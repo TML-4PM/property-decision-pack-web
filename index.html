@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troy Latter - Forward Deployed AI Engineer | Adobe</title>
+    <meta name="description" content="AI-native full-stack engineer specializing in GenAI applications, RAG pipelines, and multimodal AI. Building the future of creative workflows.">
+    
+    <!-- Adobe Brand Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --adobe-red: #EB1000;
+            --adobe-deep-red: #C5000E;
+            --adobe-orange: #FF9500;
+            --adobe-purple: #7B61FF;
+            --adobe-blue: #0066FF;
+            --dark: #000000;
+            --light: #FFFFFF;
+            --gray: #6B7280;
+        }
+
+        body {
+            font-family: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Custom cursor */
+        body {
+            cursor: none;
+        }
+
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--adobe-red);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .cursor.hover {
+            transform: scale(2);
+            border-color: var(--adobe-orange);
+        }
+
+        /* Animated mesh gradient background */
+        .mesh-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .mesh-gradient {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, var(--adobe-red) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--adobe-purple) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, var(--adobe-blue) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, var(--adobe-orange) 0%, transparent 50%);
+            filter: blur(100px);
+            animation: meshMove 20s ease-in-out infinite;
+        }
+
+        @keyframes meshMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(5%, -5%) scale(1.1); }
+            50% { transform: translate(-5%, 5%) scale(0.9); }
+            75% { transform: translate(5%, 5%) scale(1.05); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(235, 16, 0, 0.2);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--adobe-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--adobe-red);
+        }
+
+        /* Hero with Photo */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 80px;
+            padding: 120px 60px 60px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-eyebrow {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--adobe-red);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, var(--adobe-red), var(--adobe-orange), var(--adobe-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 2.5vw, 28px);
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .hero-description {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Photo Container */
+        .hero-photo {
+            position: relative;
+            animation: slideUp 0.8s ease-out 0.3s both;
+        }
+
+        .photo-frame {
+            position: relative;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
+            border: 3px solid var(--adobe-red);
+            background: rgba(235, 16, 0, 0.1);
+        }
+
+        .photo-frame:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(235, 16, 0, 0.2) 0%, 
+                rgba(123, 97, 255, 0.2) 50%,
+                rgba(0, 102, 255, 0.2) 100%);
+            z-index: 1;
+            mix-blend-mode: multiply;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Placeholder for when no image is uploaded */
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, 
+                rgba(235, 16, 0, 0.1) 0%, 
+                rgba(123, 97, 255, 0.1) 50%,
+                rgba(0, 102, 255, 0.1) 100%);
+            color: var(--gray);
+            font-size: 48px;
+            font-weight: 900;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .photo-placeholder span {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            opacity: 0.5;
+        }
+
+        .photo-accent {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: var(--adobe-red);
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .photo-accent-1 {
+            top: -100px;
+            right: -100px;
+        }
+
+        .photo-accent-2 {
+            bottom: -100px;
+            left: -100px;
+            background: var(--adobe-purple);
+            animation-delay: 3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 20px); }
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            cursor: none;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: var(--adobe-red);
+            color: white;
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+        }
+
+        .btn-primary:hover {
+            background: var(--adobe-deep-red);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(235, 16, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--adobe-red);
+            clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px);
+        }
+
+        .btn-secondary:hover {
+            background: var(--adobe-red);
+            transform: translateY(-3px);
+        }
+
+        /* Tech Stack Grid */
+        .tech-stack {
+            padding: 120px 60px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title {
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 20px;
+            color: var(--gray);
+            margin-bottom: 60px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tech-card {
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(235, 16, 0, 0.2);
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--adobe-red), transparent);
+            transition: left 0.5s;
+        }
+
+        .tech-card:hover:before {
+            left: 100%;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--adobe-red);
+            background: rgba(235, 16, 0, 0.05);
+        }
+
+        .tech-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .tech-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--adobe-red);
+            font-weight: 700;
+        }
+
+        .tech-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            font-size: 14px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Projects Showcase */
+        .projects {
+            padding: 120px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            border: 2px solid rgba(235, 16, 0, 0.3);
+            clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
+            transition: all 0.3s;
+        }
+
+        .project-card:hover {
+            border-color: var(--adobe-red);
+            transform: scale(1.02);
+        }
+
+        .project-content {
+            padding: 40px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.95));
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, var(--adobe-red) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--adobe-purple) 0%, transparent 50%);
+            opacity: 0.2;
+            transition: opacity 0.3s;
+        }
+
+        .project-card:hover:before {
+            opacity: 0.4;
+        }
+
+        .project-tag {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--adobe-orange);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .project-card h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
+
+        .project-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .project-tech span {
+            padding: 5px 12px;
+            background: rgba(235, 16, 0, 0.2);
+            border: 1px solid var(--adobe-red);
+            border-radius: 3px;
+        }
+
+        /* Stats */
+        .stats {
+            padding: 120px 60px;
+            background: var(--adobe-red);
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            color: white;
+        }
+
+        .stat-number {
+            font-size: clamp(48px, 6vw, 72px);
+            font-weight: 900;
+            margin-bottom: 10px;
+            letter-spacing: -2px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        /* Timeline */
+        .timeline {
+            padding: 120px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .timeline-item:not(:last-child):after {
+            content: '';
+            position: absolute;
+            left: 100px;
+            top: 60px;
+            bottom: -80px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--adobe-red), transparent);
+        }
+
+        .timeline-date {
+            text-align: right;
+            font-weight: 700;
+            color: var(--adobe-red);
+            font-size: 18px;
+        }
+
+        .timeline-content h3 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 900;
+        }
+
+        .timeline-role {
+            color: var(--adobe-orange);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .timeline-content p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .timeline-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .timeline-content li {
+            padding-left: 30px;
+            margin-bottom: 15px;
+            position: relative;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .timeline-content li:before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--adobe-red);
+            font-weight: bold;
+        }
+
+        /* Contact */
+        .contact {
+            padding: 120px 60px;
+            text-align: center;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(235, 16, 0, 0.1) 0%, transparent 50%);
+        }
+
+        .contact h2 {
+            font-size: clamp(36px, 5vw, 64px);
+            margin-bottom: 30px;
+            font-weight: 900;
+        }
+
+        .contact p {
+            font-size: 20px;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-link {
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--adobe-red);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+        }
+
+        .contact-link:hover {
+            background: var(--adobe-red);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(235, 16, 0, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 60px;
+            text-align: center;
+            border-top: 1px solid rgba(235, 16, 0, 0.2);
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .hero-photo {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 20px 30px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero,
+            .tech-stack,
+            .projects,
+            .timeline,
+            .contact {
+                padding: 80px 30px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .timeline-date {
+                text-align: left;
+            }
+
+            .timeline-item:after {
+                display: none;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                cursor: auto;
+            }
+
+            .cursor {
+                display: none;
+            }
+        }
+
+        /* Code block styling */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(235, 16, 0, 0.1);
+            padding: 2px 8px;
+            border-radius: 3px;
+            color: var(--adobe-orange);
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+
+    <!-- Mesh Background -->
+    <div class="mesh-background">
+        <div class="mesh-gradient"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="logo">TROY<span>.</span>LATTER</div>
+        <div class="nav-links">
+            <a href="#tech">Stack</a>
+            <a href="#projects">Work</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Connect</a>
+        </div>
+    </nav>
+
+    <!-- Hero with Photo -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-eyebrow">Forward Deployed AI Engineer</div>
+            <h1>
+                Building <span class="gradient-text">GenAI-Powered</span><br>
+                Creative Workflows
+            </h1>
+            <p class="hero-subtitle">Full-Stack • LLMs • Diffusion Models • RAG • Multimodal AI</p>
+            <p class="hero-description">
+                AI-native engineer prototyping in days, deploying at scale, and embedding with customers to co-create the future of content supply chains. 727+ autonomous agents. 189 Lambda functions. Thousands of proof points.
+            </p>
+            <div class="cta-group">
+                <a href="#contact" class="btn btn-primary">Let's Build Together</a>
+                <a href="/mnt/user-data/outputs/Troy_Latter_Adobe_Forward_Deployed_AI_Engineer.docx" class="btn btn-secondary" download>Download CV</a>
+            </div>
+        </div>
+
+        <div class="hero-photo">
+            <div class="photo-accent photo-accent-1"></div>
+            <div class="photo-accent photo-accent-2"></div>
+            <div class="photo-frame">
+                <img src="troy-latter-photo.png" alt="Troy Latter - Forward Deployed AI Engineer">
+            </div>
+        </div>
+    </section>
+
+    <!-- Rest of content remains the same as previous version -->
+    <!-- Tech Stack -->
+    <section class="tech-stack" id="tech">
+        <div class="section-title reveal">Technical Arsenal</div>
+        <p class="section-subtitle reveal">The tools I use to build AI-powered futures</p>
+        
+        <div class="tech-grid">
+            <div class="tech-card reveal">
+                <div class="tech-icon">🤖</div>
+                <h3>GenAI & LLMs</h3>
+                <p>GPT-4 • Claude Sonnet • Llama 3 • Mistral<br>Fine-tuning • Prompt engineering<br>LangChain • AutoGen • LlamaIndex</p>
+            </div>
+
+            <div class="tech-card reveal">
+                <div class="tech-icon">🎨</div>
+                <h3>Diffusion Models</h3>
+                <p>Adobe Firefly Services<br>Stable Diffusion • DALL·E 3<br>Image gen • Style transfer • Inpainting</p>
+            </div>
+
+            <div class="tech-card reveal">
+                <div class="tech-icon">⚛️</div>
+                <h3>Full-Stack Dev</h3>
+                <p>React • Next.js • Angular<br>Node.js • Java Spring Boot • FastAPI<br>REST • GraphQL • TypeScript</p>
+            </div>
+
+            <div class="tech-card reveal">
+                <div class="tech-icon">🔍</div>
+                <h3>RAG & Vectors</h3>
+                <p>Pinecone • Weaviate • FAISS<br>Semantic search • Embeddings<br>Hybrid retrieval pipelines</p>
+            </div>
+
+            <div class="tech-card reveal">
+                <div class="tech-icon">☁️</div>
+                <h3>Cloud & ML</h3>
+                <p>AWS (SageMaker, Bedrock, Lambda)<br>Azure (OpenAI, Cognitive Services)<br>GCP (Vertex AI)</p>
+            </div>
+
+            <div class="tech-card reveal">
+                <div class="tech-icon">🚀</div>
+                <h3>DevOps & IaC</h3>
+                <p>Docker • Kubernetes • Serverless<br>GitLab CI/CD • Terraform<br>CloudWatch • Datadog</p>
+            </div>
+
+            <div class="tech-card reveal">
+                <div class="tech-icon">🎬</div>
+                <h3>Adobe Ecosystem</h3>
+                <p>Firefly Services APIs<br>Creative Cloud SDK/CEP<br>GenStudio • Experience Cloud</p>
+            </div>
+
+            <div class="tech-card reveal">
+                <div class="tech-icon">🎯</div>
+                <h3>Multimodal AI</h3>
+                <p>Text • Image • Video • Audio<br>Cross-modal embeddings<br>Unified processing pipelines</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" data-target="727">0</div>
+                <div class="stat-label">AI Agents</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="189">0</div>
+                <div class="stat-label">Lambda Functions</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="50">0</div>
+                <div class="stat-label">GenAI Apps</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Prototypes</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects" id="projects">
+        <div class="section-title reveal">Featured Work</div>
+        <p class="section-subtitle reveal">AI systems built at startup speed</p>
+
+        <div class="projects-grid">
+            <div class="project-card reveal">
+                <div class="project-content">
+                    <div class="project-tag">AI ORCHESTRATION</div>
+                    <h3>Neural Ennead 9×9×9</h3>
+                    <p>727+ autonomous agents orchestrated via LangChain/AutoGen across 189 Lambda functions with Supabase state management</p>
+                    <div class="project-tech">
+                        <span>GPT-4</span>
+                        <span>Claude</span>
+                        <span>LangChain</span>
+                        <span>AWS Lambda</span>
+                        <span>Supabase</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-content">
+                    <div class="project-tag">RAG PIPELINE</div>
+                    <h3>Enterprise Document Intelligence</h3>
+                    <p>RAG system with Pinecone vector search, semantic chunking, and hybrid retrieval for 200+ customer deployments</p>
+                    <div class="project-tech">
+                        <span>Pinecone</span>
+                        <span>Embeddings</span>
+                        <span>FastAPI</span>
+                        <span>React</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-content">
+                    <div class="project-tag">MULTIMODAL AI</div>
+                    <h3>Creative Content Pipeline</h3>
+                    <p>End-to-end GenAI content workflow: text generation (GPT-4), image synthesis (Firefly/SD), video processing</p>
+                    <div class="project-tech">
+                        <span>Firefly APIs</span>
+                        <span>Stable Diffusion</span>
+                        <span>Node.js</span>
+                        <span>Docker</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-content">
+                    <div class="project-tag">LLM AUTOMATION</div>
+                    <h3>Procurement Agent System</h3>
+                    <p>Agentic AI reducing procurement cycles 35% via GPT-4/Claude automation deployed on Azure Functions</p>
+                    <div class="project-tech">
+                        <span>Azure OpenAI</span>
+                        <span>AutoGen</span>
+                        <span>CI/CD</span>
+                        <span>Terraform</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-content">
+                    <div class="project-tag">REAL-TIME ML</div>
+                    <h3>IoT Analytics Platform</h3>
+                    <p>SageMaker predictive pipelines processing millions of daily events for national infrastructure programs</p>
+                    <div class="project-tech">
+                        <span>SageMaker</span>
+                        <span>Kinesis</span>
+                        <span>Lambda</span>
+                        <span>DynamoDB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-content">
+                    <div class="project-tag">AI RESEARCH</div>
+                    <h3>NEUROPAK BCI Ecosystem</h3>
+                    <p>Brain-computer interface standards framework integrating multimodal AI for human-machine collaboration</p>
+                    <div class="project-tech">
+                        <span>Multimodal</span>
+                        <span>Research</span>
+                        <span>Standards</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline" id="experience">
+        <div class="section-title reveal">Career Journey</div>
+        <p class="section-subtitle reveal">Building AI systems across enterprise and government</p>
+
+        <div class="timeline-item reveal">
+            <div class="timeline-date">2025 – Present</div>
+            <div class="timeline-content">
+                <h3>Tech 4 Humanity</h3>
+                <div class="timeline-role">Founder & CEO</div>
+                <p>Full-stack AI engineer building GenAI-powered content supply chains and 727-agent orchestration platform</p>
+                <ul>
+                    <li>Built 50+ production GenAI apps: GPT-4, Claude, Llama 3, Stable Diffusion with RAG/LangChain</li>
+                    <li>Prototype proof points in 2-5 days—React/Next.js frontends, Node.js/FastAPI backends, AWS deployment</li>
+                    <li>Neural Ennead 9×9×9: 727 autonomous agents across 189 Lambda functions with Supabase orchestration</li>
+                    <li>Full-stack: React/TypeScript, REST/GraphQL APIs, Pinecone/FAISS vectors, Docker/K8s</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="timeline-item reveal">
+            <div class="timeline-date">2024 – 2025</div>
+            <div class="timeline-content">
+                <h3>Unisys</h3>
+                <div class="timeline-role">CTO, Alliances & Strategic Foresight – APAC</div>
+                <p>Led GenAI implementation for government accounts—LLM automation, full-stack prototypes, Azure/AWS microservices</p>
+                <ul>
+                    <li>Built LLM-powered agents reducing procurement cycles 35%—Azure Functions with OpenAI Service</li>
+                    <li>Delivered 20+ proof points in 3-5 day sprints—React frontends, Node.js backends, Azure AI integration</li>
+                    <li>CI/CD pipelines with GitLab/Terraform deploying containerized microservices to AKS</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="timeline-item reveal">
+            <div class="timeline-date">2019 – 2023</div>
+            <div class="timeline-content">
+                <h3>AWS</h3>
+                <div class="timeline-role">Principal Solutions Architect</div>
+                <p>Built AI/ML applications at scale—SageMaker, Bedrock, serverless. Hands-on full-stack engineering with customer co-creation</p>
+                <ul>
+                    <li>Architected predictive pipelines processing millions of events—SageMaker, Lambda, S3/DynamoDB</li>
+                    <li>Built RAG apps with Bedrock (Claude/Titan), Pinecone, Lambda—semantic document retrieval</li>
+                    <li>Delivered 100+ prototypes—React/Angular, Node.js/Python APIs, CloudFormation/SAM CI/CD</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <h2 class="reveal">Let's Build the Future</h2>
+        <p class="reveal">
+            Ready to prototype GenAI applications at startup speed, embed with customers, and transform creative workflows from ideation to activation.
+        </p>
+        <div class="contact-grid reveal">
+            <a href="mailto:troy.latter@gmail.com" class="contact-link">troy.latter@gmail.com</a>
+            <a href="https://linkedin.com/in/theinnovater" class="contact-link" target="_blank">LinkedIn</a>
+            <a href="https://github.com/troylatter" class="contact-link" target="_blank">GitHub</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 Troy Latter. Built for Adobe.</p>
+        <p>Sydney, Australia • Available for 30% travel</p>
+    </footer>
+
+    <script>
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            const dx = mouseX - cursorX;
+            const dy = mouseY - cursorY;
+            
+            cursorX += dx * 0.15;
+            cursorY += dy * 0.15;
+            
+            cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+            
+            requestAnimationFrame(animateCursor);
+        }
+
+        animateCursor();
+
+        // Cursor hover effect
+        const interactives = document.querySelectorAll('a, button, .btn');
+        interactives.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        
+        function checkReveals() {
+            reveals.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight - 100;
+                if (isVisible) el.classList.add('active');
+            });
+        }
+
+        window.addEventListener('scroll', checkReveals);
+        window.addEventListener('load', checkReveals);
+
+        // Counter animation
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+
+            const updateCounter = () => {
+                current += step;
+                if (current < target) {
+                    element.textContent = Math.floor(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target;
+                }
+            };
+
+            updateCounter();
+        }
+
+        // Trigger counters on scroll
+        const statsSection = document.querySelector('.stats');
+        let countersAnimated = false;
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !countersAnimated) {
+                document.querySelectorAll('.stat-number[data-target]').forEach(animateCounter);
+                countersAnimated = true;
+            }
+        }, { threshold: 0.5 });
+
+        statsObserver.observe(statsSection);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

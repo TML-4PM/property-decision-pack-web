@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Property Decision Pack - User Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.6;
+      color: #1f2937;
+    }
+    h1, h2, h3 { color: #111827; }
+    h1 { border-bottom: 3px solid #2563eb; padding-bottom: 0.5rem; }
+    h2 { margin-top: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.3rem; }
+    code {
+      background: #f3f4f6;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    pre code {
+      background: none;
+      color: inherit;
+    }
+    .note {
+      background: #dbeafe;
+      border-left: 4px solid #2563eb;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+    .warning {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+    ul, ol { margin: 0.5rem 0; }
+    li { margin: 0.3rem 0; }
+  </style>
+</head>
+<body>
+
+<h1>Property Decision Pack - User Guide</h1>
+
+<p><strong>Purpose:</strong> This app helps Troy and Cassandra compare property sale and retention options using data-driven financial modelling.</p>
+
+<h2>How to Use This App</h2>
+
+<ol>
+  <li><strong>Review key numbers</strong> - Start by understanding current property values, debts, and net proceeds from each sale option</li>
+  <li><strong>Compare options</strong> - Look at the options overview to see what each path means for debt, cash, and friction</li>
+  <li><strong>Run stress tests</strong> - Check how each option performs under adverse conditions (job loss, reduced income)</li>
+  <li><strong>Explore projections</strong> - See property value growth over 5-10 years under different growth assumptions</li>
+  <li><strong>Score decisions together</strong> - Use the decision matrix to rate each option on multiple criteria</li>
+  <li><strong>Log questions</strong> - Record questions and agreed answers as you work through scenarios</li>
+</ol>
+
+<div class="note">
+  <strong>Tip:</strong> Work through the app top-to-bottom in your first session. Then use the question log for follow-up discussions.
+</div>
+
+<h2>Understanding the Sections</h2>
+
+<h3>Key Numbers</h3>
+<p>Shows the current state of both properties:</p>
+<ul>
+  <li>Market values for Seabrook and Peninsular</li>
+  <li>Current debt on Seabrook</li>
+  <li>Net cash after selling costs (2.5% + $6k fixed per property)</li>
+</ul>
+
+<h3>Options Overview</h3>
+<p>Compares three main scenarios:</p>
+<ul>
+  <li><strong>Sell Seabrook, keep Peninsular</strong> - Clears debt, leaves $640k buffer, but smaller property</li>
+  <li><strong>Sell Peninsular, keep Seabrook</strong> - Keeps the larger home, minimal debt, but tight cashflow</li>
+  <li><strong>Sell both</strong> - Maximum flexibility, $1.4M cash, zero debt, but requires renting</li>
+</ul>
+
+<h3>Stress Test</h3>
+<p>Models "hit point" scenarios where income drops significantly:</p>
+<ul>
+  <li>Weekly cashflow (mortgage + rent income - family rent)</li>
+  <li>Runway weeks from available buffer cash</li>
+  <li>Safety margin before severe financial stress</li>
+</ul>
+
+<div class="warning">
+  <strong>Important:</strong> These are modelling scenarios only, not predictions. Actual outcomes will vary.
+</div>
+
+<h3>Growth Projections</h3>
+<p>Property value forecasts under three growth rates:</p>
+<ul>
+  <li><strong>Low (3%):</strong> Conservative scenario</li>
+  <li><strong>Middle (5%):</strong> Moderate long-term average</li>
+  <li><strong>High (7%):</strong> Optimistic scenario</li>
+</ul>
+<p>Click the scenario chips to switch between them.</p>
+
+<h3>Decision Matrix</h3>
+<p>Score each option on five criteria (1-5 scale):</p>
+<ul>
+  <li><strong>Cashflow safety:</strong> Can you survive income shocks?</li>
+  <li><strong>Staying housed:</strong> Do you keep a stable home?</li>
+  <li><strong>Staying in market:</strong> Do you maintain property exposure?</li>
+  <li><strong>Fairness:</strong> Does the split feel equitable?</li>
+  <li><strong>Friction:</strong> How much disruption does this cause? (lower is better)</li>
+</ul>
+
+<div class="note">
+  <strong>Tip:</strong> Score these together. Disagreements are valuable data, not problems.
+</div>
+
+<h3>Question Log</h3>
+<p>Use this to capture:</p>
+<ul>
+  <li>Questions that come up during discussion</li>
+  <li>Answers you agree on</li>
+  <li>Which assumptions or numbers informed each answer</li>
+</ul>
+
+<p><strong>Important:</strong> Question log is saved locally in your browser. Use "Export log json" to save a permanent copy.</p>
+
+<h2>Updating the Data</h2>
+
+<p>To change assumptions or model inputs:</p>
+
+<ol>
+  <li>Open <code>model_data.json</code> in a text editor</li>
+  <li>Find the relevant section:
+    <ul>
+      <li><code>assumptions</code> - Selling costs, move friction, etc.</li>
+      <li><code>key_numbers</code> - Property values and debts</li>
+      <li><code>options_recap</code> - Scenario outcomes</li>
+      <li><code>stress_inputs</code> - Stress test parameters</li>
+    </ul>
+  </li>
+  <li>Edit the values</li>
+  <li>Save the file</li>
+  <li>Refresh your browser</li>
+</ol>
+
+<div class="warning">
+  <strong>Warning:</strong> Export your question log before updating data. Treat each data change as a new version.
+</div>
+
+<h2>Deploying the App</h2>
+
+<h3>Option 1: GitHub Pages (Free)</h3>
+<pre><code># From the project folder
+git init
+git add .
+git commit -m "Initial decision pack"
+git branch -M main
+git remote add origin git@github.com:yourusername/property-decision-pack.git
+git push -u origin main
+
+# Then enable GitHub Pages in repo settings
+</code></pre>
+
+<h3>Option 2: Vercel (Free)</h3>
+<ol>
+  <li>Push to GitHub (see above)</li>
+  <li>Visit <a href="https://vercel.com">vercel.com</a></li>
+  <li>Import your repo</li>
+  <li>Framework preset: <strong>Other</strong></li>
+  <li>Deploy</li>
+</ol>
+
+<h3>Option 3: Local Server</h3>
+<pre><code>python3 run_local_server.py
+# Open http://localhost:8000/index.html
+</code></pre>
+
+<h2>Best Practices</h2>
+
+<ul>
+  <li><strong>Export your question log</strong> after important discussions</li>
+  <li><strong>Version your data</strong> - Save copies of <code>model_data.json</code> when you make major changes</li>
+  <li><strong>Score together</strong> - The decision matrix is most valuable when both people participate</li>
+  <li><strong>Use concrete examples</strong> - When discussing scenarios, reference specific numbers from the tables</li>
+  <li><strong>Challenge assumptions</strong> - The assumptions table exists precisely so you can question and revise inputs</li>
+</ul>
+
+<h2>Limitations</h2>
+
+<ul>
+  <li>This is a <strong>modelling tool</strong>, not financial advice</li>
+  <li>Projections are <strong>illustrative scenarios</strong>, not predictions</li>
+  <li>Does not account for taxes, capital gains, or legal costs beyond selling fees</li>
+  <li>Stress tests use simplified weekly cashflow models</li>
+  <li>Property value forecasts assume steady growth (reality is volatile)</li>
+</ul>
+
+<div class="note">
+  <strong>Recommended:</strong> Use this app to structure your thinking and discussions, then consult with a qualified financial advisor before making final decisions.
+</div>
+
+<h2>Support</h2>
+
+<p>For technical issues with the app:</p>
+<ul>
+  <li>Check that <code>model_data.json</code> is in the same folder as <code>index.html</code></li>
+  <li>Ensure chart images are in the <code>assets/</code> subfolder</li>
+  <li>Try opening in a different browser (Chrome, Firefox, Safari)</li>
+  <li>Check the browser console for errors (right-click → Inspect → Console)</li>
+</ul>
+
+<hr>
+
+<p style="text-align: center; color: #6b7280; font-size: 0.9em; margin-top: 3rem;">
+  Property Decision Pack v1.0 · Generated 2025-12-24 · Private family tool
+</p>
+
+</body>
+</html>

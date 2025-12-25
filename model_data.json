@@ -1,0 +1,148 @@
+{
+  "assumptions": [
+    { "Item": "Selling cost percent", "Value": 0.025, "Type": "assumed" },
+    { "Item": "Fixed selling costs per property", "Value": 6000, "Type": "assumed" },
+    { "Item": "Move pack and storage", "Value": 30000, "Type": "assumed" },
+    { "Item": "Contents writeoff", "Value": 100000, "Type": "assumed" }
+  ],
+  "tables": {
+    "key_numbers": [
+      { "Item": "Seabrook current value", "Amount": 1400000 },
+      { "Item": "Peninsular current value", "Amount": 900000 },
+      { "Item": "Combined value", "Amount": 2300000 },
+      { "Item": "Current debt Seabrook", "Amount": 695000 },
+      { "Item": "Seabrook net after sale", "Amount": 670000 },
+      { "Item": "Peninsular net after sale", "Amount": 871500 }
+    ],
+    "options_recap": [
+      {
+        "Option": "Sell Seabrook keep Pen",
+        "Move friction": 30000,
+        "Debt after": 0,
+        "Cash after": 640000
+      },
+      {
+        "Option": "Sell Pen pay Seabrook",
+        "Move friction": 0,
+        "Debt after": 18500,
+        "Cash after": 5000
+      },
+      {
+        "Option": "Sell both hold cash",
+        "Move friction": 30000,
+        "Debt after": 0,
+        "Cash after": 1411500
+      }
+    ],
+    "stress_inputs": [
+      { "Item": "Move pack and storage", "Value": 30000 },
+      { "Item": "Contents writeoff", "Value": 100000 },
+      { "Item": "Weekly mortgage baseline", "Value": 1200 },
+      { "Item": "Weekly net rent baseline", "Value": 800 },
+      { "Item": "Weekly family rent", "Value": 250 }
+    ],
+    "hit_severe_summary": [
+      {
+        "Option": "Sell Seabrook keep Pen",
+        "Weekly mortgage": 0,
+        "Weekly net rent": 800,
+        "Weekly family rent": 250,
+        "Weekly net cashflow": 1050,
+        "Buffer cash": 640000,
+        "Runway weeks from buffer": 609.5,
+        "Runway weeks at 250 family rent": null
+      },
+      {
+        "Option": "Sell Pen pay Seabrook",
+        "Weekly mortgage": 1200,
+        "Weekly net rent": 0,
+        "Weekly family rent": 250,
+        "Weekly net cashflow": -950,
+        "Buffer cash": 5000,
+        "Runway weeks from buffer": 5.3,
+        "Runway weeks at 250 family rent": 20.0
+      },
+      {
+        "Option": "Sell both hold cash",
+        "Weekly mortgage": 0,
+        "Weekly net rent": 0,
+        "Weekly family rent": 250,
+        "Weekly net cashflow": 250,
+        "Buffer cash": 1411500,
+        "Runway weeks from buffer": 5646.0,
+        "Runway weeks at 250 family rent": null
+      }
+    ],
+    "repayments": [
+      {
+        "Annual rate": 0.05,
+        "Monthly repayment current loan": 3800,
+        "Monthly repayment after Opt3 loan": 100,
+        "Monthly repayment after Opt4 loan": 0,
+        "Monthly saving Opt3": 3700,
+        "Monthly saving Opt4": 3800
+      },
+      {
+        "Annual rate": 0.06,
+        "Monthly repayment current loan": 4200,
+        "Monthly repayment after Opt3 loan": 110,
+        "Monthly repayment after Opt4 loan": 0,
+        "Monthly saving Opt3": 4090,
+        "Monthly saving Opt4": 4200
+      },
+      {
+        "Annual rate": 0.07,
+        "Monthly repayment current loan": 4600,
+        "Monthly repayment after Opt3 loan": 125,
+        "Monthly repayment after Opt4 loan": 0,
+        "Monthly saving Opt3": 4475,
+        "Monthly saving Opt4": 4600
+      }
+    ],
+    "sell_splits": [
+      { "Split rule": "50-50 of net pool", "Cassandra": 770750, "Troy": 770750 },
+      { "Split rule": "70-30 Cassandra favor", "Cassandra": 1079050, "Troy": 462450 },
+      { "Split rule": "Keep own sale net", "Cassandra": 871500, "Troy": 670000 },
+      { "Split rule": "Cassandra gets Pen net first", "Cassandra": 871500, "Troy": 670000 }
+    ],
+    "projections": [
+      { "Scenario": "Low 3 percent", "Years": 0, "Seabrook value": 1400000, "Peninsular value": 900000, "Both value": 2300000 },
+      { "Scenario": "Low 3 percent", "Years": 5, "Seabrook value": 1622000, "Peninsular value": 1043000, "Both value": 2665000 },
+      { "Scenario": "Low 3 percent", "Years": 10, "Seabrook value": 1880000, "Peninsular value": 1208000, "Both value": 3088000 },
+      { "Scenario": "Middle 5 percent", "Years": 0, "Seabrook value": 1400000, "Peninsular value": 900000, "Both value": 2300000 },
+      { "Scenario": "Middle 5 percent", "Years": 5, "Seabrook value": 1786000, "Peninsular value": 1148000, "Both value": 2934000 },
+      { "Scenario": "Middle 5 percent", "Years": 10, "Seabrook value": 2280000, "Peninsular value": 1465000, "Both value": 3745000 },
+      { "Scenario": "High 7 percent", "Years": 0, "Seabrook value": 1400000, "Peninsular value": 900000, "Both value": 2300000 },
+      { "Scenario": "High 7 percent", "Years": 5, "Seabrook value": 1963000, "Peninsular value": 1262000, "Both value": 3225000 },
+      { "Scenario": "High 7 percent", "Years": 10, "Seabrook value": 2753000, "Peninsular value": 1770000, "Both value": 4523000 }
+    ]
+  },
+  "question_ledger": [
+    {
+      "q": "What happens if we sell Seabrook?",
+      "a": "Selling Seabrook clears all debt and leaves ~$640k cash buffer, but you move to the smaller Peninsular property."
+    },
+    {
+      "q": "Can we keep Seabrook?",
+      "a": "Yes by selling Peninsular, but debt reduces only to ~$18.5k and cash buffer is minimal (~$5k), creating cashflow stress."
+    },
+    {
+      "q": "What's the fairest split if we sell both?",
+      "a": "Several options exist: 50-50 split, 70-30 weighted to Cassandra, or each keeps their own property's net proceeds."
+    }
+  ],
+  "charts": [
+    {
+      "title": "Property value growth over 10 years",
+      "file": "assets/IMG_PropertyGrowthChart_HousesFinance_20251224.jpg"
+    },
+    {
+      "title": "Paper gains comparison across scenarios",
+      "file": "assets/IMG_PropertyGainChart_HousesFinance_20251224.jpg"
+    },
+    {
+      "title": "Portfolio outcome by option",
+      "file": "assets/IMG_PortfolioComparison_HousesFinance_20251224.jpg"
+    }
+  ]
+}
