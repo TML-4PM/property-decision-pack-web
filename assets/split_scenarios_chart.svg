@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350">
+  <rect width="600" height="350" fill="#f9fafb"/>
+  <text x="300" y="30" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="600" fill="#111827">Split Scenarios - Who Gets What</text>
+  
+  <!-- Header -->
+  <text x="250" y="60" text-anchor="end" font-family="system-ui" font-size="12" fill="#6b7280">Cassandra</text>
+  <text x="450" y="60" text-anchor="start" font-family="system-ui" font-size="12" fill="#6b7280">Troy</text>
+  
+  <!-- 50/50 -->
+  <text x="55" y="100" font-family="system-ui" font-size="11" fill="#111827">50/50</text>
+  <rect x="130" y="85" width="120" height="20" fill="#ec4899" rx="3"/>
+  <rect x="250" y="85" width="120" height="20" fill="#3b82f6" rx="3"/>
+  <text x="190" y="99" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">$1.15M</text>
+  <text x="310" y="99" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">$1.15M</text>
+  
+  <!-- 60/40 -->
+  <text x="55" y="140" font-family="system-ui" font-size="11" fill="#111827">60/40</text>
+  <rect x="130" y="125" width="144" height="20" fill="#ec4899" rx="3"/>
+  <rect x="274" y="125" width="96" height="20" fill="#3b82f6" rx="3"/>
+  <text x="202" y="139" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">$1.38M</text>
+  <text x="322" y="139" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">$920k</text>
+  
+  <!-- 70/30 -->
+  <text x="55" y="180" font-family="system-ui" font-size="11" fill="#111827">70/30</text>
+  <rect x="130" y="165" width="168" height="20" fill="#ec4899" rx="3"/>
+  <rect x="298" y="165" width="72" height="20" fill="#3b82f6" rx="3"/>
+  <text x="214" y="179" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">$1.61M</text>
+  <text x="334" y="179" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">$690k</text>
+  
+  <!-- Each keeps own -->
+  <text x="55" y="220" font-family="system-ui" font-size="11" fill="#111827">Own Net</text>
+  <rect x="130" y="205" width="84" height="20" fill="#ec4899" rx="3"/>
+  <rect x="214" y="205" width="156" height="20" fill="#3b82f6" rx="3"/>
+  <text x="172" y="219" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">$809k</text>
+  <text x="292" y="219" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">$1.49M</text>
+  
+  <!-- Pen first -->
+  <text x="55" y="260" font-family="system-ui" font-size="11" fill="#111827">Pen First</text>
+  <rect x="130" y="245" width="193" height="20" fill="#ec4899" rx="3"/>
+  <rect x="323" y="245" width="47" height="20" fill="#3b82f6" rx="3"/>
+  <text x="226" y="259" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">$1.85M</text>
+  <text x="346" y="259" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">$447k</text>
+  
+  <!-- Legend -->
+  <rect x="200" y="300" width="16" height="16" fill="#ec4899" rx="2"/>
+  <text x="222" y="312" font-family="system-ui" font-size="12" fill="#111827">Cassandra</text>
+  <rect x="320" y="300" width="16" height="16" fill="#3b82f6" rx="2"/>
+  <text x="342" y="312" font-family="system-ui" font-size="12" fill="#111827">Troy</text>
+</svg>
