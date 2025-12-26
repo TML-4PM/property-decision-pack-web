@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350">
+  <rect width="600" height="350" fill="#f9fafb"/>
+  <text x="300" y="30" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="600" fill="#111827">Debt Reduction Waterfall</text>
+  
+  <!-- Starting debt bar -->
+  <text x="100" y="80" text-anchor="middle" font-family="system-ui" font-size="12" fill="#111827">Current</text>
+  <rect x="60" y="90" width="80" height="200" fill="#dc2626" rx="4"/>
+  <text x="100" y="195" text-anchor="middle" font-family="system-ui" font-size="11" fill="white" font-weight="600">$2.44M</text>
+  
+  <!-- Arrow -->
+  <path d="M155,190 L185,190" stroke="#111827" stroke-width="2" marker-end="url(#arrow)"/>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#111827"/></marker></defs>
+  
+  <!-- Sell Pen pay all -->
+  <text x="250" y="80" text-anchor="middle" font-family="system-ui" font-size="12" fill="#111827">Sell Pen (all in)</text>
+  <rect x="210" y="190" width="80" height="100" fill="#f59e0b" rx="4"/>
+  <text x="250" y="245" text-anchor="middle" font-family="system-ui" font-size="11" fill="white" font-weight="600">$807k</text>
+  <text x="250" y="180" text-anchor="middle" font-family="system-ui" font-size="10" fill="#22c55e">-67%</text>
+  
+  <!-- Arrow -->
+  <path d="M305,190 L335,190" stroke="#111827" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Sell Pen keep buffer -->
+  <text x="400" y="80" text-anchor="middle" font-family="system-ui" font-size="12" fill="#111827">Sell Pen (buffer)</text>
+  <rect x="360" y="175" width="80" height="115" fill="#f59e0b" rx="4"/>
+  <text x="400" y="235" text-anchor="middle" font-family="system-ui" font-size="11" fill="white" font-weight="600">$936k</text>
+  <text x="400" y="165" text-anchor="middle" font-family="system-ui" font-size="10" fill="#22c55e">-62%</text>
+  
+  <!-- Arrow -->
+  <path d="M455,190 L485,190" stroke="#111827" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Sell both -->
+  <text x="540" y="80" text-anchor="middle" font-family="system-ui" font-size="12" fill="#111827">Sell Both</text>
+  <rect x="500" y="280" width="80" height="10" fill="#22c55e" rx="4"/>
+  <text x="540" y="305" text-anchor="middle" font-family="system-ui" font-size="11" fill="#22c55e" font-weight="600">$0</text>
+  <text x="540" y="270" text-anchor="middle" font-family="system-ui" font-size="10" fill="#22c55e">-100%</text>
+</svg>
