@@ -1,148 +1,378 @@
 {
+  "metadata": {
+    "version": "3.0",
+    "generated": "2025-12-26",
+    "purpose": "Property decision modelling for Troy & Cassandra",
+    "disclaimer": "Modelling only, not financial advice"
+  },
   "assumptions": [
-    { "Item": "Selling cost percent", "Value": 0.025, "Type": "assumed" },
-    { "Item": "Fixed selling costs per property", "Value": 6000, "Type": "assumed" },
-    { "Item": "Move pack and storage", "Value": 30000, "Type": "assumed" },
-    { "Item": "Contents writeoff", "Value": 100000, "Type": "assumed" }
+    {"Item": "Seabrook value", "Value": 3192543, "Type": "estimated", "Source": "Property estimate app"},
+    {"Item": "Peninsular value", "Value": 1681394, "Type": "estimated", "Source": "Property estimate app"},
+    {"Item": "Seabrook loan", "Value": 1615977, "Type": "known", "Source": "Loan statement"},
+    {"Item": "Peninsular loans total", "Value": 824429, "Type": "known", "Source": "Loan statements"},
+    {"Item": "Selling cost percent", "Value": 0.025, "Type": "assumed", "Source": "Industry standard"},
+    {"Item": "Fixed selling costs per property", "Value": 6000, "Type": "assumed", "Source": "Legals and discharge"},
+    {"Item": "Move pack and storage", "Value": 30000, "Type": "assumed", "Source": "Estimate"},
+    {"Item": "Contents writeoff", "Value": 100000, "Type": "assumed", "Source": "Retail vs resale gap"},
+    {"Item": "Interest rate", "Value": 0.07, "Type": "assumed", "Source": "Current market"},
+    {"Item": "Loan term years", "Value": 30, "Type": "assumed", "Source": "Standard term"},
+    {"Item": "Net rent percent", "Value": 0.80, "Type": "assumed", "Source": "After agent/vacancy/costs"},
+    {"Item": "Seabrook weekly rent", "Value": 1750, "Type": "estimated", "Source": "Market comparison"},
+    {"Item": "Family rent weekly", "Value": 250, "Type": "proposed", "Source": "Discussion"}
   ],
-  "tables": {
-    "key_numbers": [
-      { "Item": "Seabrook current value", "Amount": 1400000 },
-      { "Item": "Peninsular current value", "Amount": 900000 },
-      { "Item": "Combined value", "Amount": 2300000 },
-      { "Item": "Current debt Seabrook", "Amount": 695000 },
-      { "Item": "Seabrook net after sale", "Amount": 670000 },
-      { "Item": "Peninsular net after sale", "Amount": 871500 }
-    ],
-    "options_recap": [
-      {
-        "Option": "Sell Seabrook keep Pen",
-        "Move friction": 30000,
-        "Debt after": 0,
-        "Cash after": 640000
-      },
-      {
-        "Option": "Sell Pen pay Seabrook",
-        "Move friction": 0,
-        "Debt after": 18500,
-        "Cash after": 5000
-      },
-      {
-        "Option": "Sell both hold cash",
-        "Move friction": 30000,
-        "Debt after": 0,
-        "Cash after": 1411500
-      }
-    ],
-    "stress_inputs": [
-      { "Item": "Move pack and storage", "Value": 30000 },
-      { "Item": "Contents writeoff", "Value": 100000 },
-      { "Item": "Weekly mortgage baseline", "Value": 1200 },
-      { "Item": "Weekly net rent baseline", "Value": 800 },
-      { "Item": "Weekly family rent", "Value": 250 }
-    ],
-    "hit_severe_summary": [
-      {
-        "Option": "Sell Seabrook keep Pen",
-        "Weekly mortgage": 0,
-        "Weekly net rent": 800,
-        "Weekly family rent": 250,
-        "Weekly net cashflow": 1050,
-        "Buffer cash": 640000,
-        "Runway weeks from buffer": 609.5,
-        "Runway weeks at 250 family rent": null
-      },
-      {
-        "Option": "Sell Pen pay Seabrook",
-        "Weekly mortgage": 1200,
-        "Weekly net rent": 0,
-        "Weekly family rent": 250,
-        "Weekly net cashflow": -950,
-        "Buffer cash": 5000,
-        "Runway weeks from buffer": 5.3,
-        "Runway weeks at 250 family rent": 20.0
-      },
-      {
-        "Option": "Sell both hold cash",
-        "Weekly mortgage": 0,
-        "Weekly net rent": 0,
-        "Weekly family rent": 250,
-        "Weekly net cashflow": 250,
-        "Buffer cash": 1411500,
-        "Runway weeks from buffer": 5646.0,
-        "Runway weeks at 250 family rent": null
-      }
-    ],
-    "repayments": [
-      {
-        "Annual rate": 0.05,
-        "Monthly repayment current loan": 3800,
-        "Monthly repayment after Opt3 loan": 100,
-        "Monthly repayment after Opt4 loan": 0,
-        "Monthly saving Opt3": 3700,
-        "Monthly saving Opt4": 3800
-      },
-      {
-        "Annual rate": 0.06,
-        "Monthly repayment current loan": 4200,
-        "Monthly repayment after Opt3 loan": 110,
-        "Monthly repayment after Opt4 loan": 0,
-        "Monthly saving Opt3": 4090,
-        "Monthly saving Opt4": 4200
-      },
-      {
-        "Annual rate": 0.07,
-        "Monthly repayment current loan": 4600,
-        "Monthly repayment after Opt3 loan": 125,
-        "Monthly repayment after Opt4 loan": 0,
-        "Monthly saving Opt3": 4475,
-        "Monthly saving Opt4": 4600
-      }
-    ],
-    "sell_splits": [
-      { "Split rule": "50-50 of net pool", "Cassandra": 770750, "Troy": 770750 },
-      { "Split rule": "70-30 Cassandra favor", "Cassandra": 1079050, "Troy": 462450 },
-      { "Split rule": "Keep own sale net", "Cassandra": 871500, "Troy": 670000 },
-      { "Split rule": "Cassandra gets Pen net first", "Cassandra": 871500, "Troy": 670000 }
-    ],
-    "projections": [
-      { "Scenario": "Low 3 percent", "Years": 0, "Seabrook value": 1400000, "Peninsular value": 900000, "Both value": 2300000 },
-      { "Scenario": "Low 3 percent", "Years": 5, "Seabrook value": 1622000, "Peninsular value": 1043000, "Both value": 2665000 },
-      { "Scenario": "Low 3 percent", "Years": 10, "Seabrook value": 1880000, "Peninsular value": 1208000, "Both value": 3088000 },
-      { "Scenario": "Middle 5 percent", "Years": 0, "Seabrook value": 1400000, "Peninsular value": 900000, "Both value": 2300000 },
-      { "Scenario": "Middle 5 percent", "Years": 5, "Seabrook value": 1786000, "Peninsular value": 1148000, "Both value": 2934000 },
-      { "Scenario": "Middle 5 percent", "Years": 10, "Seabrook value": 2280000, "Peninsular value": 1465000, "Both value": 3745000 },
-      { "Scenario": "High 7 percent", "Years": 0, "Seabrook value": 1400000, "Peninsular value": 900000, "Both value": 2300000 },
-      { "Scenario": "High 7 percent", "Years": 5, "Seabrook value": 1963000, "Peninsular value": 1262000, "Both value": 3225000 },
-      { "Scenario": "High 7 percent", "Years": 10, "Seabrook value": 2753000, "Peninsular value": 1770000, "Both value": 4523000 }
+  "key_numbers": [
+    {"Item": "Seabrook value now", "Amount": 3192543},
+    {"Item": "Peninsular value now", "Amount": 1681394},
+    {"Item": "Combined property value", "Amount": 4873937},
+    {"Item": "Seabrook loan", "Amount": 1615977},
+    {"Item": "Peninsular loans", "Amount": 824429},
+    {"Item": "Combined debt", "Amount": 2440406},
+    {"Item": "Seabrook equity", "Amount": 1576566},
+    {"Item": "Peninsular equity", "Amount": 856965},
+    {"Item": "Combined equity", "Amount": 2433532},
+    {"Item": "Net if sell Seabrook", "Amount": 1490753},
+    {"Item": "Net if sell Peninsular", "Amount": 808930},
+    {"Item": "Net if sell both", "Amount": 2299683}
+  ],
+  "options": [
+    {
+      "code": "A",
+      "name": "Keep both houses",
+      "description": "No sale. Formalise internal settlement. Cassandra pays a defined share of Seabrook carry.",
+      "debt_after": 2440406,
+      "cash_after": 0,
+      "move_friction": 0,
+      "risk": "High",
+      "market_exposure": "Full - both properties",
+      "pros": ["Maximum growth exposure", "No transaction costs", "No stamp duty", "Stay in Seabrook"],
+      "cons": ["Highest debt stress", "Requires income stability", "Troy carries most risk"],
+      "cassandra_value_after": 3277666,
+      "troy_value_after": 1596272
+    },
+    {
+      "code": "B1",
+      "name": "Sell Peninsular, pay all into Seabrook",
+      "description": "Sell Peninsular, pay all net proceeds into Seabrook loan. Maximum debt reduction.",
+      "debt_after": 807046,
+      "cash_after": 0,
+      "move_friction": 0,
+      "risk": "Medium",
+      "market_exposure": "Seabrook only",
+      "pros": ["Repayments halved", "No moving", "Keep high-value asset", "No stamp duty now"],
+      "cons": ["No cash buffer", "Need income for mortgage", "Cassandra loses visible asset"],
+      "cassandra_value_after": 1596272,
+      "troy_value_after": 1596272
+    },
+    {
+      "code": "B2",
+      "name": "Sell Peninsular, keep 1-year buffer",
+      "description": "Sell Peninsular, keep 1 year of Seabrook repayments as safety buffer, pay rest into loan.",
+      "debt_after": 936060,
+      "cash_after": 129014,
+      "move_friction": 0,
+      "risk": "Low-Medium",
+      "market_exposure": "Seabrook only",
+      "pros": ["Strong repayment drop", "One year runway", "No moving", "Keep Seabrook"],
+      "cons": ["Still some shortfall risk", "Cassandra needs protected credit"],
+      "cassandra_value_after": 1596272,
+      "troy_value_after": 1596272,
+      "recommended": true,
+      "recommended_reason": "Best balance of safety, market exposure, and reduced stress"
+    },
+    {
+      "code": "B3",
+      "name": "Sell Peninsular, put into offset",
+      "description": "Put lump sum into offset in Cassandra's name. Interest drops but liquidity preserved.",
+      "debt_after": 1615977,
+      "cash_after": 0,
+      "move_friction": 0,
+      "risk": "Medium",
+      "market_exposure": "Seabrook only",
+      "pros": ["Liquidity preserved", "Interest reduced", "Cassandra cash visible", "No moving"],
+      "cons": ["Debt stays on books", "Requires discipline"],
+      "cassandra_value_after": 1596272,
+      "troy_value_after": 1596272
+    },
+    {
+      "code": "C",
+      "name": "Sell Peninsular, rent Seabrook, live with family",
+      "description": "Sell Peninsular, pay into Seabrook, rent Seabrook out, family lives with relatives.",
+      "debt_after": 807046,
+      "cash_after": 0,
+      "move_friction": 30000,
+      "risk": "Medium",
+      "market_exposure": "Seabrook (rented)",
+      "pros": ["Rent covers mortgage", "Stay in market", "Time to decide"],
+      "cons": ["Lifestyle disruption", "Rental variability", "Move costs"],
+      "cassandra_value_after": 1596272,
+      "troy_value_after": 1596272
+    },
+    {
+      "code": "D1",
+      "name": "Sell Seabrook, keep Peninsular debt-free",
+      "description": "Sell Seabrook, clear Peninsular loans, keep cash buffer. Debt free.",
+      "debt_after": 0,
+      "cash_after": 666324,
+      "move_friction": 130000,
+      "risk": "Very Low",
+      "market_exposure": "Peninsular only",
+      "pros": ["Completely debt free", "Large cash buffer", "Lower stress"],
+      "cons": ["You said you don't want to live there", "Exit Seabrook growth", "Big move friction"],
+      "cassandra_value_after": 1681394,
+      "troy_value_after": 0
+    },
+    {
+      "code": "D2",
+      "name": "Sell Seabrook, rent Peninsular",
+      "description": "Sell Seabrook, clear Peninsular loans, rent it out, family rents elsewhere.",
+      "debt_after": 0,
+      "cash_after": 666324,
+      "move_friction": 130000,
+      "risk": "Low",
+      "market_exposure": "Peninsular (rented)",
+      "pros": ["Debt free", "Rental income", "Some market exposure"],
+      "cons": ["Not preferred home", "Move costs", "Rental management"],
+      "cassandra_value_after": 1681394,
+      "troy_value_after": 0
+    },
+    {
+      "code": "E1",
+      "name": "Sell both, hold cash",
+      "description": "Sell both properties. Hold cash. Rent 6-12 months. Buy later.",
+      "debt_after": 0,
+      "cash_after": 2299683,
+      "move_friction": 130000,
+      "risk": "Flexible",
+      "market_exposure": "None until rebuy",
+      "pros": ["Maximum flexibility", "Complete reset", "Choose any next home"],
+      "cons": ["Market timing risk", "Stamp duty on rebuy", "Rental costs", "Could fall behind if market rises"],
+      "cassandra_value_after": 0,
+      "troy_value_after": 0
+    },
+    {
+      "code": "E2",
+      "name": "Sell both, buy new home quickly",
+      "description": "Sell both and immediately buy the home you actually want.",
+      "debt_after": 0,
+      "cash_after": 2169683,
+      "move_friction": 130000,
+      "risk": "Medium",
+      "market_exposure": "New property",
+      "pros": ["Choose ideal home", "Stay in market", "Clean slate"],
+      "cons": ["Stamp duty ~$150k+", "Move friction", "Transaction costs stack"],
+      "cassandra_value_after": 0,
+      "troy_value_after": 0
+    },
+    {
+      "code": "F",
+      "name": "Keep both, formalise settlement",
+      "description": "Keep both houses. Write formal agreement on contributions and equity shares.",
+      "debt_after": 2440406,
+      "cash_after": 0,
+      "move_friction": 0,
+      "risk": "High",
+      "market_exposure": "Full",
+      "pros": ["No transaction costs", "Maximum growth", "Clear ownership rules"],
+      "cons": ["High debt", "Requires stable income", "Paperwork needed"],
+      "cassandra_value_after": 3277666,
+      "troy_value_after": 1596272
+    },
+    {
+      "code": "G",
+      "name": "Sell both, live with family, buy later",
+      "description": "Sell both, live with family short term, hold cash, buy when ready.",
+      "debt_after": 0,
+      "cash_after": 2169683,
+      "move_friction": 130000,
+      "risk": "Medium",
+      "market_exposure": "None until rebuy",
+      "pros": ["Lowest living cost", "Time to find right home", "Zero debt"],
+      "cons": ["Lifestyle disruption", "Market timing risk", "Family dynamics"],
+      "cassandra_value_after": 0,
+      "troy_value_after": 0
+    },
+    {
+      "code": "H",
+      "name": "Sell Peninsular, aggressive payoff",
+      "description": "Sell Peninsular, pay all into Seabrook, keep repayments same to kill loan fast.",
+      "debt_after": 807046,
+      "cash_after": 0,
+      "move_friction": 0,
+      "risk": "Medium",
+      "market_exposure": "Seabrook only",
+      "pros": ["Loan finished in ~8 years", "Maximum wealth building", "No moving"],
+      "cons": ["Tight cashflow", "No buffer", "Requires income stability"],
+      "cassandra_value_after": 1596272,
+      "troy_value_after": 1596272
+    }
+  ],
+  "stress_inputs": [
+    {"Item": "Weekly Seabrook expenses", "Value": 400},
+    {"Item": "Monthly mortgage at 7%", "Value": 10751},
+    {"Item": "Weekly mortgage at 7%", "Value": 2481},
+    {"Item": "Monthly reduced loan mortgage", "Value": 5369},
+    {"Item": "Weekly reduced loan mortgage", "Value": 1239},
+    {"Item": "Seabrook gross rent weekly", "Value": 1750},
+    {"Item": "Net rent at 80%", "Value": 1400},
+    {"Item": "Family rent weekly", "Value": 250}
+  ],
+  "hit_severe_summary": [
+    {
+      "Option": "Keep both (current)",
+      "Weekly mortgage": 2481,
+      "Weekly net rent": 0,
+      "Weekly family rent": 0,
+      "Weekly net cashflow": -2481,
+      "Buffer cash": 0,
+      "Runway weeks from buffer": 0
+    },
+    {
+      "Option": "Sell Pen, pay all in",
+      "Weekly mortgage": 1239,
+      "Weekly net rent": 0,
+      "Weekly family rent": 0,
+      "Weekly net cashflow": -1239,
+      "Buffer cash": 0,
+      "Runway weeks from buffer": 0
+    },
+    {
+      "Option": "Sell Pen, keep 1y buffer",
+      "Weekly mortgage": 1437,
+      "Weekly net rent": 0,
+      "Weekly family rent": 0,
+      "Weekly net cashflow": -1437,
+      "Buffer cash": 129014,
+      "Runway weeks from buffer": 89.8
+    },
+    {
+      "Option": "Sell Pen, rent Seabrook",
+      "Weekly mortgage": 1239,
+      "Weekly net rent": 1400,
+      "Weekly family rent": 250,
+      "Weekly net cashflow": -89,
+      "Buffer cash": 0,
+      "Runway weeks from buffer": 0
+    },
+    {
+      "Option": "Sell Seabrook, keep Pen",
+      "Weekly mortgage": 0,
+      "Weekly net rent": 0,
+      "Weekly family rent": 0,
+      "Weekly net cashflow": 0,
+      "Buffer cash": 666324,
+      "Runway weeks from buffer": null
+    },
+    {
+      "Option": "Sell both",
+      "Weekly mortgage": 0,
+      "Weekly net rent": 0,
+      "Weekly family rent": 0,
+      "Weekly net cashflow": 0,
+      "Buffer cash": 2169683,
+      "Runway weeks from buffer": null
+    }
+  ],
+  "repayments": [
+    {"Annual rate": 0.055, "Current loan monthly": 9176, "Reduced loan monthly": 4583, "Savings monthly": 4593},
+    {"Annual rate": 0.060, "Current loan monthly": 9688, "Reduced loan monthly": 4839, "Savings monthly": 4849},
+    {"Annual rate": 0.065, "Current loan monthly": 10214, "Reduced loan monthly": 5101, "Savings monthly": 5113},
+    {"Annual rate": 0.070, "Current loan monthly": 10751, "Reduced loan monthly": 5369, "Savings monthly": 5382},
+    {"Annual rate": 0.075, "Current loan monthly": 11299, "Reduced loan monthly": 5643, "Savings monthly": 5656}
+  ],
+  "sell_splits": [
+    {"Split rule": "50/50 equal", "Cassandra": 1149842, "Troy": 1149842, "Note": "Simple equal split"},
+    {"Split rule": "70/30 to Cassandra", "Cassandra": 1609778, "Troy": 689905, "Note": "Proposed ratio"},
+    {"Split rule": "Each keeps own sale net", "Cassandra": 808930, "Troy": 1490753, "Note": "By property ownership"},
+    {"Split rule": "Cass gets Pen net first, then 70/30", "Cassandra": 1852457, "Troy": 447226, "Note": "Preserves Pen value first"},
+    {"Split rule": "60/40 to Cassandra", "Cassandra": 1379810, "Troy": 919873, "Note": "Middle ground"},
+    {"Split rule": "Proportional to title ownership", "Cassandra": 1450000, "Troy": 849683, "Note": "Based on ownership %"}
+  ],
+  "projections": [
+    {"Scenario": "Conservative 3%", "Years": 0, "Seabrook value": 3192543, "Peninsular value": 1681394, "Both value": 4873937},
+    {"Scenario": "Conservative 3%", "Years": 5, "Seabrook value": 3701032, "Peninsular value": 1949196, "Both value": 5650228},
+    {"Scenario": "Conservative 3%", "Years": 10, "Seabrook value": 4290511, "Peninsular value": 2259653, "Both value": 6550164},
+    {"Scenario": "Middle 5%", "Years": 0, "Seabrook value": 3192543, "Peninsular value": 1681394, "Both value": 4873937},
+    {"Scenario": "Middle 5%", "Years": 5, "Seabrook value": 4074584, "Peninsular value": 2145932, "Both value": 6220516},
+    {"Scenario": "Middle 5%", "Years": 10, "Seabrook value": 5200316, "Peninsular value": 2738814, "Both value": 7939130},
+    {"Scenario": "Strong 7.6%", "Years": 0, "Seabrook value": 3192543, "Peninsular value": 1681394, "Both value": 4873937},
+    {"Scenario": "Strong 7.6%", "Years": 5, "Seabrook value": 4604666, "Peninsular value": 2425107, "Both value": 7029773},
+    {"Scenario": "Strong 7.6%", "Years": 10, "Seabrook value": 6641397, "Peninsular value": 3497778, "Both value": 10139175}
+  ],
+  "paper_gains": [
+    {"Property": "Seabrook", "Years": 5, "Middle 5%": 882041, "Strong 7.6%": 1412123},
+    {"Property": "Seabrook", "Years": 10, "Middle 5%": 2007773, "Strong 7.6%": 3448854},
+    {"Property": "Peninsular", "Years": 5, "Middle 5%": 464538, "Strong 7.6%": 743713},
+    {"Property": "Peninsular", "Years": 10, "Middle 5%": 1057420, "Strong 7.6%": 1816384}
+  ],
+  "stamp_duty": {
+    "already_paid_estimate": 151991,
+    "examples_if_rebuy": [
+      {"Purchase price": 2300000, "Duty estimate": 108512},
+      {"Purchase price": 3000000, "Duty estimate": 147012},
+      {"Purchase price": 3500000, "Duty estimate": 174512},
+      {"Purchase price": 4000000, "Duty estimate": 206197}
     ]
   },
+  "ranking_criteria": [
+    {"name": "Cashflow safety", "description": "How well can you survive income shocks?", "weight": 1},
+    {"name": "Staying housed", "description": "Do you keep a home you want to live in?", "weight": 1},
+    {"name": "Staying in market", "description": "Do you keep property growth exposure?", "weight": 1},
+    {"name": "Fairness", "description": "Does both parties feel the split is fair?", "weight": 1},
+    {"name": "Transaction friction", "description": "Lower is better - moving, stamp duty, costs", "weight": 1},
+    {"name": "Flexibility", "description": "Options for the future", "weight": 1}
+  ],
   "question_ledger": [
     {
-      "q": "What happens if we sell Seabrook?",
-      "a": "Selling Seabrook clears all debt and leaves ~$640k cash buffer, but you move to the smaller Peninsular property."
+      "q": "What does 'preserved credit' mean?",
+      "a": "When Peninsular sale money goes into Seabrook, Cassandra gets that amount recorded as a credit. If Seabrook is ever sold, she gets that credit back first, then remaining equity splits 50/50.",
+      "status": "Answered"
     },
     {
-      "q": "Can we keep Seabrook?",
-      "a": "Yes by selling Peninsular, but debt reduces only to ~$18.5k and cash buffer is minimal (~$5k), creating cashflow stress."
+      "q": "Why does the bigger property win?",
+      "a": "Same growth rate means same percent gain. But the bigger asset turns the same percent into more dollars. At 5% growth, Seabrook gains ~$882k in 5 years vs Peninsular's ~$465k.",
+      "status": "Answered"
     },
     {
-      "q": "What's the fairest split if we sell both?",
-      "a": "Several options exist: 50-50 split, 70-30 weighted to Cassandra, or each keeps their own property's net proceeds."
+      "q": "What is move friction?",
+      "a": "Moving cost (~$30k) plus contents writeoff (~$100k for furniture bought at retail that can't be resold). Selling Seabrook and downsizing = ~$130k friction.",
+      "status": "Answered"
+    },
+    {
+      "q": "Does family rent help with tax?",
+      "a": "No. Paying family rent is a private living cost. It's not deductible against rental income. Raising family rent from $250 to $1200/week just increases cash out.",
+      "status": "Answered"
+    },
+    {
+      "q": "What happens to Cassandra's value if we sell Peninsular?",
+      "a": "Her 100% ownership of Peninsular becomes a preserved credit inside Seabrook. The value doesn't disappear - it's protected and paid first if Seabrook is ever sold.",
+      "status": "Answered"
+    },
+    {
+      "q": "What is the hit point?",
+      "a": "The point where cashflow breaks - when weekly outflows become too large for too long. The stress test shows runway weeks before hitting this point.",
+      "status": "Answered"
     }
   ],
   "charts": [
-    {
-      "title": "Property value growth over 10 years",
-      "file": "assets/IMG_PropertyGrowthChart_HousesFinance_20251224.jpg"
-    },
-    {
-      "title": "Paper gains comparison across scenarios",
-      "file": "assets/IMG_PropertyGainChart_HousesFinance_20251224.jpg"
-    },
-    {
-      "title": "Portfolio outcome by option",
-      "file": "assets/IMG_PortfolioComparison_HousesFinance_20251224.jpg"
-    }
-  ]
+    {"title": "Property value growth over 10 years", "file": "assets/property_growth_chart.svg"},
+    {"title": "Paper gains comparison", "file": "assets/paper_gains_chart.svg"},
+    {"title": "Portfolio comparison by option", "file": "assets/portfolio_comparison_chart.svg"},
+    {"title": "Debt reduction waterfall", "file": "assets/debt_waterfall_chart.svg"},
+    {"title": "Runway comparison", "file": "assets/runway_chart.svg"},
+    {"title": "Split scenarios", "file": "assets/split_scenarios_chart.svg"}
+  ],
+  "decision_rules": {
+    "must_pick": true,
+    "no_blank_answers": true,
+    "ground_rule": "No 'no decision' or 'no comment' allowed. A decision must be made."
+  },
+  "recommended_default": {
+    "option_code": "B2",
+    "summary": "Sell Peninsular, keep Seabrook, keep 12-month buffer, pay rest into loan",
+    "rationale": "Best balance of reduced stress, staying in market, and keeping a safety runway. Cassandra's value protected via preserved credit mechanism."
+  },
+  "supabase_config": {
+    "table_name": "property_question_log",
+    "rls_enabled": true
+  }
 }
