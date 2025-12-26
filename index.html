@@ -1,1124 +1,1235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Troy Latter - Forward Deployed AI Engineer | Adobe</title>
-    <meta name="description" content="AI-native full-stack engineer specializing in GenAI applications, RAG pipelines, and multimodal AI. Building the future of creative workflows.">
-    
-    <!-- Adobe Brand Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --adobe-red: #EB1000;
-            --adobe-deep-red: #C5000E;
-            --adobe-orange: #FF9500;
-            --adobe-purple: #7B61FF;
-            --adobe-blue: #0066FF;
-            --dark: #000000;
-            --light: #FFFFFF;
-            --gray: #6B7280;
-        }
-
-        body {
-            font-family: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--dark);
-            color: var(--light);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Custom cursor */
-        body {
-            cursor: none;
-        }
-
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--adobe-red);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            mix-blend-mode: difference;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .cursor.hover {
-            transform: scale(2);
-            border-color: var(--adobe-orange);
-        }
-
-        /* Animated mesh gradient background */
-        .mesh-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.4;
-        }
-
-        .mesh-gradient {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, var(--adobe-red) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, var(--adobe-purple) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, var(--adobe-blue) 0%, transparent 50%),
-                radial-gradient(circle at 60% 60%, var(--adobe-orange) 0%, transparent 50%);
-            filter: blur(100px);
-            animation: meshMove 20s ease-in-out infinite;
-        }
-
-        @keyframes meshMove {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(5%, -5%) scale(1.1); }
-            50% { transform: translate(-5%, 5%) scale(0.9); }
-            75% { transform: translate(5%, 5%) scale(1.05); }
-        }
-
-        /* Navigation */
-        .nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 30px 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(235, 16, 0, 0.2);
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 900;
-            letter-spacing: -1px;
-        }
-
-        .logo span {
-            color: var(--adobe-red);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-        }
-
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--adobe-red);
-        }
-
-        /* Hero with Photo */
-        .hero {
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            gap: 80px;
-            padding: 120px 60px 60px;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .hero-content {
-            animation: slideUp 0.8s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-eyebrow {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--adobe-red);
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .hero h1 {
-            font-size: clamp(36px, 6vw, 72px);
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 30px;
-            letter-spacing: -2px;
-        }
-
-        .hero h1 .gradient-text {
-            background: linear-gradient(135deg, var(--adobe-red), var(--adobe-orange), var(--adobe-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(18px, 2.5vw, 28px);
-            color: var(--gray);
-            margin-bottom: 30px;
-        }
-
-        .hero-description {
-            font-size: 18px;
-            line-height: 1.8;
-            margin-bottom: 40px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Photo Container */
-        .hero-photo {
-            position: relative;
-            animation: slideUp 0.8s ease-out 0.3s both;
-        }
-
-        .photo-frame {
-            position: relative;
-            aspect-ratio: 3/4;
-            overflow: hidden;
-            clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
-            border: 3px solid var(--adobe-red);
-            background: rgba(235, 16, 0, 0.1);
-        }
-
-        .photo-frame:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, 
-                rgba(235, 16, 0, 0.2) 0%, 
-                rgba(123, 97, 255, 0.2) 50%,
-                rgba(0, 102, 255, 0.2) 100%);
-            z-index: 1;
-            mix-blend-mode: multiply;
-        }
-
-        .photo-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* Placeholder for when no image is uploaded */
-        .photo-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, 
-                rgba(235, 16, 0, 0.1) 0%, 
-                rgba(123, 97, 255, 0.1) 50%,
-                rgba(0, 102, 255, 0.1) 100%);
-            color: var(--gray);
-            font-size: 48px;
-            font-weight: 900;
-            text-align: center;
-            padding: 40px;
-        }
-
-        .photo-placeholder span {
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 20px;
-            opacity: 0.5;
-        }
-
-        .photo-accent {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: var(--adobe-red);
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            z-index: -1;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .photo-accent-1 {
-            top: -100px;
-            right: -100px;
-        }
-
-        .photo-accent-2 {
-            bottom: -100px;
-            left: -100px;
-            background: var(--adobe-purple);
-            animation-delay: 3s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(20px, 20px); }
-        }
-
-        .cta-group {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 18px 40px;
-            font-size: 16px;
-            font-weight: 700;
-            border: none;
-            cursor: none;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-primary {
-            background: var(--adobe-red);
-            color: white;
-            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-        }
-
-        .btn-primary:hover {
-            background: var(--adobe-deep-red);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(235, 16, 0, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid var(--adobe-red);
-            clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px);
-        }
-
-        .btn-secondary:hover {
-            background: var(--adobe-red);
-            transform: translateY(-3px);
-        }
-
-        /* Tech Stack Grid */
-        .tech-stack {
-            padding: 120px 60px;
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        .section-title {
-            font-size: clamp(36px, 5vw, 64px);
-            font-weight: 900;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-        }
-
-        .section-subtitle {
-            font-size: 20px;
-            color: var(--gray);
-            margin-bottom: 60px;
-        }
-
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .tech-card {
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(235, 16, 0, 0.2);
-            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tech-card:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--adobe-red), transparent);
-            transition: left 0.5s;
-        }
-
-        .tech-card:hover:before {
-            left: 100%;
-        }
-
-        .tech-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--adobe-red);
-            background: rgba(235, 16, 0, 0.05);
-        }
-
-        .tech-icon {
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-
-        .tech-card h3 {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: var(--adobe-red);
-            font-weight: 700;
-        }
-
-        .tech-card p {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.8;
-            font-size: 14px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* Projects Showcase */
-        .projects {
-            padding: 120px 60px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 40px;
-        }
-
-        .project-card {
-            position: relative;
-            overflow: hidden;
-            aspect-ratio: 16/10;
-            border: 2px solid rgba(235, 16, 0, 0.3);
-            clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
-            transition: all 0.3s;
-        }
-
-        .project-card:hover {
-            border-color: var(--adobe-red);
-            transform: scale(1.02);
-        }
-
-        .project-content {
-            padding: 40px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.95));
-            position: relative;
-            z-index: 1;
-        }
-
-        .project-card:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, var(--adobe-red) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, var(--adobe-purple) 0%, transparent 50%);
-            opacity: 0.2;
-            transition: opacity 0.3s;
-        }
-
-        .project-card:hover:before {
-            opacity: 0.4;
-        }
-
-        .project-tag {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--adobe-orange);
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        .project-card h3 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            font-weight: 900;
-        }
-
-        .project-card p {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 20px;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .project-tech span {
-            padding: 5px 12px;
-            background: rgba(235, 16, 0, 0.2);
-            border: 1px solid var(--adobe-red);
-            border-radius: 3px;
-        }
-
-        /* Stats */
-        .stats {
-            padding: 120px 60px;
-            background: var(--adobe-red);
-            text-align: center;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 60px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .stat-item {
-            color: white;
-        }
-
-        .stat-number {
-            font-size: clamp(48px, 6vw, 72px);
-            font-weight: 900;
-            margin-bottom: 10px;
-            letter-spacing: -2px;
-        }
-
-        .stat-label {
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.9;
-        }
-
-        /* Timeline */
-        .timeline {
-            padding: 120px 60px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .timeline-item {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 60px;
-            margin-bottom: 80px;
-            position: relative;
-        }
-
-        .timeline-item:not(:last-child):after {
-            content: '';
-            position: absolute;
-            left: 100px;
-            top: 60px;
-            bottom: -80px;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--adobe-red), transparent);
-        }
-
-        .timeline-date {
-            text-align: right;
-            font-weight: 700;
-            color: var(--adobe-red);
-            font-size: 18px;
-        }
-
-        .timeline-content h3 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            font-weight: 900;
-        }
-
-        .timeline-role {
-            color: var(--adobe-orange);
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .timeline-content p {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        .timeline-content ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .timeline-content li {
-            padding-left: 30px;
-            margin-bottom: 15px;
-            position: relative;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-        }
-
-        .timeline-content li:before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--adobe-red);
-            font-weight: bold;
-        }
-
-        /* Contact */
-        .contact {
-            padding: 120px 60px;
-            text-align: center;
-            background: 
-                radial-gradient(circle at 50% 50%, rgba(235, 16, 0, 0.1) 0%, transparent 50%);
-        }
-
-        .contact h2 {
-            font-size: clamp(36px, 5vw, 64px);
-            margin-bottom: 30px;
-            font-weight: 900;
-        }
-
-        .contact p {
-            font-size: 20px;
-            color: var(--gray);
-            max-width: 700px;
-            margin: 0 auto 50px;
-        }
-
-        .contact-grid {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .contact-link {
-            padding: 20px 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid var(--adobe-red);
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s;
-            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
-        }
-
-        .contact-link:hover {
-            background: var(--adobe-red);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(235, 16, 0, 0.4);
-        }
-
-        /* Footer */
-        .footer {
-            padding: 60px;
-            text-align: center;
-            border-top: 1px solid rgba(235, 16, 0, 0.2);
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        .footer p {
-            margin-bottom: 10px;
-        }
-
-        /* Scroll Reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .hero {
-                grid-template-columns: 1fr;
-                gap: 60px;
-            }
-
-            .hero-photo {
-                max-width: 500px;
-                margin: 0 auto;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav {
-                padding: 20px 30px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .hero,
-            .tech-stack,
-            .projects,
-            .timeline,
-            .contact {
-                padding: 80px 30px;
-            }
-
-            .timeline-item {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .timeline-date {
-                text-align: left;
-            }
-
-            .timeline-item:after {
-                display: none;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            body {
-                cursor: auto;
-            }
-
-            .cursor {
-                display: none;
-            }
-        }
-
-        /* Code block styling */
-        code {
-            font-family: 'JetBrains Mono', monospace;
-            background: rgba(235, 16, 0, 0.1);
-            padding: 2px 8px;
-            border-radius: 3px;
-            color: var(--adobe-orange);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Property Decision Pack - Troy & Cassandra</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card-bg: #ffffff;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --success: #22c55e;
+      --success-bg: #dcfce7;
+      --warning: #f59e0b;
+      --warning-bg: #fef3c7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --radius: 12px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #eff6ff 0%, var(--bg) 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      font-size: 16px;
+    }
+    header {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    h1 { font-size: 1.25rem; font-weight: 700; }
+    .subtitle { font-size: 0.8rem; color: var(--text-muted); }
+    .ground-rule {
+      background: var(--danger-bg);
+      color: var(--danger);
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 1rem;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .tab-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: none;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+    .tab-btn:hover:not(.active) {
+      background: var(--accent-soft);
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .card h2 { font-size: 1rem; font-weight: 600; }
+    .card h3 { font-size: 0.9rem; font-weight: 600; margin: 1rem 0 0.5rem; }
+    .badge {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+    .badge-success { background: var(--success-bg); color: var(--success); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); }
+    .badge-info { background: var(--accent-soft); color: var(--accent); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    th, td {
+      padding: 0.6rem 0.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: #f9fafb;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    td:nth-child(n+2) { text-align: right; }
+    th:nth-child(n+2) { text-align: right; }
+    .recommended-card {
+      background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);
+      border: 2px solid var(--success);
+    }
+    .recommended-card h2 { color: var(--success); }
+    .option-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+    .option-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      cursor: pointer;
+      background: #f9fafb;
+    }
+    .option-header:hover { background: #f3f4f6; }
+    .option-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .option-code {
+      background: var(--accent);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+    .option-details {
+      display: none;
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .option-card.expanded .option-details { display: block; }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .metric {
+      background: #f9fafb;
+      padding: 0.75rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .metric-label { font-size: 0.7rem; color: var(--text-muted); }
+    .metric-value { font-size: 1rem; font-weight: 700; margin-top: 0.25rem; }
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .pros h4 { color: var(--success); }
+    .cons h4 { color: var(--danger); }
+    .pros ul, .cons ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 0.5rem;
+    }
+    .pros li::before { content: "✓ "; color: var(--success); }
+    .cons li::before { content: "✗ "; color: var(--danger); }
+    .ranking-input {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .ranking-input input {
+      width: 60px;
+      padding: 0.5rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      text-align: center;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+    }
+    .chip {
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      background: #f3f4f6;
+      border: none;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .chip.active {
+      background: var(--accent);
+      color: white;
+    }
+    .split-calc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .calc-input {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .calc-input label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .calc-input input, .calc-input select {
+      padding: 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+    .calc-result {
+      background: var(--accent-soft);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    .calc-result h4 { color: var(--accent); margin-bottom: 0.5rem; }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    .result-row:last-child { border-bottom: none; }
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .btn-outline:hover { background: #f3f4f6; }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .form-group label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    .log-entry {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 0.75rem;
+    }
+    .log-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .qa-card {
+      background: #f9fafb;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+    }
+    .qa-card p { margin: 0.25rem 0; font-size: 0.85rem; }
+    .matrix-table input {
+      width: 50px;
+      padding: 0.4rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      text-align: center;
+    }
+    .total-cell {
+      font-weight: 700;
+      background: var(--accent-soft);
+    }
+    .decision-box {
+      background: var(--success-bg);
+      border: 2px solid var(--success);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .decision-box h3 { color: var(--success); margin-bottom: 0.5rem; }
+    .email-summary {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      margin: 1rem 0;
+    }
+    .priorities-panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .priority-card {
+      background: #f9fafb;
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent);
+    }
+    .priority-card h4 { margin-bottom: 0.5rem; }
+    .parking-lot {
+      background: var(--warning-bg);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    .parking-lot h4 { color: var(--warning); margin-bottom: 0.5rem; }
+    .supabase-config {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 768px) {
+      .pros-cons { grid-template-columns: 1fr; }
+      .split-calc { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor" id="cursor"></div>
+  <header>
+    <div class="header-content">
+      <div>
+        <h1>Property Decision Pack</h1>
+        <div class="subtitle">Generated 2025-12-26 · Modelling only, not financial advice</div>
+      </div>
+      <div class="ground-rule">⚠️ No "no decision" allowed - must pick one</div>
+    </div>
+  </header>
 
-    <!-- Mesh Background -->
-    <div class="mesh-background">
-        <div class="mesh-gradient"></div>
+  <nav>
+    <button class="tab-btn active" data-tab="overview">📊 Overview</button>
+    <button class="tab-btn" data-tab="options">🏠 All Options</button>
+    <button class="tab-btn" data-tab="calculator">🧮 Split Calculator</button>
+    <button class="tab-btn" data-tab="stress">⚡ Stress Test</button>
+    <button class="tab-btn" data-tab="projections">📈 Projections</button>
+    <button class="tab-btn" data-tab="questions">❓ Q&A Log</button>
+    <button class="tab-btn" data-tab="decision">✅ Final Decision</button>
+  </nav>
+
+  <main>
+    <!-- OVERVIEW TAB -->
+    <div id="overview" class="tab-content active">
+      <div class="card recommended-card">
+        <div class="card-header">
+          <h2>⭐ Recommended Default</h2>
+          <span class="badge badge-success">Top Pick</span>
+        </div>
+        <div id="recommended-content"></div>
+      </div>
+
+      <div class="card">
+        <h2>Key Numbers Now</h2>
+        <div id="key-numbers-table"></div>
+      </div>
+
+      <div class="card">
+        <h2>Quick Option Comparison</h2>
+        <div id="options-summary-table"></div>
+      </div>
+
+      <div class="card">
+        <h2>Priorities & Considerations</h2>
+        <div class="priorities-panel">
+          <div class="priority-card">
+            <h4>🏠 Cassandra's Value</h4>
+            <p>Peninsular value doesn't disappear - becomes a "preserved credit" inside Seabrook if sold. Paid back first if Seabrook ever sells.</p>
+          </div>
+          <div class="priority-card">
+            <h4>💰 Troy's Debt Load</h4>
+            <p>Currently carrying ~$1.9M in loans. Selling Peninsular and paying into Seabrook roughly halves the repayments.</p>
+          </div>
+          <div class="priority-card">
+            <h4>📈 Market Exposure</h4>
+            <p>Bigger property = bigger dollar gains at same %. Seabrook gains ~$882k in 5yrs at 5% vs Peninsular's ~$465k.</p>
+          </div>
+          <div class="priority-card">
+            <h4>🛡️ Safety Buffer</h4>
+            <p>Keeping 1-year of mortgage payments (~$129k) as buffer provides ~90 weeks runway if income stops.</p>
+          </div>
+        </div>
+
+        <div class="parking-lot">
+          <h4>🅿️ Parking Lot - Things to Decide Later</h4>
+          <ul>
+            <li>Exact preserved credit mechanism documentation</li>
+            <li>Whether to split Seabrook loan formally (requires bank approval)</li>
+            <li>Timeline for any property transactions</li>
+            <li>Professional advice consultation</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="logo">TROY<span>.</span>LATTER</div>
-        <div class="nav-links">
-            <a href="#tech">Stack</a>
-            <a href="#projects">Work</a>
-            <a href="#experience">Experience</a>
-            <a href="#contact">Connect</a>
+    <!-- ALL OPTIONS TAB -->
+    <div id="options" class="tab-content">
+      <div class="card">
+        <h2>All Options - Click to Expand</h2>
+        <p class="subtitle">Rate each option 1-10 to help prioritize your decision</p>
+        <div id="options-list"></div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="exportRankings()">📥 Export Rankings</button>
+          <button class="btn btn-outline" onclick="clearRankings()">🗑️ Clear Rankings</button>
         </div>
-    </nav>
+      </div>
+    </div>
 
-    <!-- Hero with Photo -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-eyebrow">Forward Deployed AI Engineer</div>
-            <h1>
-                Building <span class="gradient-text">GenAI-Powered</span><br>
-                Creative Workflows
-            </h1>
-            <p class="hero-subtitle">Full-Stack • LLMs • Diffusion Models • RAG • Multimodal AI</p>
-            <p class="hero-description">
-                AI-native engineer prototyping in days, deploying at scale, and embedding with customers to co-create the future of content supply chains. 727+ autonomous agents. 189 Lambda functions. Thousands of proof points.
-            </p>
-            <div class="cta-group">
-                <a href="#contact" class="btn btn-primary">Let's Build Together</a>
-                <a href="/mnt/user-data/outputs/Troy_Latter_Adobe_Forward_Deployed_AI_Engineer.docx" class="btn btn-secondary" download>Download CV</a>
-            </div>
-        </div>
-
-        <div class="hero-photo">
-            <div class="photo-accent photo-accent-1"></div>
-            <div class="photo-accent photo-accent-2"></div>
-            <div class="photo-frame">
-                <img src="troy-latter-photo.png" alt="Troy Latter - Forward Deployed AI Engineer">
-            </div>
-        </div>
-    </section>
-
-    <!-- Rest of content remains the same as previous version -->
-    <!-- Tech Stack -->
-    <section class="tech-stack" id="tech">
-        <div class="section-title reveal">Technical Arsenal</div>
-        <p class="section-subtitle reveal">The tools I use to build AI-powered futures</p>
+    <!-- SPLIT CALCULATOR TAB -->
+    <div id="calculator" class="tab-content">
+      <div class="card">
+        <h2>Split Calculator</h2>
+        <p>Calculate how the money splits after deducting buffer, renovations, and holiday costs.</p>
         
-        <div class="tech-grid">
-            <div class="tech-card reveal">
-                <div class="tech-icon">🤖</div>
-                <h3>GenAI & LLMs</h3>
-                <p>GPT-4 • Claude Sonnet • Llama 3 • Mistral<br>Fine-tuning • Prompt engineering<br>LangChain • AutoGen • LlamaIndex</p>
-            </div>
-
-            <div class="tech-card reveal">
-                <div class="tech-icon">🎨</div>
-                <h3>Diffusion Models</h3>
-                <p>Adobe Firefly Services<br>Stable Diffusion • DALL·E 3<br>Image gen • Style transfer • Inpainting</p>
-            </div>
-
-            <div class="tech-card reveal">
-                <div class="tech-icon">⚛️</div>
-                <h3>Full-Stack Dev</h3>
-                <p>React • Next.js • Angular<br>Node.js • Java Spring Boot • FastAPI<br>REST • GraphQL • TypeScript</p>
-            </div>
-
-            <div class="tech-card reveal">
-                <div class="tech-icon">🔍</div>
-                <h3>RAG & Vectors</h3>
-                <p>Pinecone • Weaviate • FAISS<br>Semantic search • Embeddings<br>Hybrid retrieval pipelines</p>
-            </div>
-
-            <div class="tech-card reveal">
-                <div class="tech-icon">☁️</div>
-                <h3>Cloud & ML</h3>
-                <p>AWS (SageMaker, Bedrock, Lambda)<br>Azure (OpenAI, Cognitive Services)<br>GCP (Vertex AI)</p>
-            </div>
-
-            <div class="tech-card reveal">
-                <div class="tech-icon">🚀</div>
-                <h3>DevOps & IaC</h3>
-                <p>Docker • Kubernetes • Serverless<br>GitLab CI/CD • Terraform<br>CloudWatch • Datadog</p>
-            </div>
-
-            <div class="tech-card reveal">
-                <div class="tech-icon">🎬</div>
-                <h3>Adobe Ecosystem</h3>
-                <p>Firefly Services APIs<br>Creative Cloud SDK/CEP<br>GenStudio • Experience Cloud</p>
-            </div>
-
-            <div class="tech-card reveal">
-                <div class="tech-icon">🎯</div>
-                <h3>Multimodal AI</h3>
-                <p>Text • Image • Video • Audio<br>Cross-modal embeddings<br>Unified processing pipelines</p>
-            </div>
+        <div class="split-calc">
+          <div class="calc-input">
+            <label>Starting Cash Pool</label>
+            <input type="number" id="calc-pool" value="2299683" onchange="calculateSplit()">
+          </div>
+          <div class="calc-input">
+            <label>Buffer to Keep</label>
+            <input type="number" id="calc-buffer" value="129014" onchange="calculateSplit()">
+          </div>
+          <div class="calc-input">
+            <label>Renovations/Setup</label>
+            <input type="number" id="calc-renos" value="30000" onchange="calculateSplit()">
+          </div>
+          <div class="calc-input">
+            <label>Holiday/Transition</label>
+            <input type="number" id="calc-holiday" value="20000" onchange="calculateSplit()">
+          </div>
+          <div class="calc-input">
+            <label>Split Ratio</label>
+            <select id="calc-ratio" onchange="calculateSplit()">
+              <option value="50-50">50/50 Equal</option>
+              <option value="60-40">60/40 to Cassandra</option>
+              <option value="70-30" selected>70/30 to Cassandra</option>
+              <option value="pen-first">Pen Net First + 70/30</option>
+            </select>
+          </div>
         </div>
-    </section>
 
-    <!-- Stats -->
-    <section class="stats">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <div class="stat-number" data-target="727">0</div>
-                <div class="stat-label">AI Agents</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" data-target="189">0</div>
-                <div class="stat-label">Lambda Functions</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" data-target="50">0</div>
-                <div class="stat-label">GenAI Apps</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">100+</div>
-                <div class="stat-label">Prototypes</div>
-            </div>
+        <div class="calc-result" id="calc-result">
+          <h4>Split Results</h4>
+          <div class="result-row">
+            <span>Net Pool After Deductions</span>
+            <span id="result-net">$0</span>
+          </div>
+          <div class="result-row">
+            <span>Cassandra Receives</span>
+            <span id="result-cass">$0</span>
+          </div>
+          <div class="result-row">
+            <span>Troy Receives</span>
+            <span id="result-troy">$0</span>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- Projects -->
-    <section class="projects" id="projects">
-        <div class="section-title reveal">Featured Work</div>
-        <p class="section-subtitle reveal">AI systems built at startup speed</p>
+      <div class="card">
+        <h2>Pre-Calculated Split Scenarios</h2>
+        <div id="splits-table"></div>
+      </div>
+    </div>
 
-        <div class="projects-grid">
-            <div class="project-card reveal">
-                <div class="project-content">
-                    <div class="project-tag">AI ORCHESTRATION</div>
-                    <h3>Neural Ennead 9×9×9</h3>
-                    <p>727+ autonomous agents orchestrated via LangChain/AutoGen across 189 Lambda functions with Supabase state management</p>
-                    <div class="project-tech">
-                        <span>GPT-4</span>
-                        <span>Claude</span>
-                        <span>LangChain</span>
-                        <span>AWS Lambda</span>
-                        <span>Supabase</span>
-                    </div>
+    <!-- STRESS TEST TAB -->
+    <div id="stress" class="tab-content">
+      <div class="card">
+        <h2>Stress Test Inputs</h2>
+        <div id="stress-inputs-table"></div>
+      </div>
+
+      <div class="card">
+        <h2>Hit Severe Summary - How Long Can You Survive?</h2>
+        <p>Shows weekly cashflow and runway if income stops or drops significantly.</p>
+        <div id="stress-summary-table"></div>
+      </div>
+
+      <div class="card">
+        <h2>Repayment Sensitivity</h2>
+        <p>How repayments change at different interest rates.</p>
+        <div id="repayments-table"></div>
+      </div>
+    </div>
+
+    <!-- PROJECTIONS TAB -->
+    <div id="projections" class="tab-content">
+      <div class="card">
+        <h2>Growth Projections</h2>
+        <div class="chips" id="scenario-chips"></div>
+        <div id="projections-table"></div>
+      </div>
+
+      <div class="card">
+        <h2>Paper Gains Comparison</h2>
+        <p>Why the bigger property wins in dollars even at the same growth rate.</p>
+        <div id="gains-table"></div>
+      </div>
+
+      <div class="card">
+        <h2>Stamp Duty Considerations</h2>
+        <div id="stamp-duty-info"></div>
+      </div>
+    </div>
+
+    <!-- Q&A LOG TAB -->
+    <div id="questions" class="tab-content">
+      <div class="card">
+        <h2>Pre-Answered Questions</h2>
+        <div id="question-bank"></div>
+      </div>
+
+      <div class="card">
+        <h2>Add New Question</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Asked By</label>
+            <select id="ql-asked-by">
+              <option value="Both">Both</option>
+              <option value="Troy">Troy</option>
+              <option value="Cassandra">Cassandra</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="ql-status">
+              <option value="Open">Open</option>
+              <option value="Answered">Answered</option>
+              <option value="Agreed">Agreed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Revisit Date (if Open)</label>
+            <input type="date" id="ql-revisit">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Question</label>
+          <textarea id="ql-question" placeholder="What needs to be answered?"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Answer</label>
+          <textarea id="ql-answer" placeholder="Once agreed, record the answer here..."></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="saveQuestion()">💾 Save Entry</button>
+          <button class="btn btn-outline" onclick="clearQuestionForm()">🗑️ Clear Form</button>
+          <button class="btn btn-outline" onclick="exportQuestionLog()">📥 Export Log</button>
+          <button class="btn btn-outline" onclick="wipeQuestionLog()">⚠️ Wipe Log</button>
+        </div>
+
+        <h3>Previous Entries</h3>
+        <div id="question-log"></div>
+      </div>
+
+      <div class="card supabase-config">
+        <h2>☁️ Supabase Sync (Optional)</h2>
+        <p>Sync questions across devices using Supabase.</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Supabase URL</label>
+            <input type="text" id="sb-url" placeholder="https://xxx.supabase.co">
+          </div>
+          <div class="form-group">
+            <label>Anon Key</label>
+            <input type="password" id="sb-key" placeholder="Your anon key">
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="pushToSupabase()">⬆️ Push to Supabase</button>
+          <button class="btn btn-outline" onclick="pullFromSupabase()">⬇️ Pull from Supabase</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINAL DECISION TAB -->
+    <div id="decision" class="tab-content">
+      <div class="card">
+        <h2>Decision Matrix</h2>
+        <p>Score each option 1-5 on each criteria. Higher = better (except friction).</p>
+        <div id="decision-matrix"></div>
+      </div>
+
+      <div class="card">
+        <h2>Record Final Decision</h2>
+        <div class="form-group">
+          <label>Selected Option</label>
+          <select id="final-option"></select>
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea id="final-notes" placeholder="Any additional notes about the decision..."></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-success" onclick="saveDecision()">✅ Save Decision</button>
+          <button class="btn btn-primary" onclick="copyEmailSummary()">📋 Copy Email Summary</button>
+          <a id="email-link" class="btn btn-outline" href="#">📧 Open Email Draft</a>
+        </div>
+        <div id="current-decision"></div>
+      </div>
+
+      <div class="card">
+        <h2>📧 Email Summary Preview</h2>
+        <div class="email-summary" id="email-preview">
+Loading summary...
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let MODEL = null;
+    const QUESTION_LOG_KEY = "property_question_log_v3";
+    const RANKINGS_KEY = "property_rankings_v3";
+    const MATRIX_KEY = "property_matrix_v3";
+    const DECISION_KEY = "property_decision_v3";
+
+    function byId(id) { return document.getElementById(id); }
+
+    function money(v) {
+      if (v === null || v === undefined) return '-';
+      return new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD', maximumFractionDigits: 0 }).format(v);
+    }
+
+    function pct(v) {
+      if (typeof v !== 'number') return v;
+      return (v * 100).toFixed(1) + '%';
+    }
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        byId(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    async function init() {
+      const res = await fetch('model_data.json');
+      MODEL = await res.json();
+      
+      renderRecommended();
+      renderKeyNumbers();
+      renderOptionsSummary();
+      renderAllOptions();
+      renderSplitsTable();
+      renderStressInputs();
+      renderStressSummary();
+      renderRepayments();
+      renderScenarioChips();
+      renderProjections('Middle 5%');
+      renderGainsTable();
+      renderStampDuty();
+      renderQuestionBank();
+      loadQuestionLog();
+      renderDecisionMatrix();
+      loadDecision();
+      calculateSplit();
+      updateEmailPreview();
+    }
+
+    function renderRecommended() {
+      const rec = MODEL.recommended_default;
+      const opt = MODEL.options.find(o => o.code === rec.option_code);
+      byId('recommended-content').innerHTML = `
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+          <div class="option-code">${opt.code}</div>
+          <div>
+            <strong>${opt.name}</strong>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">${rec.summary}</p>
+          </div>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric"><div class="metric-label">Debt After</div><div class="metric-value">${money(opt.debt_after)}</div></div>
+          <div class="metric"><div class="metric-label">Cash Buffer</div><div class="metric-value">${money(opt.cash_after)}</div></div>
+          <div class="metric"><div class="metric-label">Risk Level</div><div class="metric-value">${opt.risk}</div></div>
+          <div class="metric"><div class="metric-label">Move Friction</div><div class="metric-value">${money(opt.move_friction)}</div></div>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted);"><strong>Why:</strong> ${rec.rationale}</p>
+      `;
+    }
+
+    function renderKeyNumbers() {
+      const rows = MODEL.key_numbers;
+      let html = '<table><thead><tr><th>Item</th><th>Amount</th></tr></thead><tbody>';
+      rows.forEach(r => {
+        html += `<tr><td>${r.Item}</td><td>${money(r.Amount)}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      byId('key-numbers-table').innerHTML = html;
+    }
+
+    function renderOptionsSummary() {
+      const opts = MODEL.options.filter(o => ['A','B1','B2','D1','E1'].includes(o.code));
+      let html = '<table><thead><tr><th>Option</th><th>Debt After</th><th>Cash After</th><th>Risk</th></tr></thead><tbody>';
+      opts.forEach(o => {
+        const isRec = o.recommended ? ' style="background: var(--success-bg);"' : '';
+        html += `<tr${isRec}><td>${o.code}: ${o.name}</td><td>${money(o.debt_after)}</td><td>${money(o.cash_after)}</td><td><span class="badge ${o.risk === 'Low' || o.risk === 'Very Low' ? 'badge-success' : o.risk === 'High' ? 'badge-danger' : 'badge-warning'}">${o.risk}</span></td></tr>`;
+      });
+      html += '</tbody></table>';
+      byId('options-summary-table').innerHTML = html;
+    }
+
+    function renderAllOptions() {
+      const savedRankings = JSON.parse(localStorage.getItem(RANKINGS_KEY) || '{}');
+      let html = '';
+      MODEL.options.forEach(opt => {
+        const ranking = savedRankings[opt.code] || '';
+        html += `
+          <div class="option-card" id="opt-${opt.code}">
+            <div class="option-header" onclick="toggleOption('${opt.code}')">
+              <div class="option-title">
+                <div class="option-code">${opt.code}</div>
+                <div>
+                  <strong>${opt.name}</strong>
+                  ${opt.recommended ? '<span class="badge badge-success" style="margin-left: 0.5rem;">Recommended</span>' : ''}
                 </div>
+              </div>
+              <div class="ranking-input" onclick="event.stopPropagation()">
+                <label>Rank:</label>
+                <input type="number" min="1" max="10" value="${ranking}" onchange="saveRanking('${opt.code}', this.value)">
+              </div>
             </div>
-
-            <div class="project-card reveal">
-                <div class="project-content">
-                    <div class="project-tag">RAG PIPELINE</div>
-                    <h3>Enterprise Document Intelligence</h3>
-                    <p>RAG system with Pinecone vector search, semantic chunking, and hybrid retrieval for 200+ customer deployments</p>
-                    <div class="project-tech">
-                        <span>Pinecone</span>
-                        <span>Embeddings</span>
-                        <span>FastAPI</span>
-                        <span>React</span>
-                    </div>
+            <div class="option-details">
+              <p>${opt.description}</p>
+              <div class="metrics-grid">
+                <div class="metric"><div class="metric-label">Debt After</div><div class="metric-value">${money(opt.debt_after)}</div></div>
+                <div class="metric"><div class="metric-label">Cash After</div><div class="metric-value">${money(opt.cash_after)}</div></div>
+                <div class="metric"><div class="metric-label">Move Friction</div><div class="metric-value">${money(opt.move_friction)}</div></div>
+                <div class="metric"><div class="metric-label">Risk</div><div class="metric-value">${opt.risk}</div></div>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-muted);"><strong>Market Exposure:</strong> ${opt.market_exposure}</p>
+              <div class="pros-cons">
+                <div class="pros">
+                  <h4>Pros</h4>
+                  <ul>${opt.pros.map(p => `<li>${p}</li>`).join('')}</ul>
                 </div>
-            </div>
-
-            <div class="project-card reveal">
-                <div class="project-content">
-                    <div class="project-tag">MULTIMODAL AI</div>
-                    <h3>Creative Content Pipeline</h3>
-                    <p>End-to-end GenAI content workflow: text generation (GPT-4), image synthesis (Firefly/SD), video processing</p>
-                    <div class="project-tech">
-                        <span>Firefly APIs</span>
-                        <span>Stable Diffusion</span>
-                        <span>Node.js</span>
-                        <span>Docker</span>
-                    </div>
+                <div class="cons">
+                  <h4>Cons</h4>
+                  <ul>${opt.cons.map(c => `<li>${c}</li>`).join('')}</ul>
                 </div>
+              </div>
             </div>
+          </div>
+        `;
+      });
+      byId('options-list').innerHTML = html;
+    }
 
-            <div class="project-card reveal">
-                <div class="project-content">
-                    <div class="project-tag">LLM AUTOMATION</div>
-                    <h3>Procurement Agent System</h3>
-                    <p>Agentic AI reducing procurement cycles 35% via GPT-4/Claude automation deployed on Azure Functions</p>
-                    <div class="project-tech">
-                        <span>Azure OpenAI</span>
-                        <span>AutoGen</span>
-                        <span>CI/CD</span>
-                        <span>Terraform</span>
-                    </div>
-                </div>
-            </div>
+    function toggleOption(code) {
+      const card = byId('opt-' + code);
+      card.classList.toggle('expanded');
+    }
 
-            <div class="project-card reveal">
-                <div class="project-content">
-                    <div class="project-tag">REAL-TIME ML</div>
-                    <h3>IoT Analytics Platform</h3>
-                    <p>SageMaker predictive pipelines processing millions of daily events for national infrastructure programs</p>
-                    <div class="project-tech">
-                        <span>SageMaker</span>
-                        <span>Kinesis</span>
-                        <span>Lambda</span>
-                        <span>DynamoDB</span>
-                    </div>
-                </div>
-            </div>
+    function saveRanking(code, value) {
+      const rankings = JSON.parse(localStorage.getItem(RANKINGS_KEY) || '{}');
+      rankings[code] = value;
+      localStorage.setItem(RANKINGS_KEY, JSON.stringify(rankings));
+    }
 
-            <div class="project-card reveal">
-                <div class="project-content">
-                    <div class="project-tag">AI RESEARCH</div>
-                    <h3>NEUROPAK BCI Ecosystem</h3>
-                    <p>Brain-computer interface standards framework integrating multimodal AI for human-machine collaboration</p>
-                    <div class="project-tech">
-                        <span>Multimodal</span>
-                        <span>Research</span>
-                        <span>Standards</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    function exportRankings() {
+      const rankings = localStorage.getItem(RANKINGS_KEY) || '{}';
+      downloadJSON(rankings, 'property_rankings.json');
+    }
 
-    <!-- Timeline -->
-    <section class="timeline" id="experience">
-        <div class="section-title reveal">Career Journey</div>
-        <p class="section-subtitle reveal">Building AI systems across enterprise and government</p>
+    function clearRankings() {
+      if (confirm('Clear all rankings?')) {
+        localStorage.removeItem(RANKINGS_KEY);
+        renderAllOptions();
+      }
+    }
 
-        <div class="timeline-item reveal">
-            <div class="timeline-date">2025 – Present</div>
-            <div class="timeline-content">
-                <h3>Tech 4 Humanity</h3>
-                <div class="timeline-role">Founder & CEO</div>
-                <p>Full-stack AI engineer building GenAI-powered content supply chains and 727-agent orchestration platform</p>
-                <ul>
-                    <li>Built 50+ production GenAI apps: GPT-4, Claude, Llama 3, Stable Diffusion with RAG/LangChain</li>
-                    <li>Prototype proof points in 2-5 days—React/Next.js frontends, Node.js/FastAPI backends, AWS deployment</li>
-                    <li>Neural Ennead 9×9×9: 727 autonomous agents across 189 Lambda functions with Supabase orchestration</li>
-                    <li>Full-stack: React/TypeScript, REST/GraphQL APIs, Pinecone/FAISS vectors, Docker/K8s</li>
-                </ul>
-            </div>
-        </div>
+    function renderSplitsTable() {
+      const rows = MODEL.sell_splits;
+      let html = '<table><thead><tr><th>Split Rule</th><th>Cassandra</th><th>Troy</th><th>Note</th></tr></thead><tbody>';
+      rows.forEach(r => {
+        html += `<tr><td>${r['Split rule']}</td><td>${money(r.Cassandra)}</td><td>${money(r.Troy)}</td><td style="font-size: 0.8rem; color: var(--text-muted);">${r.Note || ''}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      byId('splits-table').innerHTML = html;
+    }
 
-        <div class="timeline-item reveal">
-            <div class="timeline-date">2024 – 2025</div>
-            <div class="timeline-content">
-                <h3>Unisys</h3>
-                <div class="timeline-role">CTO, Alliances & Strategic Foresight – APAC</div>
-                <p>Led GenAI implementation for government accounts—LLM automation, full-stack prototypes, Azure/AWS microservices</p>
-                <ul>
-                    <li>Built LLM-powered agents reducing procurement cycles 35%—Azure Functions with OpenAI Service</li>
-                    <li>Delivered 20+ proof points in 3-5 day sprints—React frontends, Node.js backends, Azure AI integration</li>
-                    <li>CI/CD pipelines with GitLab/Terraform deploying containerized microservices to AKS</li>
-                </ul>
-            </div>
-        </div>
+    function calculateSplit() {
+      const pool = parseFloat(byId('calc-pool').value) || 0;
+      const buffer = parseFloat(byId('calc-buffer').value) || 0;
+      const renos = parseFloat(byId('calc-renos').value) || 0;
+      const holiday = parseFloat(byId('calc-holiday').value) || 0;
+      const ratio = byId('calc-ratio').value;
 
-        <div class="timeline-item reveal">
-            <div class="timeline-date">2019 – 2023</div>
-            <div class="timeline-content">
-                <h3>AWS</h3>
-                <div class="timeline-role">Principal Solutions Architect</div>
-                <p>Built AI/ML applications at scale—SageMaker, Bedrock, serverless. Hands-on full-stack engineering with customer co-creation</p>
-                <ul>
-                    <li>Architected predictive pipelines processing millions of events—SageMaker, Lambda, S3/DynamoDB</li>
-                    <li>Built RAG apps with Bedrock (Claude/Titan), Pinecone, Lambda—semantic document retrieval</li>
-                    <li>Delivered 100+ prototypes—React/Angular, Node.js/Python APIs, CloudFormation/SAM CI/CD</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+      const net = pool - buffer - renos - holiday;
+      let cass = 0, troy = 0;
 
-    <!-- Contact -->
-    <section class="contact" id="contact">
-        <h2 class="reveal">Let's Build the Future</h2>
-        <p class="reveal">
-            Ready to prototype GenAI applications at startup speed, embed with customers, and transform creative workflows from ideation to activation.
-        </p>
-        <div class="contact-grid reveal">
-            <a href="mailto:troy.latter@gmail.com" class="contact-link">troy.latter@gmail.com</a>
-            <a href="https://linkedin.com/in/theinnovater" class="contact-link" target="_blank">LinkedIn</a>
-            <a href="https://github.com/troylatter" class="contact-link" target="_blank">GitHub</a>
-        </div>
-    </section>
+      if (ratio === '50-50') { cass = net * 0.5; troy = net * 0.5; }
+      else if (ratio === '60-40') { cass = net * 0.6; troy = net * 0.4; }
+      else if (ratio === '70-30') { cass = net * 0.7; troy = net * 0.3; }
+      else if (ratio === 'pen-first') {
+        const penNet = 808930;
+        cass = penNet + (net - penNet) * 0.7;
+        troy = (net - penNet) * 0.3;
+      }
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>© 2025 Troy Latter. Built for Adobe.</p>
-        <p>Sydney, Australia • Available for 30% travel</p>
-    </footer>
+      byId('result-net').textContent = money(net);
+      byId('result-cass').textContent = money(cass);
+      byId('result-troy').textContent = money(troy);
+      updateEmailPreview();
+    }
 
-    <script>
-        // Custom cursor
-        const cursor = document.getElementById('cursor');
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
+    function renderStressInputs() {
+      const rows = MODEL.stress_inputs;
+      let html = '<table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>';
+      rows.forEach(r => {
+        html += `<tr><td>${r.Item}</td><td>${money(r.Value)}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      byId('stress-inputs-table').innerHTML = html;
+    }
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+    function renderStressSummary() {
+      const rows = MODEL.hit_severe_summary;
+      let html = '<table><thead><tr><th>Option</th><th>Weekly Mortgage</th><th>Weekly Net Rent</th><th>Weekly Cashflow</th><th>Buffer</th><th>Runway Weeks</th></tr></thead><tbody>';
+      rows.forEach(r => {
+        const runway = r['Runway weeks from buffer'];
+        html += `<tr>
+          <td>${r.Option}</td>
+          <td>${money(r['Weekly mortgage'])}</td>
+          <td>${money(r['Weekly net rent'])}</td>
+          <td style="color: ${r['Weekly net cashflow'] < 0 ? 'var(--danger)' : 'var(--success)'}">${money(r['Weekly net cashflow'])}</td>
+          <td>${money(r['Buffer cash'])}</td>
+          <td>${runway === null ? '∞' : runway.toFixed(1)}</td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      byId('stress-summary-table').innerHTML = html;
+    }
+
+    function renderRepayments() {
+      const rows = MODEL.repayments;
+      let html = '<table><thead><tr><th>Rate</th><th>Current Loan</th><th>Reduced Loan</th><th>Savings</th></tr></thead><tbody>';
+      rows.forEach(r => {
+        html += `<tr><td>${pct(r['Annual rate'])}</td><td>${money(r['Current loan monthly'])}/mo</td><td>${money(r['Reduced loan monthly'])}/mo</td><td style="color: var(--success)">${money(r['Savings monthly'])}/mo</td></tr>`;
+      });
+      html += '</tbody></table>';
+      byId('repayments-table').innerHTML = html;
+    }
+
+    function renderScenarioChips() {
+      const scenarios = [...new Set(MODEL.projections.map(p => p.Scenario))];
+      let html = '';
+      scenarios.forEach((s, i) => {
+        html += `<button class="chip ${i === 1 ? 'active' : ''}" onclick="selectScenario(this, '${s}')">${s}</button>`;
+      });
+      byId('scenario-chips').innerHTML = html;
+    }
+
+    function selectScenario(btn, scenario) {
+      document.querySelectorAll('#scenario-chips .chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      renderProjections(scenario);
+    }
+
+    function renderProjections(scenario) {
+      const rows = MODEL.projections.filter(p => p.Scenario === scenario);
+      let html = '<table><thead><tr><th>Years</th><th>Seabrook</th><th>Peninsular</th><th>Both</th></tr></thead><tbody>';
+      rows.forEach(r => {
+        html += `<tr><td>${r.Years}</td><td>${money(r['Seabrook value'])}</td><td>${money(r['Peninsular value'])}</td><td>${money(r['Both value'])}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      byId('projections-table').innerHTML = html;
+    }
+
+    function renderGainsTable() {
+      const rows = MODEL.paper_gains;
+      let html = '<table><thead><tr><th>Property</th><th>Years</th><th>Middle 5%</th><th>Strong 7.6%</th></tr></thead><tbody>';
+      rows.forEach(r => {
+        html += `<tr><td>${r.Property}</td><td>${r.Years}</td><td>${money(r['Middle 5%'])}</td><td>${money(r['Strong 7.6%'])}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      byId('gains-table').innerHTML = html;
+    }
+
+    function renderStampDuty() {
+      const sd = MODEL.stamp_duty;
+      let html = `<p><strong>Already Paid (estimate):</strong> ${money(sd.already_paid_estimate)}</p>
+        <h4 style="margin-top: 1rem;">If You Buy Again in NSW</h4>
+        <table><thead><tr><th>Purchase Price</th><th>Stamp Duty</th></tr></thead><tbody>`;
+      sd.examples_if_rebuy.forEach(r => {
+        html += `<tr><td>${money(r['Purchase price'])}</td><td>${money(r['Duty estimate'])}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      byId('stamp-duty-info').innerHTML = html;
+    }
+
+    function renderQuestionBank() {
+      const qs = MODEL.question_ledger;
+      let html = '';
+      qs.forEach(q => {
+        html += `<div class="qa-card">
+          <p><strong>Q:</strong> ${q.q}</p>
+          <p><strong>A:</strong> ${q.a}</p>
+          <span class="badge badge-success">${q.status}</span>
+        </div>`;
+      });
+      byId('question-bank').innerHTML = html;
+    }
+
+    function loadQuestionLog() {
+      const log = JSON.parse(localStorage.getItem(QUESTION_LOG_KEY) || '[]');
+      renderQuestionLog(log);
+    }
+
+    function renderQuestionLog(log) {
+      if (!log.length) {
+        byId('question-log').innerHTML = '<p style="color: var(--text-muted);">No entries yet.</p>';
+        return;
+      }
+      let html = '';
+      log.forEach((e, i) => {
+        const statusClass = e.status === 'Agreed' ? 'badge-success' : e.status === 'Answered' ? 'badge-info' : 'badge-warning';
+        html += `<div class="log-entry">
+          <div class="log-header">
+            <span>${new Date(e.timestamp).toLocaleString()} · <strong>${e.asked_by}</strong></span>
+            <span class="badge ${statusClass}">${e.status}</span>
+          </div>
+          <p><strong>Q:</strong> ${e.question}</p>
+          <p><strong>A:</strong> ${e.answer || '(pending)'}</p>
+          ${e.revisit ? `<p style="font-size: 0.8rem; color: var(--warning);">Revisit: ${e.revisit}</p>` : ''}
+        </div>`;
+      });
+      byId('question-log').innerHTML = html;
+    }
+
+    function saveQuestion() {
+      const status = byId('ql-status').value;
+      const question = byId('ql-question').value.trim();
+      if (!question) { alert('Please enter a question'); return; }
+      if (status === 'Open' && !byId('ql-revisit').value) {
+        alert('Open questions must have a revisit date'); return;
+      }
+      const entry = {
+        timestamp: new Date().toISOString(),
+        asked_by: byId('ql-asked-by').value,
+        status: status,
+        revisit: byId('ql-revisit').value,
+        question: question,
+        answer: byId('ql-answer').value.trim()
+      };
+      const log = JSON.parse(localStorage.getItem(QUESTION_LOG_KEY) || '[]');
+      log.push(entry);
+      localStorage.setItem(QUESTION_LOG_KEY, JSON.stringify(log));
+      renderQuestionLog(log);
+      clearQuestionForm();
+      updateEmailPreview();
+    }
+
+    function clearQuestionForm() {
+      byId('ql-question').value = '';
+      byId('ql-answer').value = '';
+      byId('ql-revisit').value = '';
+    }
+
+    function exportQuestionLog() {
+      downloadJSON(localStorage.getItem(QUESTION_LOG_KEY) || '[]', 'question_log.json');
+    }
+
+    function wipeQuestionLog() {
+      if (confirm('Delete all question log entries?')) {
+        localStorage.removeItem(QUESTION_LOG_KEY);
+        renderQuestionLog([]);
+      }
+    }
+
+    function renderDecisionMatrix() {
+      const opts = MODEL.options;
+      const criteria = MODEL.ranking_criteria;
+      const saved = JSON.parse(localStorage.getItem(MATRIX_KEY) || '{}');
+
+      let html = '<table class="matrix-table"><thead><tr><th>Option</th>';
+      criteria.forEach(c => html += `<th>${c.name}</th>`);
+      html += '<th>Total</th></tr></thead><tbody>';
+
+      opts.forEach(opt => {
+        html += `<tr><td>${opt.code}: ${opt.name.substring(0, 25)}...</td>`;
+        let total = 0;
+        criteria.forEach(c => {
+          const key = `${opt.code}-${c.name}`;
+          const val = saved[key] || 3;
+          total += parseInt(val);
+          html += `<td><input type="number" min="1" max="5" value="${val}" onchange="saveMatrix('${key}', this.value)"></td>`;
         });
+        html += `<td class="total-cell">${total}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      byId('decision-matrix').innerHTML = html;
 
-        function animateCursor() {
-            const dx = mouseX - cursorX;
-            const dy = mouseY - cursorY;
-            
-            cursorX += dx * 0.15;
-            cursorY += dy * 0.15;
-            
-            cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-            
-            requestAnimationFrame(animateCursor);
-        }
+      // Populate final option dropdown
+      let optHtml = '<option value="">Select option...</option>';
+      opts.forEach(o => optHtml += `<option value="${o.code}">${o.code}: ${o.name}</option>`);
+      byId('final-option').innerHTML = optHtml;
+    }
 
-        animateCursor();
+    function saveMatrix(key, value) {
+      const saved = JSON.parse(localStorage.getItem(MATRIX_KEY) || '{}');
+      saved[key] = value;
+      localStorage.setItem(MATRIX_KEY, JSON.stringify(saved));
+      renderDecisionMatrix();
+    }
 
-        // Cursor hover effect
-        const interactives = document.querySelectorAll('a, button, .btn');
-        interactives.forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    function saveDecision() {
+      const option = byId('final-option').value;
+      const notes = byId('final-notes').value;
+      if (!option) { alert('Please select an option'); return; }
+      const decision = {
+        timestamp: new Date().toISOString(),
+        option: option,
+        notes: notes
+      };
+      localStorage.setItem(DECISION_KEY, JSON.stringify(decision));
+      loadDecision();
+      updateEmailPreview();
+    }
+
+    function loadDecision() {
+      const decision = JSON.parse(localStorage.getItem(DECISION_KEY) || 'null');
+      if (decision) {
+        const opt = MODEL.options.find(o => o.code === decision.option);
+        byId('current-decision').innerHTML = `
+          <div class="decision-box">
+            <h3>✅ Agreed Decision</h3>
+            <p><strong>${opt.code}: ${opt.name}</strong></p>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">${decision.notes || ''}</p>
+            <p style="font-size: 0.75rem;">Recorded: ${new Date(decision.timestamp).toLocaleString()}</p>
+          </div>
+        `;
+        byId('final-option').value = decision.option;
+        byId('final-notes').value = decision.notes || '';
+      }
+    }
+
+    function updateEmailPreview() {
+      const decision = JSON.parse(localStorage.getItem(DECISION_KEY) || 'null');
+      const pool = byId('calc-pool')?.value || 2299683;
+      const buffer = byId('calc-buffer')?.value || 129014;
+      const renos = byId('calc-renos')?.value || 30000;
+      const holiday = byId('calc-holiday')?.value || 20000;
+      const ratio = byId('calc-ratio')?.value || '70-30';
+      const cass = byId('result-cass')?.textContent || '$0';
+      const troy = byId('result-troy')?.textContent || '$0';
+
+      const optName = decision ? MODEL.options.find(o => o.code === decision.option)?.name : '(not yet selected)';
+      
+      const log = JSON.parse(localStorage.getItem(QUESTION_LOG_KEY) || '[]');
+      const openQs = log.filter(q => q.status === 'Open');
+
+      const summary = `DRAFT PROPERTY DECISION (not advice)
+=====================================
+
+Selected Option: ${decision?.option || '?'} - ${optName}
+
+Split Calculation:
+- Pool: $${parseInt(pool).toLocaleString()}
+- Buffer kept: $${parseInt(buffer).toLocaleString()}
+- Renos/setup: $${parseInt(renos).toLocaleString()}
+- Holiday/transition: $${parseInt(holiday).toLocaleString()}
+- Split ratio: ${ratio}
+- Cassandra receives: ${cass}
+- Troy receives: ${troy}
+
+${openQs.length ? `Open Questions (${openQs.length}):
+${openQs.map(q => '- ' + q.question).join('\n')}` : 'No open questions.'}
+
+${decision?.notes ? `Notes: ${decision.notes}` : ''}
+
+Generated: ${new Date().toLocaleString()}
+This is modelling only, not financial advice.`;
+
+      byId('email-preview').textContent = summary;
+      
+      // Update mailto link
+      const subject = encodeURIComponent('Property Decision Draft - Troy & Cassandra');
+      const body = encodeURIComponent(summary);
+      byId('email-link').href = `mailto:?subject=${subject}&body=${body}`;
+    }
+
+    function copyEmailSummary() {
+      const summary = byId('email-preview').textContent;
+      navigator.clipboard.writeText(summary).then(() => {
+        alert('Summary copied to clipboard!');
+      });
+    }
+
+    async function pushToSupabase() {
+      const url = byId('sb-url').value;
+      const key = byId('sb-key').value;
+      if (!url || !key) { alert('Enter Supabase URL and key'); return; }
+      
+      const log = JSON.parse(localStorage.getItem(QUESTION_LOG_KEY) || '[]');
+      try {
+        const res = await fetch(`${url}/rest/v1/property_question_log`, {
+          method: 'POST',
+          headers: {
+            'apikey': key,
+            'Authorization': `Bearer ${key}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify(log.map(e => ({...e, id: e.timestamp})))
         });
+        if (res.ok) alert('Pushed to Supabase!');
+        else alert('Push failed: ' + await res.text());
+      } catch (e) { alert('Error: ' + e.message); }
+    }
 
-        // Scroll reveal
-        const reveals = document.querySelectorAll('.reveal');
-        
-        function checkReveals() {
-            reveals.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                const isVisible = rect.top < window.innerHeight - 100;
-                if (isVisible) el.classList.add('active');
-            });
-        }
-
-        window.addEventListener('scroll', checkReveals);
-        window.addEventListener('load', checkReveals);
-
-        // Counter animation
-        function animateCounter(element) {
-            const target = parseInt(element.getAttribute('data-target'));
-            const duration = 2000;
-            const step = target / (duration / 16);
-            let current = 0;
-
-            const updateCounter = () => {
-                current += step;
-                if (current < target) {
-                    element.textContent = Math.floor(current);
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    element.textContent = target;
-                }
-            };
-
-            updateCounter();
-        }
-
-        // Trigger counters on scroll
-        const statsSection = document.querySelector('.stats');
-        let countersAnimated = false;
-
-        const statsObserver = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && !countersAnimated) {
-                document.querySelectorAll('.stat-number[data-target]').forEach(animateCounter);
-                countersAnimated = true;
-            }
-        }, { threshold: 0.5 });
-
-        statsObserver.observe(statsSection);
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
+    async function pullFromSupabase() {
+      const url = byId('sb-url').value;
+      const key = byId('sb-key').value;
+      if (!url || !key) { alert('Enter Supabase URL and key'); return; }
+      
+      try {
+        const res = await fetch(`${url}/rest/v1/property_question_log?select=*`, {
+          headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
         });
-    </script>
+        if (res.ok) {
+          const data = await res.json();
+          localStorage.setItem(QUESTION_LOG_KEY, JSON.stringify(data));
+          loadQuestionLog();
+          alert('Pulled from Supabase!');
+        } else alert('Pull failed: ' + await res.text());
+      } catch (e) { alert('Error: ' + e.message); }
+    }
+
+    function downloadJSON(data, filename) {
+      const blob = new Blob([typeof data === 'string' ? data : JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
 </body>
 </html>
