@@ -1,1170 +1,1203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <meta name="description" content="Property decision tool for Troy & Cassandra - Compare options, calculate splits, stress test scenarios">
-  <title>Property Decision Pack - Troy & Cassandra</title>
-  <style>
-    :root {
-      --bg: #f5f5f7;
-      --card-bg: #ffffff;
-      --accent: #2563eb;
-      --accent-soft: #dbeafe;
-      --success: #16a34a;
-      --success-bg: #dcfce7;
-      --warning: #d97706;
-      --warning-bg: #fef3c7;
-      --danger: #dc2626;
-      --danger-bg: #fee2e2;
-      --text-main: #111827;
-      --text-muted: #4b5563;
-      --border: #e5e7eb;
-      --radius: 12px;
-      --shadow: 0 4px 20px rgba(0,0,0,0.08);
-      --focus-ring: 0 0 0 3px rgba(37,99,235,0.4);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #eff6ff 0%, var(--bg) 100%);
-      color: var(--text-main);
-      min-height: 100vh;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-    /* Skip link for accessibility */
-    .skip-link {
-      position: absolute;
-      top: -50px;
-      left: 16px;
-      background: var(--accent);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 0 0 8px 8px;
-      z-index: 10000;
-      font-weight: 600;
-      transition: top 0.3s;
-      text-decoration: none;
-    }
-    .skip-link:focus { top: 0; }
-    /* Loading overlay */
-    .loading-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(255,255,255,0.95);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.3s, visibility 0.3s;
-    }
-    .loading-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .progress-bar {
-      width: 200px;
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin-top: 16px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: var(--accent);
-      transition: width 0.3s;
-    }
-    /* Toast notifications */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--text-main);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      z-index: 10000;
-      opacity: 0;
-      transition: all 0.3s;
-      font-weight: 500;
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-    .toast.success { background: var(--success); }
-    .toast.error { background: var(--danger); }
-    /* Header */
-    header {
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .header-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-    }
-    h1 { font-size: 1.25rem; font-weight: 700; }
-    .subtitle { font-size: 0.8rem; color: var(--text-muted); }
-    /* Enhanced warning badge */
-    .ground-rule {
-      background: var(--danger-bg);
-      color: var(--danger);
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      border: 2px solid var(--danger);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .ground-rule::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      background: var(--danger);
-      border-radius: 50%;
-      animation: blink 1.5s infinite;
-    }
-    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-    /* Sticky nav */
-    nav {
-      display: flex;
-      gap: 0.5rem;
-      overflow-x: auto;
-      padding: 0.75rem 1rem;
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 68px;
-      z-index: 99;
-      scrollbar-width: thin;
-    }
-    nav::-webkit-scrollbar { height: 4px; }
-    nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-    .tab-btn {
-      padding: 0.6rem 1rem;
-      border: 2px solid transparent;
-      background: none;
-      border-radius: 8px;
-      cursor: pointer;
-      white-space: nowrap;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      transition: all 0.2s;
-      min-height: 44px;
-    }
-    .tab-btn:focus { outline: none; box-shadow: var(--focus-ring); }
-    .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
-    .tab-btn:hover:not(.active) { background: var(--accent-soft); }
-    main { max-width: 1200px; margin: 0 auto; padding: 1rem; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.3s; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    /* Cards */
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-      border: 1px solid var(--border);
-    }
-    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .card h2 { font-size: 1rem; font-weight: 600; }
-    .card h3 { font-size: 0.9rem; font-weight: 600; margin: 1rem 0 0.5rem; }
-    /* Badges with better contrast */
-    .badge {
-      font-size: 0.7rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-      font-weight: 600;
-    }
-    .badge-success { background: var(--success-bg); color: var(--success); }
-    .badge-warning { background: var(--warning-bg); color: var(--warning); }
-    .badge-danger { background: var(--danger-bg); color: var(--danger); }
-    .badge-info { background: var(--accent-soft); color: var(--accent); }
-    /* Tables */
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 0.5rem; }
-    th, td { padding: 0.6rem 0.5rem; text-align: left; border-bottom: 1px solid var(--border); }
-    th { background: #f9fafb; font-weight: 600; position: sticky; top: 0; }
-    td:nth-child(n+2), th:nth-child(n+2) { text-align: right; }
-    /* Recommended card */
-    .recommended-card {
-      background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);
-      border: 2px solid var(--success);
-    }
-    .recommended-card h2 { color: var(--success); }
-    /* Options */
-    .option-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 0.75rem;
-      overflow: hidden;
-    }
-    .option-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      cursor: pointer;
-      background: #f9fafb;
-      transition: background 0.2s;
-    }
-    .option-header:hover { background: #f3f4f6; }
-    .option-header:focus { outline: none; box-shadow: inset var(--focus-ring); }
-    .option-title { display: flex; align-items: center; gap: 0.75rem; }
-    .option-code {
-      background: var(--accent);
-      color: white;
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.85rem;
-    }
-    .option-details { display: none; padding: 1rem; border-top: 1px solid var(--border); }
-    .option-card.expanded .option-details { display: block; }
-    /* Metrics grid */
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 0.75rem;
-      margin: 1rem 0;
-    }
-    .metric { background: #f9fafb; padding: 0.75rem; border-radius: 8px; text-align: center; }
-    .metric-label { font-size: 0.7rem; color: var(--text-muted); }
-    .metric-value { font-size: 1rem; font-weight: 700; margin-top: 0.25rem; }
-    /* Pros/Cons */
-    .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
-    .pros h4 { color: var(--success); }
-    .cons h4 { color: var(--danger); }
-    .pros ul, .cons ul { list-style: none; padding: 0; margin-top: 0.5rem; }
-    .pros li::before { content: "✓ "; color: var(--success); font-weight: bold; }
-    .cons li::before { content: "✗ "; color: var(--danger); font-weight: bold; }
-    /* Forms */
-    .ranking-input { display: flex; align-items: center; gap: 0.5rem; }
-    .ranking-input input {
-      width: 60px;
-      padding: 0.5rem;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      font-size: 1rem;
-      text-align: center;
-      min-height: 44px;
-    }
-    .ranking-input input:focus { border-color: var(--accent); outline: none; box-shadow: var(--focus-ring); }
-    .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0; }
-    .chip {
-      padding: 0.5rem 1rem;
-      border-radius: 999px;
-      background: #f3f4f6;
-      border: 2px solid transparent;
-      cursor: pointer;
-      font-size: 0.85rem;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-    }
-    .chip:focus { outline: none; box-shadow: var(--focus-ring); }
-    .chip.active { background: var(--accent); color: white; }
-    /* Calculator */
-    .split-calc {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin: 1rem 0;
-    }
-    .calc-input { display: flex; flex-direction: column; gap: 0.25rem; }
-    .calc-input label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
-    .calc-input input, .calc-input select {
-      padding: 0.6rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      min-height: 44px;
-    }
-    .calc-input input:focus, .calc-input select:focus {
-      border-color: var(--accent);
-      outline: none;
-      box-shadow: var(--focus-ring);
-    }
-    .calc-result { background: var(--accent-soft); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
-    .calc-result h4 { color: var(--accent); margin-bottom: 0.5rem; }
-    .result-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(0,0,0,0.1); }
-    .result-row:last-child { border-bottom: none; }
-    /* Buttons */
-    .btn {
-      padding: 0.7rem 1.4rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: all 0.2s;
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .btn:focus { outline: none; box-shadow: var(--focus-ring); }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-primary { background: var(--accent); color: white; }
-    .btn-primary:hover:not(:disabled) { background: #1d4ed8; }
-    .btn-success { background: var(--success); color: white; }
-    .btn-success:hover:not(:disabled) { background: #15803d; }
-    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
-    .btn-outline:hover:not(:disabled) { background: #f3f4f6; }
-    .btn.loading { color: transparent; position: relative; }
-    .btn.loading::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    .btn-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
-    /* Form groups */
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 0.75rem;
-      margin: 1rem 0;
-    }
-    .form-group { display: flex; flex-direction: column; gap: 0.25rem; }
-    .form-group label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
-    .form-group input, .form-group select, .form-group textarea {
-      padding: 0.6rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      min-height: 44px;
-    }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      border-color: var(--accent);
-      outline: none;
-      box-shadow: var(--focus-ring);
-    }
-    textarea { min-height: 80px; resize: vertical; }
-    /* Log entries */
-    .log-entry {
-      background: #f9fafb;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem;
-      margin-top: 0.75rem;
-    }
-    .log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-    .qa-card { background: #f9fafb; padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem; }
-    .qa-card p { margin: 0.25rem 0; font-size: 0.85rem; }
-    /* Matrix */
-    .matrix-table input {
-      width: 50px;
-      padding: 0.4rem;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      text-align: center;
-      min-height: 36px;
-    }
-    .total-cell { font-weight: 700; background: var(--accent-soft); }
-    /* Decision */
-    .decision-box {
-      background: var(--success-bg);
-      border: 2px solid var(--success);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      margin-top: 1rem;
-      text-align: center;
-    }
-    .decision-box h3 { color: var(--success); margin-bottom: 0.5rem; }
-    .email-summary {
-      background: #f0f9ff;
-      border: 1px solid #bae6fd;
-      border-radius: 8px;
-      padding: 1rem;
-      font-family: monospace;
-      font-size: 0.85rem;
-      white-space: pre-wrap;
-      margin: 1rem 0;
-    }
-    /* Priorities */
-    .priorities-panel {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-    }
-    .priority-card {
-      background: #f9fafb;
-      padding: 1rem;
-      border-radius: 8px;
-      border-left: 4px solid var(--accent);
-    }
-    .priority-card h4 { margin-bottom: 0.5rem; }
-    .parking-lot {
-      background: var(--warning-bg);
-      border-radius: 8px;
-      padding: 1rem;
-      margin-top: 1rem;
-      border-left: 4px solid var(--warning);
-    }
-    .parking-lot h4 { color: var(--warning); margin-bottom: 0.5rem; }
-    .supabase-config {
-      background: #f0fdf4;
-      border: 1px solid #86efac;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-top: 1rem;
-    }
-    /* FAB for mobile */
-    .fab {
-      display: none;
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: white;
-      border: none;
-      box-shadow: 0 4px 12px rgba(37,99,235,0.4);
-      cursor: pointer;
-      z-index: 98;
-      font-size: 1.5rem;
-    }
-    .fab:focus { outline: none; box-shadow: var(--focus-ring), 0 4px 12px rgba(37,99,235,0.4); }
-    .fab-menu {
-      display: none;
-      position: fixed;
-      bottom: 90px;
-      right: 24px;
-      background: var(--card-bg);
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      padding: 0.5rem;
-      z-index: 98;
-    }
-    .fab-menu.show { display: block; }
-    .fab-menu button {
-      display: block;
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: none;
-      background: none;
-      text-align: left;
-      cursor: pointer;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      min-height: 44px;
-    }
-    .fab-menu button:hover { background: var(--accent-soft); }
-    /* Screen reader only */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-      border: 0;
-    }
-    @media (max-width: 768px) {
-      .pros-cons { grid-template-columns: 1fr; }
-      .split-calc { grid-template-columns: 1fr; }
-      .fab { display: flex; align-items: center; justify-content: center; }
-      nav { top: 60px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Decision Pack | Troy & Cassandra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --card: #ffffff;
+            --text: #1a1a2e;
+            --text-muted: #6b7280;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --success: #059669;
+            --success-light: #d1fae5;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Skip link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent);
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Header */
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text);
+        }
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+        .nav-btn:focus {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 768px) {
+            nav { display: none; }
+        }
+
+        /* Main content */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* Sections */
+        section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+        }
+
+        /* Key Numbers Grid */
+        .key-numbers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-value.positive { color: var(--success); }
+        .stat-value.negative { color: var(--danger); }
+        .stat-value.warning { color: var(--warning); }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+        }
+
+        .option-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .option-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .option-card.selected {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .option-card.recommended {
+            border-color: var(--success);
+        }
+
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .option-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--accent);
+        }
+
+        .option-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-desc {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+        }
+
+        .badge-success { background: var(--success-light); color: var(--success); }
+        .badge-warning { background: var(--warning-light); color: var(--warning); }
+        .badge-danger { background: var(--danger-light); color: var(--danger); }
+        .badge-info { background: var(--accent-light); color: var(--accent); }
+
+        .option-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 0.5rem;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Comparison Table */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:hover {
+            background: var(--bg);
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            background: var(--card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 85%;
+        }
+
+        .chat-message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chat-bubble {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+        }
+
+        .chat-message.assistant .chat-bubble {
+            background: var(--bg);
+        }
+
+        .chat-message.user .chat-bubble {
+            background: var(--accent);
+            color: white;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .chat-send {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .chat-send:hover {
+            background: #1d4ed8;
+        }
+
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-top: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        .quick-q {
+            padding: 0.5rem 0.75rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-q:hover {
+            background: var(--accent-light);
+            border-color: var(--accent);
+        }
+
+        /* Split Calculator */
+        .split-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .split-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+
+        .split-rule {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .split-values {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .split-person {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+        }
+
+        .split-name {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .split-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        /* Stress Test */
+        .stress-table {
+            width: 100%;
+        }
+
+        .runway-bar {
+            height: 8px;
+            background: var(--bg);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .runway-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Mobile FAB */
+        .fab-menu {
+            display: none;
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .fab-menu {
+                display: block;
+            }
+        }
+
+        .fab-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.2s;
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .fab-options {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: none;
+            min-width: 180px;
+        }
+
+        .fab-options.open {
+            display: block;
+            animation: slideUp 0.2s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fab-option {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: none;
+            background: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .fab-option:hover {
+            background: var(--bg);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 200;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Preference indicator */
+        .preference-banner {
+            background: var(--success-light);
+            border: 1px solid var(--success);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preference-text {
+            font-weight: 500;
+        }
+
+        .clear-pref {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        /* Print styles */
+        @media print {
+            header, nav, .fab-menu, .chat-input-area, .quick-questions { display: none; }
+            section { display: block !important; page-break-inside: avoid; }
+            .card { box-shadow: none; border: 1px solid #ddd; }
+        }
+
+        /* Loading */
+        .loading {
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading.hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-  
-  <div class="loading-overlay" id="loading" role="status" aria-live="polite">
-    <div class="spinner" aria-hidden="true"></div>
-    <p id="loading-text">Loading property data...</p>
-    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
-  </div>
-  
-  <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
-
-  <header>
-    <div class="header-content">
-      <div>
-        <h1>Property Decision Pack</h1>
-        <div class="subtitle">Generated 2025-12-26 · Modelling only, not financial advice</div>
-      </div>
-      <div class="ground-rule" role="alert">
-        <span class="sr-only">Important:</span>
-        No "no decision" allowed - must pick one
-      </div>
-    </div>
-  </header>
-
-  <nav role="tablist" aria-label="Property decision sections">
-    <button class="tab-btn active" data-tab="overview" role="tab" aria-selected="true" aria-controls="overview" id="tab-overview">📊 Overview</button>
-    <button class="tab-btn" data-tab="options" role="tab" aria-selected="false" aria-controls="options" id="tab-options">🏠 All Options</button>
-    <button class="tab-btn" data-tab="calculator" role="tab" aria-selected="false" aria-controls="calculator" id="tab-calculator">🧮 Split Calc</button>
-    <button class="tab-btn" data-tab="stress" role="tab" aria-selected="false" aria-controls="stress" id="tab-stress">⚡ Stress Test</button>
-    <button class="tab-btn" data-tab="projections" role="tab" aria-selected="false" aria-controls="projections" id="tab-projections">📈 Projections</button>
-    <button class="tab-btn" data-tab="questions" role="tab" aria-selected="false" aria-controls="questions" id="tab-questions">❓ Q&A Log</button>
-    <button class="tab-btn" data-tab="decision" role="tab" aria-selected="false" aria-controls="decision" id="tab-decision">✅ Decision</button>
-  </nav>
-
-  <button class="fab" id="fab" aria-label="Quick navigation" aria-expanded="false" aria-controls="fab-menu">☰</button>
-  <div class="fab-menu" id="fab-menu" role="menu">
-    <button role="menuitem" data-tab="overview">📊 Overview</button>
-    <button role="menuitem" data-tab="options">🏠 All Options</button>
-    <button role="menuitem" data-tab="calculator">🧮 Calculator</button>
-    <button role="menuitem" data-tab="stress">⚡ Stress Test</button>
-    <button role="menuitem" data-tab="projections">📈 Projections</button>
-    <button role="menuitem" data-tab="questions">❓ Q&A Log</button>
-    <button role="menuitem" data-tab="decision">✅ Decision</button>
-  </div>
-
-  <main id="main-content">
-    <div id="overview" class="tab-content active" role="tabpanel" aria-labelledby="tab-overview">
-      <div class="card recommended-card">
-        <div class="card-header">
-          <h2>⭐ Recommended Default</h2>
-          <span class="badge badge-success">Top Pick</span>
-        </div>
-        <div id="recommended-content"></div>
-      </div>
-      <div class="card">
-        <h2>Key Numbers Now</h2>
-        <div id="key-numbers-table"></div>
-      </div>
-      <div class="card">
-        <h2>Quick Option Comparison</h2>
-        <div id="options-summary-table"></div>
-      </div>
-      <div class="card">
-        <h2>Priorities & Considerations</h2>
-        <div class="priorities-panel">
-          <div class="priority-card"><h4>🏠 Cassandra's Value</h4><p>Peninsular value doesn't disappear - becomes a "preserved credit" inside Seabrook if sold. Paid back first if Seabrook ever sells.</p></div>
-          <div class="priority-card"><h4>💰 Troy's Debt Load</h4><p>Currently carrying ~$1.9M in loans. Selling Peninsular and paying into Seabrook roughly halves the repayments.</p></div>
-          <div class="priority-card"><h4>📈 Market Exposure</h4><p>Bigger property = bigger dollar gains at same %. Seabrook gains ~$882k in 5yrs at 5% vs Peninsular's ~$465k.</p></div>
-          <div class="priority-card"><h4>🛡️ Safety Buffer</h4><p>Keeping 1-year of mortgage payments (~$129k) as buffer provides ~90 weeks runway if income stops.</p></div>
-        </div>
-        <div class="parking-lot">
-          <h4>🅿️ Parking Lot - Things to Decide Later</h4>
-          <ul>
-            <li>Exact preserved credit mechanism documentation</li>
-            <li>Whether to split Seabrook loan formally (requires bank approval)</li>
-            <li>Timeline for any property transactions</li>
-            <li>Professional advice consultation</li>
-          </ul>
-        </div>
-      </div>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
     </div>
 
-    <div id="options" class="tab-content" role="tabpanel" aria-labelledby="tab-options">
-      <div class="card">
-        <h2>All Options - Click to Expand</h2>
-        <p class="subtitle">Rate each option 1-10 to help prioritize your decision</p>
-        <div id="options-list"></div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="exportRankings()" aria-label="Export rankings to JSON file">📥 Export Rankings</button>
-          <button class="btn btn-outline" onclick="clearRankings()" aria-label="Clear all rankings">🗑️ Clear Rankings</button>
+    <header>
+        <div class="header-content">
+            <div class="logo">Property<span>Pack</span></div>
+            <nav role="tablist" aria-label="Main navigation">
+                <button class="nav-btn active" role="tab" aria-selected="true" onclick="showSection('overview')" data-section="overview">Overview</button>
+                <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('options')" data-section="options">Options</button>
+                <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('compare')" data-section="compare">Compare</button>
+                <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('stress')" data-section="stress">Stress Test</button>
+                <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('splits')" data-section="splits">Splits</button>
+                <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('chat')" data-section="chat">Ask Questions</button>
+            </nav>
         </div>
-      </div>
-    </div>
+    </header>
 
-    <div id="calculator" class="tab-content" role="tabpanel" aria-labelledby="tab-calculator">
-      <div class="card">
-        <h2>Split Calculator</h2>
-        <p>Calculate how the money splits after deducting buffer, renovations, and holiday costs.</p>
-        <div class="split-calc">
-          <div class="calc-input">
-            <label for="calc-pool">Starting Cash Pool</label>
-            <input type="number" id="calc-pool" value="2299683" onchange="calculateSplit()" aria-describedby="pool-desc">
-            <span id="pool-desc" class="sr-only">Total cash available from property sale</span>
-          </div>
-          <div class="calc-input">
-            <label for="calc-buffer">Buffer to Keep</label>
-            <input type="number" id="calc-buffer" value="129014" onchange="calculateSplit()">
-          </div>
-          <div class="calc-input">
-            <label for="calc-renos">Renovations/Setup</label>
-            <input type="number" id="calc-renos" value="30000" onchange="calculateSplit()">
-          </div>
-          <div class="calc-input">
-            <label for="calc-holiday">Holiday/Transition</label>
-            <input type="number" id="calc-holiday" value="20000" onchange="calculateSplit()">
-          </div>
-          <div class="calc-input">
-            <label for="calc-ratio">Split Ratio</label>
-            <select id="calc-ratio" onchange="calculateSplit()">
-              <option value="50-50">50/50 Equal</option>
-              <option value="60-40">60/40 to Cassandra</option>
-              <option value="70-30" selected>70/30 to Cassandra</option>
-              <option value="pen-first">Pen Net First + 70/30</option>
-            </select>
-          </div>
-        </div>
-        <div class="calc-result" id="calc-result" role="region" aria-live="polite">
-          <h4>Split Results</h4>
-          <div class="result-row"><span>Net Pool After Deductions</span><span id="result-net">$0</span></div>
-          <div class="result-row"><span>Cassandra Receives</span><span id="result-cass">$0</span></div>
-          <div class="result-row"><span>Troy Receives</span><span id="result-troy">$0</span></div>
-        </div>
-      </div>
-      <div class="card">
-        <h2>Pre-Calculated Split Scenarios</h2>
-        <div id="splits-table"></div>
-      </div>
-    </div>
+    <main id="main-content">
+        <!-- OVERVIEW SECTION -->
+        <section id="overview" class="active" role="tabpanel" aria-labelledby="tab-overview">
+            <h1>Property Decision Pack</h1>
+            <p class="subtitle">Troy & Cassandra • Modelling only, not financial advice</p>
 
-    <div id="stress" class="tab-content" role="tabpanel" aria-labelledby="tab-stress">
-      <div class="card"><h2>Stress Test Inputs</h2><div id="stress-inputs-table"></div></div>
-      <div class="card"><h2>Hit Severe Summary - How Long Can You Survive?</h2><p>Shows weekly cashflow and runway if income stops or drops significantly.</p><div id="stress-summary-table"></div></div>
-      <div class="card"><h2>Repayment Sensitivity</h2><p>How repayments change at different interest rates.</p><div id="repayments-table"></div></div>
-    </div>
+            <div id="preference-display"></div>
 
-    <div id="projections" class="tab-content" role="tabpanel" aria-labelledby="tab-projections">
-      <div class="card"><h2>Growth Projections</h2><div class="chips" id="scenario-chips" role="radiogroup" aria-label="Growth scenario"></div><div id="projections-table"></div></div>
-      <div class="card"><h2>Paper Gains Comparison</h2><p>Why the bigger property wins in dollars even at the same growth rate.</p><div id="gains-table"></div></div>
-      <div class="card"><h2>Stamp Duty Considerations</h2><div id="stamp-duty-info"></div></div>
-    </div>
-
-    <div id="questions" class="tab-content" role="tabpanel" aria-labelledby="tab-questions">
-      <div class="card"><h2>Pre-Answered Questions</h2><div id="question-bank"></div></div>
-      <div class="card">
-        <h2>Add New Question</h2>
-        <div class="form-grid">
-          <div class="form-group"><label for="ql-asked-by">Asked By</label><select id="ql-asked-by"><option value="Both">Both</option><option value="Troy">Troy</option><option value="Cassandra">Cassandra</option></select></div>
-          <div class="form-group"><label for="ql-status">Status</label><select id="ql-status"><option value="Open">Open</option><option value="Answered">Answered</option><option value="Agreed">Agreed</option></select></div>
-          <div class="form-group"><label for="ql-revisit">Revisit Date</label><input type="date" id="ql-revisit"></div>
-        </div>
-        <div class="form-group"><label for="ql-question">Question</label><textarea id="ql-question" placeholder="What needs to be answered?"></textarea></div>
-        <div class="form-group"><label for="ql-answer">Answer</label><textarea id="ql-answer" placeholder="Once agreed, record the answer here..."></textarea></div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="saveQuestion()">💾 Save Entry</button>
-          <button class="btn btn-outline" onclick="clearQuestionForm()">🗑️ Clear Form</button>
-          <button class="btn btn-outline" onclick="exportQuestionLog()">📥 Export Log</button>
-          <button class="btn btn-outline" onclick="wipeQuestionLog()">⚠️ Wipe Log</button>
-        </div>
-        <h3>Previous Entries</h3>
-        <div id="question-log"></div>
-      </div>
-      <div class="card supabase-config">
-        <h2>☁️ Supabase Sync (Optional)</h2>
-        <p>Sync questions across devices using Supabase.</p>
-        <div class="form-grid">
-          <div class="form-group"><label for="sb-url">Supabase URL</label><input type="text" id="sb-url" placeholder="https://xxx.supabase.co"></div>
-          <div class="form-group"><label for="sb-key">Anon Key</label><input type="password" id="sb-key" placeholder="Your anon key"></div>
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="pushToSupabase()">⬆️ Push to Supabase</button>
-          <button class="btn btn-outline" onclick="pullFromSupabase()">⬇️ Pull from Supabase</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="decision" class="tab-content" role="tabpanel" aria-labelledby="tab-decision">
-      <div class="card"><h2>Decision Matrix</h2><p>Score each option 1-5 on each criteria. Higher = better.</p><div id="decision-matrix"></div></div>
-      <div class="card">
-        <h2>Record Final Decision</h2>
-        <div class="form-group"><label for="final-option">Selected Option</label><select id="final-option"></select></div>
-        <div class="form-group"><label for="final-notes">Notes</label><textarea id="final-notes" placeholder="Any additional notes about the decision..."></textarea></div>
-        <div class="btn-row">
-          <button class="btn btn-success" onclick="saveDecision()">✅ Save Decision</button>
-          <button class="btn btn-primary" onclick="copyEmailSummary()">📋 Copy Email Summary</button>
-          <a id="email-link" class="btn btn-outline" href="#">📧 Open Email Draft</a>
-        </div>
-        <div id="current-decision"></div>
-      </div>
-      <div class="card"><h2>📧 Email Summary Preview</h2><div class="email-summary" id="email-preview">Loading summary...</div></div>
-    </div>
-  </main>
-
-  <script>
-    let MODEL = null;
-    const QUESTION_LOG_KEY = "property_question_log_v3";
-    const RANKINGS_KEY = "property_rankings_v3";
-    const MATRIX_KEY = "property_matrix_v3";
-    const DECISION_KEY = "property_decision_v3";
-
-    function byId(id) { return document.getElementById(id); }
-    function money(v) {
-      if (v === null || v === undefined) return '-';
-      return new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD', maximumFractionDigits: 0 }).format(v);
-    }
-    function pct(v) { return typeof v === 'number' ? (v * 100).toFixed(1) + '%' : v; }
-
-    // Toast notification
-    function showToast(msg, type = '') {
-      const t = byId('toast');
-      t.textContent = msg;
-      t.className = 'toast ' + type + ' show';
-      setTimeout(() => t.classList.remove('show'), 3000);
-    }
-
-    // Progress updates
-    function setProgress(pct, msg) {
-      byId('progress').style.width = pct + '%';
-      if (msg) byId('loading-text').textContent = msg;
-    }
-
-    // Tab switching with ARIA
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-      btn.addEventListener('keydown', e => {
-        const tabs = [...document.querySelectorAll('.tab-btn')];
-        const idx = tabs.indexOf(btn);
-        if (e.key === 'ArrowRight' && idx < tabs.length - 1) { tabs[idx + 1].focus(); tabs[idx + 1].click(); }
-        if (e.key === 'ArrowLeft' && idx > 0) { tabs[idx - 1].focus(); tabs[idx - 1].click(); }
-      });
-    });
-
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-selected', 'false');
-      });
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      const btn = document.querySelector(`[data-tab="${tabId}"]`);
-      if (btn) { btn.classList.add('active'); btn.setAttribute('aria-selected', 'true'); }
-      const panel = byId(tabId);
-      if (panel) panel.classList.add('active');
-      byId('fab-menu').classList.remove('show');
-      byId('fab').setAttribute('aria-expanded', 'false');
-    }
-
-    // FAB menu
-    byId('fab').addEventListener('click', () => {
-      const menu = byId('fab-menu');
-      const expanded = menu.classList.toggle('show');
-      byId('fab').setAttribute('aria-expanded', expanded);
-    });
-    document.querySelectorAll('#fab-menu button').forEach(btn => {
-      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-    });
-
-    async function init() {
-      setProgress(10, 'Fetching model data...');
-      try {
-        const res = await fetch('model_data.json');
-        setProgress(40, 'Parsing data...');
-        MODEL = await res.json();
-        setProgress(60, 'Rendering views...');
-        renderRecommended();
-        renderKeyNumbers();
-        renderOptionsSummary();
-        setProgress(75, 'Building options...');
-        renderAllOptions();
-        renderSplitsTable();
-        renderStressInputs();
-        renderStressSummary();
-        renderRepayments();
-        setProgress(90, 'Finalizing...');
-        renderScenarioChips();
-        renderProjections('Middle 5%');
-        renderGainsTable();
-        renderStampDuty();
-        renderQuestionBank();
-        loadQuestionLog();
-        renderDecisionMatrix();
-        loadDecision();
-        calculateSplit();
-        updateEmailPreview();
-        setProgress(100, 'Complete!');
-        setTimeout(() => byId('loading').classList.add('hidden'), 300);
-      } catch (e) {
-        byId('loading-text').textContent = 'Error loading data: ' + e.message;
-        console.error(e);
-      }
-    }
-
-    function renderRecommended() {
-      const rec = MODEL.recommended_default;
-      const opt = MODEL.options.find(o => o.code === rec.option_code);
-      byId('recommended-content').innerHTML = `
-        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
-          <div class="option-code">${opt.code}</div>
-          <div><strong>${opt.name}</strong><p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.25rem;">${rec.summary}</p></div>
-        </div>
-        <div class="metrics-grid">
-          <div class="metric"><div class="metric-label">Debt After</div><div class="metric-value">${money(opt.debt_after)}</div></div>
-          <div class="metric"><div class="metric-label">Cash Buffer</div><div class="metric-value">${money(opt.cash_after)}</div></div>
-          <div class="metric"><div class="metric-label">Risk Level</div><div class="metric-value">${opt.risk}</div></div>
-          <div class="metric"><div class="metric-label">Move Friction</div><div class="metric-value">${money(opt.move_friction)}</div></div>
-        </div>
-        <p style="font-size:0.85rem;color:var(--text-muted);"><strong>Why:</strong> ${rec.rationale}</p>
-      `;
-    }
-
-    function renderKeyNumbers() {
-      let html = '<table><thead><tr><th>Item</th><th>Amount</th></tr></thead><tbody>';
-      MODEL.key_numbers.forEach(r => html += `<tr><td>${r.Item}</td><td>${money(r.Amount)}</td></tr>`);
-      html += '</tbody></table>';
-      byId('key-numbers-table').innerHTML = html;
-    }
-
-    function renderOptionsSummary() {
-      const opts = MODEL.options.filter(o => ['A','B1','B2','D1','E1'].includes(o.code));
-      let html = '<table><thead><tr><th>Option</th><th>Debt After</th><th>Cash After</th><th>Risk</th></tr></thead><tbody>';
-      opts.forEach(o => {
-        const isRec = o.recommended ? ' style="background:var(--success-bg);"' : '';
-        const badge = o.risk === 'Low' || o.risk === 'Very Low' ? 'badge-success' : o.risk === 'High' ? 'badge-danger' : 'badge-warning';
-        html += `<tr${isRec}><td>${o.code}: ${o.name}</td><td>${money(o.debt_after)}</td><td>${money(o.cash_after)}</td><td><span class="badge ${badge}">${o.risk}</span></td></tr>`;
-      });
-      html += '</tbody></table>';
-      byId('options-summary-table').innerHTML = html;
-    }
-
-    function renderAllOptions() {
-      const saved = JSON.parse(localStorage.getItem(RANKINGS_KEY) || '{}');
-      let html = '';
-      MODEL.options.forEach(opt => {
-        const ranking = saved[opt.code] || '';
-        html += `
-          <div class="option-card" id="opt-${opt.code}">
-            <div class="option-header" onclick="toggleOption('${opt.code}')" tabindex="0" role="button" aria-expanded="false" aria-controls="details-${opt.code}">
-              <div class="option-title">
-                <div class="option-code">${opt.code}</div>
-                <div><strong>${opt.name}</strong>${opt.recommended ? '<span class="badge badge-success" style="margin-left:0.5rem;">Recommended</span>' : ''}</div>
-              </div>
-              <div class="ranking-input" onclick="event.stopPropagation()">
-                <label for="rank-${opt.code}" class="sr-only">Rank option ${opt.code}</label>
-                <input type="number" id="rank-${opt.code}" min="1" max="10" value="${ranking}" onchange="saveRanking('${opt.code}', this.value)" aria-label="Rank 1-10">
-              </div>
+            <div class="key-numbers" role="region" aria-label="Key financial numbers">
+                <div class="stat-card">
+                    <div class="stat-label">Seabrook Value</div>
+                    <div class="stat-value">$3.19M</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Peninsular Value</div>
+                    <div class="stat-value">$1.68M</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Combined Equity</div>
+                    <div class="stat-value positive">$2.43M</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Combined Debt</div>
+                    <div class="stat-value negative">$2.44M</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Net if Sell Both</div>
+                    <div class="stat-value positive">$2.30M</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Recommended</div>
+                    <div class="stat-value" style="color: var(--accent)">B2</div>
+                </div>
             </div>
-            <div class="option-details" id="details-${opt.code}">
-              <p>${opt.description}</p>
-              <div class="metrics-grid">
-                <div class="metric"><div class="metric-label">Debt After</div><div class="metric-value">${money(opt.debt_after)}</div></div>
-                <div class="metric"><div class="metric-label">Cash After</div><div class="metric-value">${money(opt.cash_after)}</div></div>
-                <div class="metric"><div class="metric-label">Move Friction</div><div class="metric-value">${money(opt.move_friction)}</div></div>
-                <div class="metric"><div class="metric-label">Risk</div><div class="metric-value">${opt.risk}</div></div>
-              </div>
-              <p style="font-size:0.85rem;color:var(--text-muted);"><strong>Market Exposure:</strong> ${opt.market_exposure}</p>
-              <div class="pros-cons">
-                <div class="pros"><h4>Pros</h4><ul>${opt.pros.map(p => `<li>${p}</li>`).join('')}</ul></div>
-                <div class="cons"><h4>Cons</h4><ul>${opt.cons.map(c => `<li>${c}</li>`).join('')}</ul></div>
-              </div>
+
+            <div class="card">
+                <h2>🎯 Recommended Option: B2</h2>
+                <p><strong>Sell Peninsular, keep Seabrook, keep 12-month buffer</strong></p>
+                <p style="margin-top: 0.5rem; color: var(--text-muted);">Best balance of reduced stress, staying in market, and keeping a safety runway. Cassandra's value protected via preserved credit mechanism.</p>
+                <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <span class="badge badge-success">Low-Medium Risk</span>
+                    <span class="badge badge-info">$129k Buffer</span>
+                    <span class="badge badge-warning">$807k Debt</span>
+                </div>
             </div>
-          </div>
-        `;
-      });
-      byId('options-list').innerHTML = html;
-      // Add keyboard support
-      document.querySelectorAll('.option-header').forEach(h => {
-        h.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); h.click(); } });
-      });
+
+            <div class="card">
+                <h2>📊 Quick Summary</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Current</th>
+                                <th>After B2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Total Debt</td>
+                                <td class="mono">$2,440,406</td>
+                                <td class="mono" style="color: var(--success)">$936,060</td>
+                            </tr>
+                            <tr>
+                                <td>Monthly Repayment (7%)</td>
+                                <td class="mono">$10,751</td>
+                                <td class="mono" style="color: var(--success)">~$6,200</td>
+                            </tr>
+                            <tr>
+                                <td>Cash Buffer</td>
+                                <td class="mono">$0</td>
+                                <td class="mono" style="color: var(--success)">$129,014</td>
+                            </tr>
+                            <tr>
+                                <td>Properties</td>
+                                <td>2</td>
+                                <td>1 (Seabrook)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPTIONS SECTION -->
+        <section id="options" role="tabpanel" aria-labelledby="tab-options">
+            <h1>All Options</h1>
+            <p class="subtitle">Click any option to mark as your preference</p>
+
+            <div id="preference-display-options"></div>
+
+            <div class="options-grid" id="options-grid" role="list">
+                <!-- Generated by JS -->
+            </div>
+        </section>
+
+        <!-- COMPARE SECTION -->
+        <section id="compare" role="tabpanel" aria-labelledby="tab-compare">
+            <h1>Compare Options</h1>
+            <p class="subtitle">Side-by-side comparison of all scenarios</p>
+
+            <div class="card">
+                <div class="table-wrap">
+                    <table id="compare-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Option</th>
+                                <th>Debt After</th>
+                                <th>Cash After</th>
+                                <th>Risk</th>
+                                <th>Move Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody id="compare-tbody">
+                            <!-- Generated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- STRESS TEST SECTION -->
+        <section id="stress" role="tabpanel" aria-labelledby="tab-stress">
+            <h1>Stress Test</h1>
+            <p class="subtitle">What happens if income stops?</p>
+
+            <div class="card">
+                <h2>Weekly Cashflow & Runway</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Weekly Mortgage</th>
+                                <th>Net Cashflow</th>
+                                <th>Buffer</th>
+                                <th>Runway</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stress-tbody">
+                            <!-- Generated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Interest Rate Sensitivity</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rate</th>
+                                <th>Current Loan/month</th>
+                                <th>Reduced Loan/month</th>
+                                <th>Monthly Savings</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rate-tbody">
+                            <!-- Generated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPLITS SECTION -->
+        <section id="splits" role="tabpanel" aria-labelledby="tab-splits">
+            <h1>Split Scenarios</h1>
+            <p class="subtitle">Different ways to divide if selling both</p>
+
+            <div class="split-grid" id="split-grid">
+                <!-- Generated by JS -->
+            </div>
+        </section>
+
+        <!-- CHAT SECTION -->
+        <section id="chat" role="tabpanel" aria-labelledby="tab-chat">
+            <h1>Ask Questions</h1>
+            <p class="subtitle">Get answers about your options</p>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages" role="log" aria-live="polite">
+                    <div class="chat-message assistant">
+                        <div class="chat-bubble">
+                            Hi! I can help you understand your property options. Try asking about:
+                            <ul style="margin: 0.5rem 0 0 1rem;">
+                                <li>What's the safest option?</li>
+                                <li>Compare keeping vs selling</li>
+                                <li>What happens if rates rise?</li>
+                                <li>How do splits work?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="quick-questions">
+                    <button class="quick-q" onclick="askQuestion('What is the safest option?')">Safest option?</button>
+                    <button class="quick-q" onclick="askQuestion('Compare B2 vs keeping both')">B2 vs Keep Both</button>
+                    <button class="quick-q" onclick="askQuestion('What if rates rise to 8%?')">Rate rise impact</button>
+                    <button class="quick-q" onclick="askQuestion('How is the split calculated?')">Split rules</button>
+                    <button class="quick-q" onclick="askQuestion('What is move friction?')">Move friction?</button>
+                    <button class="quick-q" onclick="askQuestion('Why sell Peninsular not Seabrook?')">Why Peninsular?</button>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" class="chat-input" id="chat-input" placeholder="Ask a question..." aria-label="Ask a question" onkeypress="if(event.key==='Enter')sendChat()">
+                    <button class="chat-send" onclick="sendChat()" aria-label="Send message">Send</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile FAB Menu -->
+    <div class="fab-menu">
+        <div class="fab-options" id="fab-options">
+            <button class="fab-option" onclick="showSection('overview');toggleFab()">📊 Overview</button>
+            <button class="fab-option" onclick="showSection('options');toggleFab()">🏠 Options</button>
+            <button class="fab-option" onclick="showSection('compare');toggleFab()">⚖️ Compare</button>
+            <button class="fab-option" onclick="showSection('stress');toggleFab()">🧪 Stress Test</button>
+            <button class="fab-option" onclick="showSection('splits');toggleFab()">💰 Splits</button>
+            <button class="fab-option" onclick="showSection('chat');toggleFab()">💬 Questions</button>
+        </div>
+        <button class="fab-btn" onclick="toggleFab()" aria-label="Navigation menu" aria-expanded="false">☰</button>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+    // Data
+    const DATA = {
+        options: [
+            { code: "A", name: "Keep both houses", description: "No sale. Formalise internal settlement.", debt_after: 2440406, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
+            { code: "B1", name: "Sell Peninsular, pay all into Seabrook", description: "Maximum debt reduction.", debt_after: 807046, cash_after: 0, move_friction: 0, risk: "Medium", recommended: false },
+            { code: "B2", name: "Sell Peninsular, keep 1-year buffer", description: "Keep 12 months of repayments as safety buffer.", debt_after: 936060, cash_after: 129014, move_friction: 0, risk: "Low-Medium", recommended: true },
+            { code: "B3", name: "Sell Peninsular, put into offset", description: "Interest drops but liquidity preserved.", debt_after: 1615977, cash_after: 0, move_friction: 0, risk: "Medium", recommended: false },
+            { code: "C", name: "Sell Peninsular, rent Seabrook out", description: "Rent Seabrook, family lives with relatives.", debt_after: 807046, cash_after: 0, move_friction: 30000, risk: "Medium", recommended: false },
+            { code: "D1", name: "Sell Seabrook, keep Peninsular", description: "Debt free with large buffer.", debt_after: 0, cash_after: 666324, move_friction: 130000, risk: "Very Low", recommended: false },
+            { code: "D2", name: "Sell Seabrook, rent Peninsular", description: "Rent Peninsular out.", debt_after: 0, cash_after: 666324, move_friction: 130000, risk: "Low", recommended: false },
+            { code: "E1", name: "Sell both, hold cash", description: "Maximum flexibility. Rent while deciding.", debt_after: 0, cash_after: 2299683, move_friction: 130000, risk: "Flexible", recommended: false },
+            { code: "E2", name: "Sell both, buy new quickly", description: "Clean slate with ideal home.", debt_after: 0, cash_after: 2169683, move_friction: 130000, risk: "Medium", recommended: false },
+            { code: "F", name: "Keep both, formalise agreement", description: "Write formal ownership agreement.", debt_after: 2440406, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
+            { code: "G", name: "Sell both, live with family", description: "Hold cash, buy when ready.", debt_after: 0, cash_after: 2169683, move_friction: 130000, risk: "Medium", recommended: false },
+            { code: "H", name: "Sell Peninsular, aggressive payoff", description: "Kill loan fast (~8 years).", debt_after: 807046, cash_after: 0, move_friction: 0, risk: "Medium", recommended: false }
+        ],
+        stress: [
+            { option: "Keep both (current)", weekly_mortgage: 2481, net_cashflow: -2481, buffer: 0, runway: 0 },
+            { option: "Sell Pen, pay all in", weekly_mortgage: 1239, net_cashflow: -1239, buffer: 0, runway: 0 },
+            { option: "B2: Sell Pen, keep buffer", weekly_mortgage: 1437, net_cashflow: -1437, buffer: 129014, runway: 89.8 },
+            { option: "Sell Pen, rent Seabrook", weekly_mortgage: 1239, net_cashflow: -89, buffer: 0, runway: 0 },
+            { option: "Sell Seabrook, keep Pen", weekly_mortgage: 0, net_cashflow: 0, buffer: 666324, runway: "∞" },
+            { option: "Sell both", weekly_mortgage: 0, net_cashflow: 0, buffer: 2169683, runway: "∞" }
+        ],
+        rates: [
+            { rate: "5.5%", current: 9176, reduced: 4583, savings: 4593 },
+            { rate: "6.0%", current: 9688, reduced: 4839, savings: 4849 },
+            { rate: "6.5%", current: 10214, reduced: 5101, savings: 5113 },
+            { rate: "7.0%", current: 10751, reduced: 5369, savings: 5382 },
+            { rate: "7.5%", current: 11299, reduced: 5643, savings: 5656 }
+        ],
+        splits: [
+            { rule: "50/50 equal", cassandra: 1149842, troy: 1149842, note: "Simple equal split" },
+            { rule: "70/30 to Cassandra", cassandra: 1609778, troy: 689905, note: "Proposed ratio" },
+            { rule: "Each keeps own sale net", cassandra: 808930, troy: 1490753, note: "By property ownership" },
+            { rule: "Cass gets Pen first, then 70/30", cassandra: 1852457, troy: 447226, note: "Preserves Pen value first" },
+            { rule: "60/40 to Cassandra", cassandra: 1379810, troy: 919873, note: "Middle ground" },
+            { rule: "Proportional to title", cassandra: 1450000, troy: 849683, note: "Based on ownership %" }
+        ],
+        qa: {
+            "safest": "The safest options are D1 (Sell Seabrook, keep Peninsular debt-free) or E1 (Sell both, hold cash). Both give you zero debt and large cash buffers. D1 gives $666k buffer, E1 gives $2.3M buffer. B2 is the safest option if you want to stay in Seabrook - gives $129k buffer (90 weeks runway).",
+            "b2": "B2 (Sell Peninsular, keep 1-year buffer) reduces your debt from $2.44M to $936k. Monthly repayments drop from ~$10,750 to ~$6,200. You keep $129k cash buffer (90 weeks runway). Compared to keeping both: you lose Peninsular's growth potential but gain massive stress reduction.",
+            "rate": "If rates rise to 7.5%, your current monthly repayment jumps from $10,751 to $11,299 (+$548/month). With reduced loan (after selling Pen): rises from $5,369 to $5,643 (+$274/month). Selling Peninsular cuts your rate exposure in half.",
+            "split": "Six split options exist: 50/50 gives each ~$1.15M. 70/30 gives Cassandra $1.61M. 'Each keeps own' gives Troy more ($1.49M vs $809k) because Seabrook is worth more. The 'Cass gets Pen first' option protects her original asset value.",
+            "friction": "Move friction = moving costs (~$30k) + contents writeoff (~$100k). Furniture bought retail can't be resold at value. Moving from Seabrook = $130k friction. Staying in Seabrook = $0 friction.",
+            "peninsular": "Sell Peninsular not Seabrook because: 1) You prefer living in Seabrook, 2) Seabrook has more growth potential ($3.19M vs $1.68M - same % gain = more $), 3) Moving from Seabrook costs $130k in friction, 4) Cassandra's equity is protected via preserved credit mechanism.",
+            "default": "I can help with questions about your property options. Try asking about the safest option, comparing B2 vs keeping both, rate rise impacts, how splits work, move friction costs, or why sell Peninsular."
+        }
+    };
+
+    // Format money
+    function fmt(n) {
+        if (n === null || n === undefined) return '-';
+        return '$' + Math.abs(n).toLocaleString('en-AU', { maximumFractionDigits: 0 });
     }
 
-    function toggleOption(code) {
-      const card = byId('opt-' + code);
-      const header = card.querySelector('.option-header');
-      const expanded = card.classList.toggle('expanded');
-      header.setAttribute('aria-expanded', expanded);
+    // Get risk badge class
+    function riskBadge(risk) {
+        const map = {
+            'Very Low': 'badge-success',
+            'Low': 'badge-success',
+            'Low-Medium': 'badge-success',
+            'Medium': 'badge-warning',
+            'High': 'badge-danger',
+            'Flexible': 'badge-info'
+        };
+        return map[risk] || 'badge-info';
     }
 
-    function saveRanking(code, value) {
-      const rankings = JSON.parse(localStorage.getItem(RANKINGS_KEY) || '{}');
-      rankings[code] = value;
-      localStorage.setItem(RANKINGS_KEY, JSON.stringify(rankings));
-      showToast('Ranking saved', 'success');
+    // Render options grid
+    function renderOptions() {
+        const grid = document.getElementById('options-grid');
+        const pref = localStorage.getItem('property_preference');
+        
+        grid.innerHTML = DATA.options.map(opt => `
+            <div class="option-card ${opt.recommended ? 'recommended' : ''} ${pref === opt.code ? 'selected' : ''}" 
+                 role="listitem" 
+                 tabindex="0"
+                 onclick="selectOption('${opt.code}')"
+                 onkeypress="if(event.key==='Enter')selectOption('${opt.code}')">
+                <div class="option-header">
+                    <span class="option-code">${opt.code}</span>
+                    <span class="badge ${riskBadge(opt.risk)}">${opt.risk}</span>
+                </div>
+                <div class="option-name">${opt.name}</div>
+                <div class="option-desc">${opt.description}</div>
+                <div class="option-metrics">
+                    <div class="metric">
+                        <div class="metric-label">Debt After</div>
+                        <div class="metric-value" style="color: ${opt.debt_after === 0 ? 'var(--success)' : 'var(--danger)'}">${fmt(opt.debt_after)}</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Cash After</div>
+                        <div class="metric-value" style="color: ${opt.cash_after > 0 ? 'var(--success)' : 'var(--text-muted)'}">${fmt(opt.cash_after)}</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Move Cost</div>
+                        <div class="metric-value">${opt.move_friction === 0 ? '-' : fmt(opt.move_friction)}</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Status</div>
+                        <div class="metric-value">${opt.recommended ? '⭐ Rec' : '-'}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
     }
 
-    function exportRankings() {
-      downloadJSON(localStorage.getItem(RANKINGS_KEY) || '{}', 'property_rankings.json');
-      showToast('Rankings exported', 'success');
+    // Render comparison table
+    function renderCompare() {
+        const tbody = document.getElementById('compare-tbody');
+        tbody.innerHTML = DATA.options.map(opt => `
+            <tr style="${opt.recommended ? 'background: var(--success-light);' : ''}">
+                <td class="mono">${opt.code}</td>
+                <td>${opt.name}</td>
+                <td class="mono" style="color: ${opt.debt_after === 0 ? 'var(--success)' : ''}">${fmt(opt.debt_after)}</td>
+                <td class="mono" style="color: ${opt.cash_after > 0 ? 'var(--success)' : ''}">${fmt(opt.cash_after)}</td>
+                <td><span class="badge ${riskBadge(opt.risk)}">${opt.risk}</span></td>
+                <td class="mono">${opt.move_friction === 0 ? '-' : fmt(opt.move_friction)}</td>
+            </tr>
+        `).join('');
     }
 
-    function clearRankings() {
-      if (confirm('Clear all rankings?')) {
-        localStorage.removeItem(RANKINGS_KEY);
-        renderAllOptions();
-        showToast('Rankings cleared');
-      }
+    // Render stress test
+    function renderStress() {
+        const tbody = document.getElementById('stress-tbody');
+        tbody.innerHTML = DATA.stress.map(s => {
+            const runwayPct = typeof s.runway === 'number' ? Math.min(s.runway / 100 * 100, 100) : 100;
+            const runwayColor = s.runway === '∞' ? 'var(--success)' : (s.runway > 50 ? 'var(--warning)' : 'var(--danger)');
+            return `
+                <tr>
+                    <td>${s.option}</td>
+                    <td class="mono">${fmt(s.weekly_mortgage)}</td>
+                    <td class="mono" style="color: ${s.net_cashflow < 0 ? 'var(--danger)' : 'var(--success)'}">${s.net_cashflow === 0 ? '-' : fmt(s.net_cashflow)}</td>
+                    <td class="mono" style="color: ${s.buffer > 0 ? 'var(--success)' : ''}">${s.buffer === 0 ? '-' : fmt(s.buffer)}</td>
+                    <td>
+                        <span style="color: ${runwayColor}; font-weight: 600;">${s.runway === '∞' ? '∞ Safe' : s.runway + ' weeks'}</span>
+                        <div class="runway-bar">
+                            <div class="runway-fill" style="width: ${runwayPct}%; background: ${runwayColor}"></div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        const rateTbody = document.getElementById('rate-tbody');
+        rateTbody.innerHTML = DATA.rates.map(r => `
+            <tr>
+                <td class="mono">${r.rate}</td>
+                <td class="mono">${fmt(r.current)}</td>
+                <td class="mono">${fmt(r.reduced)}</td>
+                <td class="mono" style="color: var(--success)">${fmt(r.savings)}</td>
+            </tr>
+        `).join('');
     }
 
-    function renderSplitsTable() {
-      let html = '<table><thead><tr><th>Split Rule</th><th>Cassandra</th><th>Troy</th><th>Note</th></tr></thead><tbody>';
-      MODEL.sell_splits.forEach(r => html += `<tr><td>${r['Split rule']}</td><td>${money(r.Cassandra)}</td><td>${money(r.Troy)}</td><td style="font-size:0.8rem;color:var(--text-muted);">${r.Note || ''}</td></tr>`);
-      html += '</tbody></table>';
-      byId('splits-table').innerHTML = html;
+    // Render splits
+    function renderSplits() {
+        const grid = document.getElementById('split-grid');
+        grid.innerHTML = DATA.splits.map(s => `
+            <div class="split-card">
+                <div class="split-rule">${s.rule}</div>
+                <div style="font-size: 0.875rem; color: var(--text-muted);">${s.note}</div>
+                <div class="split-values">
+                    <div class="split-person">
+                        <div class="split-name">Cassandra</div>
+                        <div class="split-amount">${fmt(s.cassandra)}</div>
+                    </div>
+                    <div class="split-person">
+                        <div class="split-name">Troy</div>
+                        <div class="split-amount">${fmt(s.troy)}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
     }
 
-    function calculateSplit() {
-      const pool = parseFloat(byId('calc-pool').value) || 0;
-      const buffer = parseFloat(byId('calc-buffer').value) || 0;
-      const renos = parseFloat(byId('calc-renos').value) || 0;
-      const holiday = parseFloat(byId('calc-holiday').value) || 0;
-      const ratio = byId('calc-ratio').value;
-      const net = pool - buffer - renos - holiday;
-      let cass = 0, troy = 0;
-      if (ratio === '50-50') { cass = net * 0.5; troy = net * 0.5; }
-      else if (ratio === '60-40') { cass = net * 0.6; troy = net * 0.4; }
-      else if (ratio === '70-30') { cass = net * 0.7; troy = net * 0.3; }
-      else if (ratio === 'pen-first') { const penNet = 808930; cass = penNet + (net - penNet) * 0.7; troy = (net - penNet) * 0.3; }
-      byId('result-net').textContent = money(net);
-      byId('result-cass').textContent = money(cass);
-      byId('result-troy').textContent = money(troy);
-      updateEmailPreview();
+    // Select option as preference
+    function selectOption(code) {
+        localStorage.setItem('property_preference', code);
+        renderOptions();
+        updatePreferenceDisplay();
+        showToast(`Option ${code} marked as preference`);
     }
 
-    function renderStressInputs() {
-      let html = '<table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>';
-      MODEL.stress_inputs.forEach(r => html += `<tr><td>${r.Item}</td><td>${money(r.Value)}</td></tr>`);
-      html += '</tbody></table>';
-      byId('stress-inputs-table').innerHTML = html;
-    }
-
-    function renderStressSummary() {
-      let html = '<table><thead><tr><th>Option</th><th>Weekly Mortgage</th><th>Weekly Net Rent</th><th>Weekly Cashflow</th><th>Buffer</th><th>Runway</th></tr></thead><tbody>';
-      MODEL.hit_severe_summary.forEach(r => {
-        const runway = r['Runway weeks from buffer'];
-        const cfColor = r['Weekly net cashflow'] < 0 ? 'var(--danger)' : 'var(--success)';
-        html += `<tr><td>${r.Option}</td><td>${money(r['Weekly mortgage'])}</td><td>${money(r['Weekly net rent'])}</td><td style="color:${cfColor}">${money(r['Weekly net cashflow'])}</td><td>${money(r['Buffer cash'])}</td><td>${runway === null ? '∞' : runway.toFixed(1) + 'w'}</td></tr>`;
-      });
-      html += '</tbody></table>';
-      byId('stress-summary-table').innerHTML = html;
-    }
-
-    function renderRepayments() {
-      let html = '<table><thead><tr><th>Rate</th><th>Current</th><th>Reduced</th><th>Savings</th></tr></thead><tbody>';
-      MODEL.repayments.forEach(r => html += `<tr><td>${pct(r['Annual rate'])}</td><td>${money(r['Current loan monthly'])}/mo</td><td>${money(r['Reduced loan monthly'])}/mo</td><td style="color:var(--success)">${money(r['Savings monthly'])}/mo</td></tr>`);
-      html += '</tbody></table>';
-      byId('repayments-table').innerHTML = html;
-    }
-
-    function renderScenarioChips() {
-      const scenarios = [...new Set(MODEL.projections.map(p => p.Scenario))];
-      let html = '';
-      scenarios.forEach((s, i) => html += `<button class="chip ${i === 1 ? 'active' : ''}" onclick="selectScenario(this, '${s}')" role="radio" aria-checked="${i === 1}">${s}</button>`);
-      byId('scenario-chips').innerHTML = html;
-    }
-
-    function selectScenario(btn, scenario) {
-      document.querySelectorAll('#scenario-chips .chip').forEach(c => { c.classList.remove('active'); c.setAttribute('aria-checked', 'false'); });
-      btn.classList.add('active');
-      btn.setAttribute('aria-checked', 'true');
-      renderProjections(scenario);
-    }
-
-    function renderProjections(scenario) {
-      const rows = MODEL.projections.filter(p => p.Scenario === scenario);
-      let html = '<table><thead><tr><th>Years</th><th>Seabrook</th><th>Peninsular</th><th>Both</th></tr></thead><tbody>';
-      rows.forEach(r => html += `<tr><td>${r.Years}</td><td>${money(r['Seabrook value'])}</td><td>${money(r['Peninsular value'])}</td><td>${money(r['Both value'])}</td></tr>`);
-      html += '</tbody></table>';
-      byId('projections-table').innerHTML = html;
-    }
-
-    function renderGainsTable() {
-      let html = '<table><thead><tr><th>Property</th><th>Years</th><th>Middle 5%</th><th>Strong 7.6%</th></tr></thead><tbody>';
-      MODEL.paper_gains.forEach(r => html += `<tr><td>${r.Property}</td><td>${r.Years}</td><td>${money(r['Middle 5%'])}</td><td>${money(r['Strong 7.6%'])}</td></tr>`);
-      html += '</tbody></table>';
-      byId('gains-table').innerHTML = html;
-    }
-
-    function renderStampDuty() {
-      const sd = MODEL.stamp_duty;
-      let html = `<p><strong>Already Paid (estimate):</strong> ${money(sd.already_paid_estimate)}</p><h4 style="margin-top:1rem;">If You Buy Again in NSW</h4><table><thead><tr><th>Purchase Price</th><th>Stamp Duty</th></tr></thead><tbody>`;
-      sd.examples_if_rebuy.forEach(r => html += `<tr><td>${money(r['Purchase price'])}</td><td>${money(r['Duty estimate'])}</td></tr>`);
-      html += '</tbody></table>';
-      byId('stamp-duty-info').innerHTML = html;
-    }
-
-    function renderQuestionBank() {
-      let html = '';
-      MODEL.question_ledger.forEach(q => html += `<div class="qa-card"><p><strong>Q:</strong> ${q.q}</p><p><strong>A:</strong> ${q.a}</p><span class="badge badge-success">${q.status}</span></div>`);
-      byId('question-bank').innerHTML = html;
-    }
-
-    function loadQuestionLog() {
-      const log = JSON.parse(localStorage.getItem(QUESTION_LOG_KEY) || '[]');
-      renderQuestionLog(log);
-    }
-
-    function renderQuestionLog(log) {
-      if (!log.length) { byId('question-log').innerHTML = '<p style="color:var(--text-muted);">No entries yet.</p>'; return; }
-      let html = '';
-      log.forEach(e => {
-        const statusClass = e.status === 'Agreed' ? 'badge-success' : e.status === 'Answered' ? 'badge-info' : 'badge-warning';
-        html += `<div class="log-entry"><div class="log-header"><span>${new Date(e.timestamp).toLocaleString()} · <strong>${e.asked_by}</strong></span><span class="badge ${statusClass}">${e.status}</span></div><p><strong>Q:</strong> ${e.question}</p><p><strong>A:</strong> ${e.answer || '(pending)'}</p>${e.revisit ? `<p style="font-size:0.8rem;color:var(--warning);">Revisit: ${e.revisit}</p>` : ''}</div>`;
-      });
-      byId('question-log').innerHTML = html;
-    }
-
-    function saveQuestion() {
-      const status = byId('ql-status').value;
-      const question = byId('ql-question').value.trim();
-      if (!question) { showToast('Please enter a question', 'error'); return; }
-      if (status === 'Open' && !byId('ql-revisit').value) { showToast('Open questions need revisit date', 'error'); return; }
-      const entry = { timestamp: new Date().toISOString(), asked_by: byId('ql-asked-by').value, status, revisit: byId('ql-revisit').value, question, answer: byId('ql-answer').value.trim() };
-      const log = JSON.parse(localStorage.getItem(QUESTION_LOG_KEY) || '[]');
-      log.push(entry);
-      localStorage.setItem(QUESTION_LOG_KEY, JSON.stringify(log));
-      renderQuestionLog(log);
-      clearQuestionForm();
-      updateEmailPreview();
-      showToast('Question saved', 'success');
-    }
-
-    function clearQuestionForm() { byId('ql-question').value = ''; byId('ql-answer').value = ''; byId('ql-revisit').value = ''; }
-    function exportQuestionLog() { downloadJSON(localStorage.getItem(QUESTION_LOG_KEY) || '[]', 'question_log.json'); showToast('Log exported', 'success'); }
-    function wipeQuestionLog() { if (confirm('Delete all entries?')) { localStorage.removeItem(QUESTION_LOG_KEY); renderQuestionLog([]); showToast('Log cleared'); } }
-
-    function renderDecisionMatrix() {
-      const opts = MODEL.options;
-      const criteria = MODEL.ranking_criteria;
-      const saved = JSON.parse(localStorage.getItem(MATRIX_KEY) || '{}');
-      let html = '<div style="overflow-x:auto;"><table class="matrix-table"><thead><tr><th>Option</th>';
-      criteria.forEach(c => html += `<th>${c.name}</th>`);
-      html += '<th>Total</th></tr></thead><tbody>';
-      opts.forEach(opt => {
-        html += `<tr><td>${opt.code}: ${opt.name.substring(0, 20)}...</td>`;
-        let total = 0;
-        criteria.forEach(c => {
-          const key = `${opt.code}-${c.name}`;
-          const val = saved[key] || 3;
-          total += parseInt(val);
-          html += `<td><input type="number" min="1" max="5" value="${val}" onchange="saveMatrix('${key}', this.value)" aria-label="${opt.code} ${c.name} score"></td>`;
+    // Update preference display
+    function updatePreferenceDisplay() {
+        const pref = localStorage.getItem('property_preference');
+        const displays = ['preference-display', 'preference-display-options'];
+        
+        displays.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                if (pref) {
+                    const opt = DATA.options.find(o => o.code === pref);
+                    el.innerHTML = `
+                        <div class="preference-banner">
+                            <span class="preference-text">✅ Your preference: <strong>${opt.code} - ${opt.name}</strong></span>
+                            <button class="clear-pref" onclick="clearPreference()">Clear</button>
+                        </div>
+                    `;
+                } else {
+                    el.innerHTML = '';
+                }
+            }
         });
-        html += `<td class="total-cell">${total}</td></tr>`;
-      });
-      html += '</tbody></table></div>';
-      byId('decision-matrix').innerHTML = html;
-      let optHtml = '<option value="">Select option...</option>';
-      opts.forEach(o => optHtml += `<option value="${o.code}">${o.code}: ${o.name}</option>`);
-      byId('final-option').innerHTML = optHtml;
     }
 
-    function saveMatrix(key, value) {
-      const saved = JSON.parse(localStorage.getItem(MATRIX_KEY) || '{}');
-      saved[key] = value;
-      localStorage.setItem(MATRIX_KEY, JSON.stringify(saved));
-      renderDecisionMatrix();
+    // Clear preference
+    function clearPreference() {
+        localStorage.removeItem('property_preference');
+        renderOptions();
+        updatePreferenceDisplay();
+        showToast('Preference cleared');
     }
 
-    function saveDecision() {
-      const option = byId('final-option').value;
-      if (!option) { showToast('Select an option first', 'error'); return; }
-      const decision = { timestamp: new Date().toISOString(), option, notes: byId('final-notes').value };
-      localStorage.setItem(DECISION_KEY, JSON.stringify(decision));
-      loadDecision();
-      updateEmailPreview();
-      showToast('Decision saved!', 'success');
-    }
-
-    function loadDecision() {
-      const decision = JSON.parse(localStorage.getItem(DECISION_KEY) || 'null');
-      if (decision) {
-        const opt = MODEL.options.find(o => o.code === decision.option);
-        byId('current-decision').innerHTML = `<div class="decision-box"><h3>✅ Agreed Decision</h3><p><strong>${opt.code}: ${opt.name}</strong></p><p style="font-size:0.85rem;color:var(--text-muted);">${decision.notes || ''}</p><p style="font-size:0.75rem;">Recorded: ${new Date(decision.timestamp).toLocaleString()}</p></div>`;
-        byId('final-option').value = decision.option;
-        byId('final-notes').value = decision.notes || '';
-      }
-    }
-
-    function updateEmailPreview() {
-      const decision = JSON.parse(localStorage.getItem(DECISION_KEY) || 'null');
-      const pool = byId('calc-pool')?.value || 2299683;
-      const buffer = byId('calc-buffer')?.value || 129014;
-      const renos = byId('calc-renos')?.value || 30000;
-      const holiday = byId('calc-holiday')?.value || 20000;
-      const ratio = byId('calc-ratio')?.value || '70-30';
-      const cass = byId('result-cass')?.textContent || '$0';
-      const troy = byId('result-troy')?.textContent || '$0';
-      const optName = decision ? MODEL.options.find(o => o.code === decision.option)?.name : '(not yet selected)';
-      const log = JSON.parse(localStorage.getItem(QUESTION_LOG_KEY) || '[]');
-      const openQs = log.filter(q => q.status === 'Open');
-      const summary = `DRAFT PROPERTY DECISION (not advice)
-=====================================
-
-Selected Option: ${decision?.option || '?'} - ${optName}
-
-Split Calculation:
-- Pool: $${parseInt(pool).toLocaleString()}
-- Buffer kept: $${parseInt(buffer).toLocaleString()}
-- Renos/setup: $${parseInt(renos).toLocaleString()}
-- Holiday/transition: $${parseInt(holiday).toLocaleString()}
-- Split ratio: ${ratio}
-- Cassandra receives: ${cass}
-- Troy receives: ${troy}
-
-${openQs.length ? `Open Questions (${openQs.length}):\n${openQs.map(q => '- ' + q.question).join('\n')}` : 'No open questions.'}
-
-${decision?.notes ? `Notes: ${decision.notes}` : ''}
-
-Generated: ${new Date().toLocaleString()}
-This is modelling only, not financial advice.`;
-      byId('email-preview').textContent = summary;
-      const subject = encodeURIComponent('Property Decision Draft - Troy & Cassandra');
-      const body = encodeURIComponent(summary);
-      byId('email-link').href = `mailto:?subject=${subject}&body=${body}`;
-    }
-
-    function copyEmailSummary() {
-      navigator.clipboard.writeText(byId('email-preview').textContent).then(() => showToast('Copied to clipboard!', 'success'));
-    }
-
-    async function pushToSupabase() {
-      const url = byId('sb-url').value, key = byId('sb-key').value;
-      if (!url || !key) { showToast('Enter Supabase URL and key', 'error'); return; }
-      const btn = event.target; btn.classList.add('loading'); btn.disabled = true;
-      try {
-        const log = JSON.parse(localStorage.getItem(QUESTION_LOG_KEY) || '[]');
-        const res = await fetch(`${url}/rest/v1/property_question_log`, {
-          method: 'POST',
-          headers: { 'apikey': key, 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
-          body: JSON.stringify(log.map(e => ({...e, id: e.timestamp})))
+    // Show section
+    function showSection(sectionId) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+        
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+            if (btn.dataset.section === sectionId) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+            }
         });
-        showToast(res.ok ? 'Pushed to Supabase!' : 'Push failed', res.ok ? 'success' : 'error');
-      } catch (e) { showToast('Error: ' + e.message, 'error'); }
-      btn.classList.remove('loading'); btn.disabled = false;
     }
 
-    async function pullFromSupabase() {
-      const url = byId('sb-url').value, key = byId('sb-key').value;
-      if (!url || !key) { showToast('Enter Supabase URL and key', 'error'); return; }
-      const btn = event.target; btn.classList.add('loading'); btn.disabled = true;
-      try {
-        const res = await fetch(`${url}/rest/v1/property_question_log?select=*`, { headers: { 'apikey': key, 'Authorization': `Bearer ${key}` } });
-        if (res.ok) { const data = await res.json(); localStorage.setItem(QUESTION_LOG_KEY, JSON.stringify(data)); loadQuestionLog(); showToast('Pulled from Supabase!', 'success'); }
-        else showToast('Pull failed', 'error');
-      } catch (e) { showToast('Error: ' + e.message, 'error'); }
-      btn.classList.remove('loading'); btn.disabled = false;
+    // Toggle FAB menu
+    function toggleFab() {
+        const options = document.getElementById('fab-options');
+        const btn = document.querySelector('.fab-btn');
+        options.classList.toggle('open');
+        btn.setAttribute('aria-expanded', options.classList.contains('open'));
     }
 
-    function downloadJSON(data, filename) {
-      const blob = new Blob([typeof data === 'string' ? data : JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click();
+    // Show toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    window.addEventListener('DOMContentLoaded', init);
-  </script>
+    // Chat functions
+    function askQuestion(q) {
+        document.getElementById('chat-input').value = q;
+        sendChat();
+    }
+
+    function sendChat() {
+        const input = document.getElementById('chat-input');
+        const q = input.value.trim();
+        if (!q) return;
+
+        const messages = document.getElementById('chat-messages');
+        messages.innerHTML += `<div class="chat-message user"><div class="chat-bubble">${q}</div></div>`;
+
+        // Find answer
+        let answer = DATA.qa.default;
+        const ql = q.toLowerCase();
+        if (ql.includes('safe')) answer = DATA.qa.safest;
+        else if (ql.includes('b2') || ql.includes('keep') && ql.includes('both')) answer = DATA.qa.b2;
+        else if (ql.includes('rate') || ql.includes('interest') || ql.includes('7.5') || ql.includes('8%')) answer = DATA.qa.rate;
+        else if (ql.includes('split') || ql.includes('divide') || ql.includes('fair')) answer = DATA.qa.split;
+        else if (ql.includes('friction') || ql.includes('move') || ql.includes('moving')) answer = DATA.qa.friction;
+        else if (ql.includes('peninsular') || ql.includes('why sell')) answer = DATA.qa.peninsular;
+
+        setTimeout(() => {
+            messages.innerHTML += `<div class="chat-message assistant"><div class="chat-bubble">${answer}</div></div>`;
+            messages.scrollTop = messages.scrollHeight;
+        }, 300);
+
+        input.value = '';
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            const tabs = [...document.querySelectorAll('.nav-btn')];
+            const current = tabs.findIndex(t => t.classList.contains('active'));
+            if (current >= 0) {
+                const next = e.key === 'ArrowRight' 
+                    ? (current + 1) % tabs.length 
+                    : (current - 1 + tabs.length) % tabs.length;
+                tabs[next].click();
+                tabs[next].focus();
+            }
+        }
+    });
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+        renderOptions();
+        renderCompare();
+        renderStress();
+        renderSplits();
+        updatePreferenceDisplay();
+        
+        // Hide loading
+        setTimeout(() => {
+            document.getElementById('loading').classList.add('hidden');
+        }, 500);
+    });
+    </script>
 </body>
 </html>
