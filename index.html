@@ -41,7 +41,6 @@
             min-height: 100vh;
         }
 
-        /* Skip link for accessibility */
         .skip-link {
             position: absolute;
             top: -40px;
@@ -56,7 +55,6 @@
             top: 0;
         }
 
-        /* Header */
         header {
             background: var(--card);
             border-bottom: 1px solid var(--border);
@@ -113,14 +111,12 @@
             nav { display: none; }
         }
 
-        /* Main content */
         main {
             max-width: 1400px;
             margin: 0 auto;
             padding: 1.5rem;
         }
 
-        /* Sections */
         section {
             display: none;
             animation: fadeIn 0.3s ease;
@@ -151,7 +147,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Cards */
         .card {
             background: var(--card);
             border-radius: var(--radius);
@@ -160,7 +155,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Key Numbers Grid */
         .key-numbers {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -191,7 +185,6 @@
         .stat-value.negative { color: var(--danger); }
         .stat-value.warning { color: var(--warning); }
 
-        /* Options Grid */
         .options-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -286,7 +279,6 @@
             font-size: 0.9rem;
         }
 
-        /* Comparison Table */
         .table-wrap {
             overflow-x: auto;
             margin: 1rem 0;
@@ -319,7 +311,6 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Chat Interface */
         .chat-container {
             display: flex;
             flex-direction: column;
@@ -426,7 +417,6 @@
             border-color: var(--accent);
         }
 
-        /* Split Calculator */
         .split-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -471,11 +461,6 @@
             color: var(--success);
         }
 
-        /* Stress Test */
-        .stress-table {
-            width: 100%;
-        }
-
         .runway-bar {
             height: 8px;
             background: var(--bg);
@@ -490,7 +475,6 @@
             transition: width 0.5s ease;
         }
 
-        /* Mobile FAB */
         .fab-menu {
             display: none;
             position: fixed;
@@ -560,7 +544,6 @@
             background: var(--bg);
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 2rem;
@@ -581,7 +564,6 @@
             opacity: 1;
         }
 
-        /* Preference indicator */
         .preference-banner {
             background: var(--success-light);
             border: 1px solid var(--success);
@@ -605,14 +587,21 @@
             font-size: 0.875rem;
         }
 
-        /* Print styles */
+        .updated-badge {
+            background: var(--warning-light);
+            color: var(--warning);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
         @media print {
             header, nav, .fab-menu, .chat-input-area, .quick-questions { display: none; }
             section { display: block !important; page-break-inside: avoid; }
             .card { box-shadow: none; border: 1px solid #ddd; }
         }
 
-        /* Loading */
         .loading {
             position: fixed;
             inset: 0;
@@ -650,7 +639,7 @@
 
     <header>
         <div class="header-content">
-            <div class="logo">Property<span>Pack</span></div>
+            <div class="logo">Property<span>Pack</span> <span class="updated-badge">Updated 22 Jan</span></div>
             <nav role="tablist" aria-label="Main navigation">
                 <button class="nav-btn active" role="tab" aria-selected="true" onclick="showSection('overview')" data-section="overview">Overview</button>
                 <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('options')" data-section="options">Options</button>
@@ -666,22 +655,22 @@
         <!-- OVERVIEW SECTION -->
         <section id="overview" class="active" role="tabpanel" aria-labelledby="tab-overview">
             <h1>Property Decision Pack</h1>
-            <p class="subtitle">Troy & Cassandra • Modelling only, not financial advice</p>
+            <p class="subtitle">Troy & Cassandra • Modelling only, not financial advice • Values updated 22 Jan 2026</p>
 
             <div id="preference-display"></div>
 
             <div class="key-numbers" role="region" aria-label="Key financial numbers">
                 <div class="stat-card">
                     <div class="stat-label">Seabrook Value</div>
-                    <div class="stat-value">$3.19M</div>
+                    <div class="stat-value">$2.70M</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Peninsular Value</div>
-                    <div class="stat-value">$1.68M</div>
+                    <div class="stat-value">$1.60M</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Combined Equity</div>
-                    <div class="stat-value positive">$2.43M</div>
+                    <div class="stat-value positive">$1.86M</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Combined Debt</div>
@@ -689,7 +678,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Net if Sell Both</div>
-                    <div class="stat-value positive">$2.30M</div>
+                    <div class="stat-value positive">$1.73M</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Recommended</div>
@@ -704,7 +693,7 @@
                 <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
                     <span class="badge badge-success">Low-Medium Risk</span>
                     <span class="badge badge-info">$129k Buffer</span>
-                    <span class="badge badge-warning">$807k Debt</span>
+                    <span class="badge badge-warning">$1.02M Debt</span>
                 </div>
             </div>
 
@@ -723,12 +712,12 @@
                             <tr>
                                 <td>Total Debt</td>
                                 <td class="mono">$2,440,406</td>
-                                <td class="mono" style="color: var(--success)">$936,060</td>
+                                <td class="mono" style="color: var(--success)">$1,017,420</td>
                             </tr>
                             <tr>
                                 <td>Monthly Repayment (7%)</td>
                                 <td class="mono">$10,751</td>
-                                <td class="mono" style="color: var(--success)">~$6,200</td>
+                                <td class="mono" style="color: var(--success)">~$6,770</td>
                             </tr>
                             <tr>
                                 <td>Cash Buffer</td>
@@ -754,7 +743,6 @@
             <div id="preference-display-options"></div>
 
             <div class="options-grid" id="options-grid" role="list">
-                <!-- Generated by JS -->
             </div>
         </section>
 
@@ -777,7 +765,6 @@
                             </tr>
                         </thead>
                         <tbody id="compare-tbody">
-                            <!-- Generated by JS -->
                         </tbody>
                     </table>
                 </div>
@@ -803,7 +790,6 @@
                             </tr>
                         </thead>
                         <tbody id="stress-tbody">
-                            <!-- Generated by JS -->
                         </tbody>
                     </table>
                 </div>
@@ -822,7 +808,6 @@
                             </tr>
                         </thead>
                         <tbody id="rate-tbody">
-                            <!-- Generated by JS -->
                         </tbody>
                     </table>
                 </div>
@@ -835,7 +820,6 @@
             <p class="subtitle">Different ways to divide if selling both</p>
 
             <div class="split-grid" id="split-grid">
-                <!-- Generated by JS -->
             </div>
         </section>
 
@@ -891,63 +875,121 @@
     <div class="toast" id="toast"></div>
 
     <script>
-    // Data
+    // ========================================
+    // EDITABLE INPUTS - Change values here
+    // ========================================
+    const INPUTS = {
+        seabrook_value: 2700000,      // Current market value
+        peninsular_value: 1600000,    // Current market value
+        seabrook_loan: 1615977,       // Outstanding loan
+        peninsular_loan: 824429,      // Outstanding loan
+        selling_costs_pct: 0.03,      // 3% selling costs (agent, legal, etc)
+        move_friction_seabrook: 130000,  // Cost to move from Seabrook
+        move_friction_pen_only: 30000,   // Cost if just renting out Seabrook
+        buffer_months: 12,            // Months of buffer for B2
+        interest_rate: 0.07           // Current interest rate for calcs
+    };
+
+    // ========================================
+    // CALCULATED VALUES - Don't edit these
+    // ========================================
+    const CALC = {
+        get combined_debt() { return INPUTS.seabrook_loan + INPUTS.peninsular_loan; },
+        get seabrook_equity() { return INPUTS.seabrook_value - INPUTS.seabrook_loan; },
+        get peninsular_equity() { return INPUTS.peninsular_value - INPUTS.peninsular_loan; },
+        get combined_equity() { return this.seabrook_equity + this.peninsular_equity; },
+        
+        get pen_net_proceeds() { 
+            return (INPUTS.peninsular_value * (1 - INPUTS.selling_costs_pct)) - INPUTS.peninsular_loan; 
+        },
+        get seabrook_net_proceeds() { 
+            return (INPUTS.seabrook_value * (1 - INPUTS.selling_costs_pct)) - INPUTS.seabrook_loan; 
+        },
+        get both_net_proceeds() { 
+            return this.pen_net_proceeds + this.seabrook_net_proceeds; 
+        },
+        
+        get monthly_payment_current() {
+            return this.calcMonthlyPayment(this.combined_debt, INPUTS.interest_rate);
+        },
+        get buffer_amount() {
+            return this.monthly_payment_current * INPUTS.buffer_months;
+        },
+        
+        // B1: Sell Pen, pay all into Seabrook
+        get b1_remaining_debt() { return INPUTS.seabrook_loan - this.pen_net_proceeds; },
+        
+        // B2: Sell Pen, keep buffer
+        get b2_debt_reduction() { return this.pen_net_proceeds - this.buffer_amount; },
+        get b2_remaining_debt() { return INPUTS.seabrook_loan - this.b2_debt_reduction; },
+        
+        // D1/D2: Sell Seabrook
+        get d1_cash_after() { return this.seabrook_net_proceeds - INPUTS.peninsular_loan; },
+        
+        calcMonthlyPayment(principal, rate) {
+            const r = rate / 12;
+            const n = 30 * 12;
+            return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+        }
+    };
+
+    // Data using calculated values
     const DATA = {
         options: [
-            { code: "A", name: "Keep both houses", description: "No sale. Formalise internal settlement.", debt_after: 2440406, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
-            { code: "B1", name: "Sell Peninsular, pay all into Seabrook", description: "Maximum debt reduction.", debt_after: 807046, cash_after: 0, move_friction: 0, risk: "Medium", recommended: false },
-            { code: "B2", name: "Sell Peninsular, keep 1-year buffer", description: "Keep 12 months of repayments as safety buffer.", debt_after: 936060, cash_after: 129014, move_friction: 0, risk: "Low-Medium", recommended: true },
-            { code: "B3", name: "Sell Peninsular, put into offset", description: "Interest drops but liquidity preserved.", debt_after: 1615977, cash_after: 0, move_friction: 0, risk: "Medium", recommended: false },
-            { code: "C", name: "Sell Peninsular, rent Seabrook out", description: "Rent Seabrook, family lives with relatives.", debt_after: 807046, cash_after: 0, move_friction: 30000, risk: "Medium", recommended: false },
-            { code: "D1", name: "Sell Seabrook, keep Peninsular", description: "Debt free with large buffer.", debt_after: 0, cash_after: 666324, move_friction: 130000, risk: "Very Low", recommended: false },
-            { code: "D2", name: "Sell Seabrook, rent Peninsular", description: "Rent Peninsular out.", debt_after: 0, cash_after: 666324, move_friction: 130000, risk: "Low", recommended: false },
-            { code: "E1", name: "Sell both, hold cash", description: "Maximum flexibility. Rent while deciding.", debt_after: 0, cash_after: 2299683, move_friction: 130000, risk: "Flexible", recommended: false },
-            { code: "E2", name: "Sell both, buy new quickly", description: "Clean slate with ideal home.", debt_after: 0, cash_after: 2169683, move_friction: 130000, risk: "Medium", recommended: false },
-            { code: "F", name: "Keep both, formalise agreement", description: "Write formal ownership agreement.", debt_after: 2440406, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
-            { code: "G", name: "Sell both, live with family", description: "Hold cash, buy when ready.", debt_after: 0, cash_after: 2169683, move_friction: 130000, risk: "Medium", recommended: false },
-            { code: "H", name: "Sell Peninsular, aggressive payoff", description: "Kill loan fast (~8 years).", debt_after: 807046, cash_after: 0, move_friction: 0, risk: "Medium", recommended: false }
+            { code: "A", name: "Keep both houses", description: "No sale. Formalise internal settlement.", debt_after: CALC.combined_debt, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
+            { code: "B1", name: "Sell Peninsular, pay all into Seabrook", description: "Maximum debt reduction.", debt_after: Math.max(0, CALC.b1_remaining_debt), cash_after: Math.max(0, -CALC.b1_remaining_debt), move_friction: 0, risk: "Medium", recommended: false },
+            { code: "B2", name: "Sell Peninsular, keep 1-year buffer", description: "Keep 12 months of repayments as safety buffer.", debt_after: Math.max(0, CALC.b2_remaining_debt), cash_after: Math.round(CALC.buffer_amount), move_friction: 0, risk: "Low-Medium", recommended: true },
+            { code: "B3", name: "Sell Peninsular, put into offset", description: "Interest drops but liquidity preserved.", debt_after: INPUTS.seabrook_loan, cash_after: 0, move_friction: 0, risk: "Medium", recommended: false },
+            { code: "C", name: "Sell Peninsular, rent Seabrook out", description: "Rent Seabrook, family lives with relatives.", debt_after: Math.max(0, CALC.b1_remaining_debt), cash_after: 0, move_friction: INPUTS.move_friction_pen_only, risk: "Medium", recommended: false },
+            { code: "D1", name: "Sell Seabrook, keep Peninsular", description: "Debt free with buffer.", debt_after: 0, cash_after: Math.max(0, CALC.d1_cash_after), move_friction: INPUTS.move_friction_seabrook, risk: "Very Low", recommended: false },
+            { code: "D2", name: "Sell Seabrook, rent Peninsular", description: "Rent Peninsular out.", debt_after: 0, cash_after: Math.max(0, CALC.d1_cash_after), move_friction: INPUTS.move_friction_seabrook, risk: "Low", recommended: false },
+            { code: "E1", name: "Sell both, hold cash", description: "Maximum flexibility. Rent while deciding.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds), move_friction: INPUTS.move_friction_seabrook, risk: "Flexible", recommended: false },
+            { code: "E2", name: "Sell both, buy new quickly", description: "Clean slate with ideal home.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds - INPUTS.move_friction_seabrook), move_friction: INPUTS.move_friction_seabrook, risk: "Medium", recommended: false },
+            { code: "F", name: "Keep both, formalise agreement", description: "Write formal ownership agreement.", debt_after: CALC.combined_debt, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
+            { code: "G", name: "Sell both, live with family", description: "Hold cash, buy when ready.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds - INPUTS.move_friction_seabrook), move_friction: INPUTS.move_friction_seabrook, risk: "Medium", recommended: false },
+            { code: "H", name: "Sell Peninsular, aggressive payoff", description: "Kill loan fast (~8 years).", debt_after: Math.max(0, CALC.b1_remaining_debt), cash_after: 0, move_friction: 0, risk: "Medium", recommended: false }
         ],
         stress: [
-            { option: "Keep both (current)", weekly_mortgage: 2481, net_cashflow: -2481, buffer: 0, runway: 0 },
-            { option: "Sell Pen, pay all in", weekly_mortgage: 1239, net_cashflow: -1239, buffer: 0, runway: 0 },
-            { option: "B2: Sell Pen, keep buffer", weekly_mortgage: 1437, net_cashflow: -1437, buffer: 129014, runway: 89.8 },
-            { option: "Sell Pen, rent Seabrook", weekly_mortgage: 1239, net_cashflow: -89, buffer: 0, runway: 0 },
-            { option: "Sell Seabrook, keep Pen", weekly_mortgage: 0, net_cashflow: 0, buffer: 666324, runway: "∞" },
-            { option: "Sell both", weekly_mortgage: 0, net_cashflow: 0, buffer: 2169683, runway: "∞" }
+            { option: "Keep both (current)", weekly_mortgage: Math.round(CALC.monthly_payment_current * 12 / 52), net_cashflow: -Math.round(CALC.monthly_payment_current * 12 / 52), buffer: 0, runway: 0 },
+            { option: "Sell Pen, pay all in", weekly_mortgage: Math.round(CALC.calcMonthlyPayment(Math.max(0, CALC.b1_remaining_debt), INPUTS.interest_rate) * 12 / 52), net_cashflow: -Math.round(CALC.calcMonthlyPayment(Math.max(0, CALC.b1_remaining_debt), INPUTS.interest_rate) * 12 / 52), buffer: 0, runway: 0 },
+            { option: "B2: Sell Pen, keep buffer", weekly_mortgage: Math.round(CALC.calcMonthlyPayment(CALC.b2_remaining_debt, INPUTS.interest_rate) * 12 / 52), net_cashflow: -Math.round(CALC.calcMonthlyPayment(CALC.b2_remaining_debt, INPUTS.interest_rate) * 12 / 52), buffer: Math.round(CALC.buffer_amount), runway: Math.round(CALC.buffer_amount / (CALC.calcMonthlyPayment(CALC.b2_remaining_debt, INPUTS.interest_rate) * 12 / 52) * 10) / 10 },
+            { option: "Sell Seabrook, keep Pen", weekly_mortgage: 0, net_cashflow: 0, buffer: Math.max(0, Math.round(CALC.d1_cash_after)), runway: "∞" },
+            { option: "Sell both", weekly_mortgage: 0, net_cashflow: 0, buffer: Math.round(CALC.both_net_proceeds), runway: "∞" }
         ],
         rates: [
-            { rate: "5.5%", current: 9176, reduced: 4583, savings: 4593 },
-            { rate: "6.0%", current: 9688, reduced: 4839, savings: 4849 },
-            { rate: "6.5%", current: 10214, reduced: 5101, savings: 5113 },
-            { rate: "7.0%", current: 10751, reduced: 5369, savings: 5382 },
-            { rate: "7.5%", current: 11299, reduced: 5643, savings: 5656 }
+            { rate: "5.5%", current: Math.round(CALC.calcMonthlyPayment(CALC.combined_debt, 0.055)), reduced: Math.round(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.055)) },
+            { rate: "6.0%", current: Math.round(CALC.calcMonthlyPayment(CALC.combined_debt, 0.060)), reduced: Math.round(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.060)) },
+            { rate: "6.5%", current: Math.round(CALC.calcMonthlyPayment(CALC.combined_debt, 0.065)), reduced: Math.round(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.065)) },
+            { rate: "7.0%", current: Math.round(CALC.calcMonthlyPayment(CALC.combined_debt, 0.070)), reduced: Math.round(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.070)) },
+            { rate: "7.5%", current: Math.round(CALC.calcMonthlyPayment(CALC.combined_debt, 0.075)), reduced: Math.round(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.075)) }
         ],
         splits: [
-            { rule: "50/50 equal", cassandra: 1149842, troy: 1149842, note: "Simple equal split" },
-            { rule: "70/30 to Cassandra", cassandra: 1609778, troy: 689905, note: "Proposed ratio" },
-            { rule: "Each keeps own sale net", cassandra: 808930, troy: 1490753, note: "By property ownership" },
-            { rule: "Cass gets Pen first, then 70/30", cassandra: 1852457, troy: 447226, note: "Preserves Pen value first" },
-            { rule: "60/40 to Cassandra", cassandra: 1379810, troy: 919873, note: "Middle ground" },
-            { rule: "Proportional to title", cassandra: 1450000, troy: 849683, note: "Based on ownership %" }
+            { rule: "50/50 equal", cassandra: Math.round(CALC.both_net_proceeds / 2), troy: Math.round(CALC.both_net_proceeds / 2), note: "Simple equal split" },
+            { rule: "70/30 to Cassandra", cassandra: Math.round(CALC.both_net_proceeds * 0.7), troy: Math.round(CALC.both_net_proceeds * 0.3), note: "Proposed ratio" },
+            { rule: "Each keeps own sale net", cassandra: Math.round(CALC.pen_net_proceeds), troy: Math.round(CALC.seabrook_net_proceeds), note: "By property ownership" },
+            { rule: "Cass gets Pen first, then 70/30", cassandra: Math.round(CALC.pen_net_proceeds + CALC.seabrook_net_proceeds * 0.7), troy: Math.round(CALC.seabrook_net_proceeds * 0.3), note: "Preserves Pen value first" },
+            { rule: "60/40 to Cassandra", cassandra: Math.round(CALC.both_net_proceeds * 0.6), troy: Math.round(CALC.both_net_proceeds * 0.4), note: "Middle ground" },
+            { rule: "Proportional to equity", cassandra: Math.round(CALC.both_net_proceeds * (CALC.peninsular_equity / CALC.combined_equity)), troy: Math.round(CALC.both_net_proceeds * (CALC.seabrook_equity / CALC.combined_equity)), note: "Based on equity %" }
         ],
         qa: {
-            "safest": "The safest options are D1 (Sell Seabrook, keep Peninsular debt-free) or E1 (Sell both, hold cash). Both give you zero debt and large cash buffers. D1 gives $666k buffer, E1 gives $2.3M buffer. B2 is the safest option if you want to stay in Seabrook - gives $129k buffer (90 weeks runway).",
-            "b2": "B2 (Sell Peninsular, keep 1-year buffer) reduces your debt from $2.44M to $936k. Monthly repayments drop from ~$10,750 to ~$6,200. You keep $129k cash buffer (90 weeks runway). Compared to keeping both: you lose Peninsular's growth potential but gain massive stress reduction.",
-            "rate": "If rates rise to 7.5%, your current monthly repayment jumps from $10,751 to $11,299 (+$548/month). With reduced loan (after selling Pen): rises from $5,369 to $5,643 (+$274/month). Selling Peninsular cuts your rate exposure in half.",
-            "split": "Six split options exist: 50/50 gives each ~$1.15M. 70/30 gives Cassandra $1.61M. 'Each keeps own' gives Troy more ($1.49M vs $809k) because Seabrook is worth more. The 'Cass gets Pen first' option protects her original asset value.",
-            "friction": "Move friction = moving costs (~$30k) + contents writeoff (~$100k). Furniture bought retail can't be resold at value. Moving from Seabrook = $130k friction. Staying in Seabrook = $0 friction.",
-            "peninsular": "Sell Peninsular not Seabrook because: 1) You prefer living in Seabrook, 2) Seabrook has more growth potential ($3.19M vs $1.68M - same % gain = more $), 3) Moving from Seabrook costs $130k in friction, 4) Cassandra's equity is protected via preserved credit mechanism.",
+            "safest": `The safest options are D1 (Sell Seabrook, keep Peninsular debt-free) or E1 (Sell both, hold cash). Both give you zero debt. D1 gives ${fmt(CALC.d1_cash_after)} buffer, E1 gives ${fmt(CALC.both_net_proceeds)} buffer. B2 is the safest if you want to stay in Seabrook - gives ${fmt(CALC.buffer_amount)} buffer.`,
+            "b2": `B2 (Sell Peninsular, keep 1-year buffer) reduces your debt from ${fmt(CALC.combined_debt)} to ${fmt(CALC.b2_remaining_debt)}. Monthly repayments drop significantly. You keep ${fmt(CALC.buffer_amount)} cash buffer. Compared to keeping both: you lose Peninsular's growth potential but gain massive stress reduction.`,
+            "rate": `If rates rise to 7.5%, your current monthly repayment jumps to ${fmt(CALC.calcMonthlyPayment(CALC.combined_debt, 0.075))}. With reduced loan (after selling Pen): ${fmt(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.075))}. Selling Peninsular cuts your rate exposure significantly.`,
+            "split": `Six split options exist: 50/50 gives each ${fmt(CALC.both_net_proceeds / 2)}. 70/30 gives Cassandra ${fmt(CALC.both_net_proceeds * 0.7)}. 'Each keeps own' gives Cass ${fmt(CALC.pen_net_proceeds)}, Troy ${fmt(CALC.seabrook_net_proceeds)}.`,
+            "friction": `Move friction = moving costs (~$30k) + contents writeoff (~$100k). Furniture bought retail can't be resold at value. Moving from Seabrook = $130k friction. Staying in Seabrook = $0 friction.`,
+            "peninsular": `Sell Peninsular not Seabrook because: 1) You prefer living in Seabrook, 2) Seabrook has more growth potential (${fmt(INPUTS.seabrook_value)} vs ${fmt(INPUTS.peninsular_value)} - same % gain = more $), 3) Moving from Seabrook costs $130k in friction, 4) Cassandra's equity is protected via preserved credit mechanism.`,
             "default": "I can help with questions about your property options. Try asking about the safest option, comparing B2 vs keeping both, rate rise impacts, how splits work, move friction costs, or why sell Peninsular."
         }
     };
 
-    // Format money
+    // Add savings to rates
+    DATA.rates = DATA.rates.map(r => ({...r, savings: r.current - r.reduced}));
+
     function fmt(n) {
         if (n === null || n === undefined) return '-';
-        return '$' + Math.abs(n).toLocaleString('en-AU', { maximumFractionDigits: 0 });
+        return '$' + Math.abs(Math.round(n)).toLocaleString('en-AU');
     }
 
-    // Get risk badge class
     function riskBadge(risk) {
         const map = {
             'Very Low': 'badge-success',
@@ -960,7 +1002,6 @@
         return map[risk] || 'badge-info';
     }
 
-    // Render options grid
     function renderOptions() {
         const grid = document.getElementById('options-grid');
         const pref = localStorage.getItem('property_preference');
@@ -999,7 +1040,6 @@
         `).join('');
     }
 
-    // Render comparison table
     function renderCompare() {
         const tbody = document.getElementById('compare-tbody');
         tbody.innerHTML = DATA.options.map(opt => `
@@ -1014,7 +1054,6 @@
         `).join('');
     }
 
-    // Render stress test
     function renderStress() {
         const tbody = document.getElementById('stress-tbody');
         tbody.innerHTML = DATA.stress.map(s => {
@@ -1047,7 +1086,6 @@
         `).join('');
     }
 
-    // Render splits
     function renderSplits() {
         const grid = document.getElementById('split-grid');
         grid.innerHTML = DATA.splits.map(s => `
@@ -1068,7 +1106,6 @@
         `).join('');
     }
 
-    // Select option as preference
     function selectOption(code) {
         localStorage.setItem('property_preference', code);
         renderOptions();
@@ -1076,7 +1113,6 @@
         showToast(`Option ${code} marked as preference`);
     }
 
-    // Update preference display
     function updatePreferenceDisplay() {
         const pref = localStorage.getItem('property_preference');
         const displays = ['preference-display', 'preference-display-options'];
@@ -1099,7 +1135,6 @@
         });
     }
 
-    // Clear preference
     function clearPreference() {
         localStorage.removeItem('property_preference');
         renderOptions();
@@ -1107,7 +1142,6 @@
         showToast('Preference cleared');
     }
 
-    // Show section
     function showSection(sectionId) {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
         document.getElementById(sectionId).classList.add('active');
@@ -1122,7 +1156,6 @@
         });
     }
 
-    // Toggle FAB menu
     function toggleFab() {
         const options = document.getElementById('fab-options');
         const btn = document.querySelector('.fab-btn');
@@ -1130,7 +1163,6 @@
         btn.setAttribute('aria-expanded', options.classList.contains('open'));
     }
 
-    // Show toast
     function showToast(message) {
         const toast = document.getElementById('toast');
         toast.textContent = message;
@@ -1138,7 +1170,6 @@
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // Chat functions
     function askQuestion(q) {
         document.getElementById('chat-input').value = q;
         sendChat();
@@ -1152,11 +1183,10 @@
         const messages = document.getElementById('chat-messages');
         messages.innerHTML += `<div class="chat-message user"><div class="chat-bubble">${q}</div></div>`;
 
-        // Find answer
         let answer = DATA.qa.default;
         const ql = q.toLowerCase();
         if (ql.includes('safe')) answer = DATA.qa.safest;
-        else if (ql.includes('b2') || ql.includes('keep') && ql.includes('both')) answer = DATA.qa.b2;
+        else if (ql.includes('b2') || (ql.includes('keep') && ql.includes('both'))) answer = DATA.qa.b2;
         else if (ql.includes('rate') || ql.includes('interest') || ql.includes('7.5') || ql.includes('8%')) answer = DATA.qa.rate;
         else if (ql.includes('split') || ql.includes('divide') || ql.includes('fair')) answer = DATA.qa.split;
         else if (ql.includes('friction') || ql.includes('move') || ql.includes('moving')) answer = DATA.qa.friction;
@@ -1170,7 +1200,6 @@
         input.value = '';
     }
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
             const tabs = [...document.querySelectorAll('.nav-btn')];
@@ -1185,7 +1214,6 @@
         }
     });
 
-    // Init
     document.addEventListener('DOMContentLoaded', () => {
         renderOptions();
         renderCompare();
@@ -1193,7 +1221,6 @@
         renderSplits();
         updatePreferenceDisplay();
         
-        // Hide loading
         setTimeout(() => {
             document.getElementById('loading').classList.add('hidden');
         }, 500);
