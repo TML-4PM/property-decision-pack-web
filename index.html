@@ -579,6 +579,134 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading.hidden { display: none; }
 
+        /* Checklist styles */
+        .checklist-progress {
+            text-align: center;
+        }
+
+        .progress-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: var(--bg);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 6px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1rem;
+        }
+
+        .checklist-group {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+
+        .checklist-group-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item:hover {
+            background: var(--bg);
+            margin: 0 -0.5rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .checklist-checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.2s;
+        }
+
+        .checklist-item.done .checklist-checkbox {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .checklist-item.done .checklist-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .checklist-content {
+            flex: 1;
+        }
+
+        .checklist-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .checklist-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .notes-area {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        .notes-area:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
         /* Help button and modal */
         .help-btn {
             width: 32px;
@@ -661,6 +789,7 @@
                 <button class="nav-btn" onclick="showSection('stress')" data-section="stress">Stress</button>
                 <button class="nav-btn" onclick="showSection('splits')" data-section="splits">Splits</button>
                 <button class="nav-btn" onclick="showSection('chat')" data-section="chat">Q&A</button>
+                <button class="nav-btn" onclick="showSection('checklist')" data-section="checklist">✓ Checklist</button>
             </nav>
         </div>
     </header>
@@ -921,6 +1050,26 @@
                 </div>
             </div>
         </section>
+
+        <!-- CHECKLIST SECTION -->
+        <section id="checklist">
+            <h1>✓ Decision Checklist</h1>
+            <p class="subtitle">Track what's done before making a final call</p>
+
+            <div class="card">
+                <div class="checklist-progress">
+                    <div class="progress-text"><span id="checklist-done">0</span> of <span id="checklist-total">0</span> complete</div>
+                    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+                </div>
+            </div>
+
+            <div class="checklist-grid" id="checklist-grid"></div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h2>📝 Notes</h2>
+                <textarea class="notes-area" id="decision-notes" placeholder="Add any notes, concerns, or questions here..." onchange="saveNotes()"></textarea>
+            </div>
+        </section>
     </main>
 
     <!-- Mobile FAB Menu -->
@@ -934,6 +1083,7 @@
             <button class="fab-option" onclick="showSection('stress');toggleFab()">🧪 Stress</button>
             <button class="fab-option" onclick="showSection('splits');toggleFab()">💰 Splits</button>
             <button class="fab-option" onclick="showSection('chat');toggleFab()">💬 Q&A</button>
+            <button class="fab-option" onclick="showSection('checklist');toggleFab()">✓ Checklist</button>
         </div>
         <button class="fab-btn" onclick="toggleFab()">☰</button>
     </div>
@@ -985,6 +1135,66 @@
     </div>
 
     <script>
+    // ========================================
+    // CHECKLIST DATA
+    // ========================================
+    const CHECKLIST = [
+        {
+            group: "Hard Numbers",
+            icon: "📊",
+            items: [
+                { id: "val_seabrook", text: "Get formal Seabrook valuation", hint: "From agent or certified valuer" },
+                { id: "val_pen", text: "Get formal Peninsular valuation", hint: "From agent or certified valuer" },
+                { id: "loan_seabrook", text: "Confirm Seabrook loan balance", hint: "Call bank for exact figure" },
+                { id: "loan_pen", text: "Confirm Peninsular loan balance", hint: "Call bank for exact figure" },
+                { id: "income", text: "Document household income", hint: "Both salaries + any other income" },
+                { id: "expenses", text: "List monthly expenses", hint: "Fixed + variable costs" },
+                { id: "agent_quotes", text: "Get agent selling quotes", hint: "Compare 2-3 agents on fees" }
+            ]
+        },
+        {
+            group: "Tax & Legal",
+            icon: "⚖️",
+            items: [
+                { id: "cgt", text: "Get CGT estimate from accountant", hint: "Capital gains if selling Pen" },
+                { id: "ownership", text: "Clarify ownership structure", hint: "Names on title, percentages" },
+                { id: "stamp_duty", text: "Check stamp duty if buying new", hint: "Only if E2 option relevant" },
+                { id: "settlement", text: "Understand settlement process", hint: "How long, what's involved" }
+            ]
+        },
+        {
+            group: "Professional Advice",
+            icon: "👔",
+            items: [
+                { id: "broker", text: "Talk to mortgage broker", hint: "Can you refinance? Best rates?" },
+                { id: "accountant", text: "Meet with accountant", hint: "Tax implications of each option" },
+                { id: "lawyer", text: "Consult lawyer if needed", hint: "For split/settlement scenarios" }
+            ]
+        },
+        {
+            group: "Together Decisions",
+            icon: "💬",
+            items: [
+                { id: "cass_review", text: "Cass has reviewed calculator", hint: "Gone through all tabs" },
+                { id: "cass_questions", text: "Cass's questions answered", hint: "No outstanding concerns" },
+                { id: "preference_aligned", text: "Both preferences marked", hint: "Use Options tab to mark" },
+                { id: "discuss_timeline", text: "Discussed timeline", hint: "When to decide, when to act" },
+                { id: "discuss_kids", text: "Considered impact on kids", hint: "Schools, routine, friends" },
+                { id: "emotional", text: "Discussed emotional factors", hint: "Attachment to properties" }
+            ]
+        },
+        {
+            group: "Final Steps",
+            icon: "🎯",
+            items: [
+                { id: "option_agreed", text: "Agreed on preferred option", hint: "Both aligned on direction" },
+                { id: "numbers_final", text: "Updated calculator with final numbers", hint: "All real values entered" },
+                { id: "professional_ok", text: "Professional advice supports choice", hint: "Broker/accountant comfortable" },
+                { id: "ready_decide", text: "Ready to make final decision", hint: "All boxes ticked above" }
+            ]
+        }
+    ];
+
     // ========================================
     // DEFAULT VALUES
     // ========================================
@@ -1510,6 +1720,72 @@
         document.getElementById('help-modal').classList.remove('show');
     }
 
+    // ========================================
+    // CHECKLIST FUNCTIONS
+    // ========================================
+    function getChecklistState() {
+        return JSON.parse(localStorage.getItem('checklist_state') || '{}');
+    }
+
+    function saveChecklistState(state) {
+        localStorage.setItem('checklist_state', JSON.stringify(state));
+    }
+
+    function toggleCheckItem(id) {
+        const state = getChecklistState();
+        state[id] = !state[id];
+        saveChecklistState(state);
+        renderChecklist();
+        showToast(state[id] ? '✓ Done!' : 'Unmarked');
+    }
+
+    function renderChecklist() {
+        const state = getChecklistState();
+        const grid = document.getElementById('checklist-grid');
+        
+        let totalItems = 0;
+        let doneItems = 0;
+        
+        grid.innerHTML = CHECKLIST.map(group => {
+            const itemsHtml = group.items.map(item => {
+                totalItems++;
+                const isDone = state[item.id];
+                if (isDone) doneItems++;
+                return `
+                    <div class="checklist-item ${isDone ? 'done' : ''}" onclick="toggleCheckItem('${item.id}')">
+                        <div class="checklist-checkbox">${isDone ? '✓' : ''}</div>
+                        <div class="checklist-content">
+                            <div class="checklist-text">${item.text}</div>
+                            <div class="checklist-hint">${item.hint}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            return `
+                <div class="checklist-group">
+                    <div class="checklist-group-title">${group.icon} ${group.group}</div>
+                    ${itemsHtml}
+                </div>
+            `;
+        }).join('');
+        
+        // Update progress
+        document.getElementById('checklist-done').textContent = doneItems;
+        document.getElementById('checklist-total').textContent = totalItems;
+        document.getElementById('progress-fill').style.width = totalItems > 0 ? (doneItems / totalItems * 100) + '%' : '0%';
+    }
+
+    function saveNotes() {
+        const notes = document.getElementById('decision-notes').value;
+        localStorage.setItem('decision_notes', notes);
+    }
+
+    function loadNotes() {
+        const notes = localStorage.getItem('decision_notes') || '';
+        document.getElementById('decision-notes').value = notes;
+    }
+
     function showToast(message) {
         const toast = document.getElementById('toast');
         toast.textContent = message;
@@ -1573,6 +1849,8 @@
         readInputs();
         updateCalc();
         renderAll();
+        renderChecklist();
+        loadNotes();
         updatePreferenceDisplay();
         
         // Auto-recalc on input change
