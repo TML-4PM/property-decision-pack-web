@@ -902,9 +902,9 @@
             <div class="key-numbers" id="overview-numbers"></div>
 
             <div class="card">
-                <h2>🎯 Recommended Option: B2</h2>
+                <h2>🎯 Agreed Position: B2</h2>
                 <p><strong>Sell Peninsular, keep Seabrook, keep 12-month buffer</strong></p>
-                <p style="margin-top: 0.5rem; color: var(--text-muted);">Best balance of reduced stress, staying in market, and keeping a safety runway.</p>
+                <p style="margin-top: 0.5rem; color: var(--text-muted);">This is our current agreed direction. Use this calculator to confirm with real numbers or explore alternatives.</p>
                 <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;" id="rec-badges"></div>
             </div>
 
@@ -1095,6 +1095,10 @@
         <div class="help-content">
             <h2>👋 Hi Cass! Quick Guide</h2>
             
+            <h3>📍 Current Agreed Position</h3>
+            <p><strong>B2: Sell Peninsular, keep Seabrook, keep 12-month buffer</strong></p>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;">This is where we're at. Use this calculator to test other scenarios if you want, or confirm this is still right with updated numbers.</p>
+            
             <h3>📱 Getting Started</h3>
             <p>This calculator shows all our property options. No login needed - just use the tabs at the top.</p>
             
@@ -1110,7 +1114,7 @@
                 <li><strong>Q&A</strong> - Ask questions</li>
             </ul>
             
-            <h3>🎯 Recommended: Option B2</h3>
+            <h3>🎯 Agreed Position: B2</h3>
             <p>Sell Peninsular, keep Seabrook, keep 12-month buffer. This:</p>
             <ul>
                 <li>Cuts debt roughly in half</li>
@@ -1381,14 +1385,14 @@
                 <div class="stat-value positive">${fmt(CALC.both_net_proceeds)}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Recommended</div>
+                <div class="stat-label">Agreed Position</div>
                 <div class="stat-value" style="color: var(--accent)">B2</div>
             </div>
         `;
         document.getElementById('overview-numbers').innerHTML = html;
 
         document.getElementById('rec-badges').innerHTML = `
-            <span class="badge badge-success">Low-Medium Risk</span>
+            <span class="badge badge-success">✅ Agreed Position</span>
             <span class="badge badge-info">${fmt(CALC.buffer_amount)} Buffer</span>
             <span class="badge badge-warning">${fmt(CALC.b2_remaining_debt)} Debt</span>
         `;
@@ -1515,7 +1519,7 @@
         return [
             { code: "A", name: "Keep both houses", description: "No sale. Formalise internal settlement.", debt_after: CALC.combined_debt, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
             { code: "B1", name: "Sell Peninsular, pay all into Seabrook", description: "Maximum debt reduction.", debt_after: CALC.b1_remaining_debt, cash_after: Math.max(0, -CALC.b1_remaining_debt + INPUTS.seabrook_loan), move_friction: 0, risk: "Medium", recommended: false },
-            { code: "B2", name: "Sell Peninsular, keep buffer", description: `Keep ${INPUTS.buffer_months} months of repayments as buffer.`, debt_after: CALC.b2_remaining_debt, cash_after: Math.round(CALC.buffer_amount), move_friction: 0, risk: "Low-Medium", recommended: true },
+            { code: "B2", name: "Sell Peninsular, keep buffer", description: `Keep ${INPUTS.buffer_months} months of repayments as buffer.`, debt_after: CALC.b2_remaining_debt, cash_after: Math.round(CALC.buffer_amount), move_friction: 0, risk: "Low-Medium", agreed: true },
             { code: "B3", name: "Sell Peninsular, put into offset", description: "Interest drops but liquidity preserved.", debt_after: INPUTS.seabrook_loan, cash_after: Math.round(CALC.pen_net_proceeds), move_friction: 0, risk: "Medium", recommended: false },
             { code: "C", name: "Sell Peninsular, rent Seabrook", description: "Rent Seabrook, family lives elsewhere.", debt_after: CALC.b1_remaining_debt, cash_after: 0, move_friction: 30000, risk: "Medium", recommended: false },
             { code: "D1", name: "Sell Seabrook, keep Peninsular", description: "Debt free with buffer.", debt_after: 0, cash_after: CALC.d1_cash_after, move_friction: INPUTS.move_friction, risk: "Very Low", recommended: false },
@@ -1534,7 +1538,7 @@
         const options = getOptions();
         
         grid.innerHTML = options.map(opt => `
-            <div class="option-card ${opt.recommended ? 'recommended' : ''} ${pref === opt.code ? 'selected' : ''}" 
+            <div class="option-card ${opt.agreed ? 'recommended' : ''} ${pref === opt.code ? 'selected' : ''}" 
                  onclick="selectOption('${opt.code}')">
                 <div class="option-header">
                     <span class="option-code">${opt.code}</span>
@@ -1557,7 +1561,7 @@
                     </div>
                     <div class="metric">
                         <div class="metric-label">Status</div>
-                        <div class="metric-value">${opt.recommended ? '⭐ Rec' : '-'}</div>
+                        <div class="metric-value">${opt.agreed ? '✅ Agreed' : '-'}</div>
                     </div>
                 </div>
             </div>
@@ -1567,7 +1571,7 @@
     function renderCompare() {
         const options = getOptions();
         document.getElementById('compare-tbody').innerHTML = options.map(opt => `
-            <tr style="${opt.recommended ? 'background: var(--success-light);' : ''}">
+            <tr style="${opt.agreed ? 'background: var(--success-light);' : ''}">
                 <td class="mono">${opt.code}</td>
                 <td>${opt.name}</td>
                 <td class="mono" style="color: ${opt.debt_after === 0 ? 'var(--success)' : ''}">${fmt(opt.debt_after)}</td>
