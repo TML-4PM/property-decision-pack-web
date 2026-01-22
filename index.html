@@ -27,11 +27,7 @@
             --radius-sm: 8px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -51,9 +47,7 @@
             z-index: 100;
             transition: top 0.3s;
         }
-        .skip-link:focus {
-            top: 0;
-        }
+        .skip-link:focus { top: 0; }
 
         header {
             background: var(--card);
@@ -71,28 +65,20 @@
             justify-content: space-between;
             align-items: center;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        .logo {
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: var(--text);
-        }
-        .logo span {
-            color: var(--accent);
-        }
+        .logo { font-weight: 700; font-size: 1.25rem; color: var(--text); }
+        .logo span { color: var(--accent); }
 
-        nav {
-            display: flex;
-            gap: 0.5rem;
-        }
+        nav { display: flex; gap: 0.25rem; flex-wrap: wrap; }
 
         .nav-btn {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.75rem;
             border: none;
             background: transparent;
             color: var(--text-muted);
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             font-weight: 500;
             cursor: pointer;
             border-radius: var(--radius-sm);
@@ -101,10 +87,6 @@
         .nav-btn:hover, .nav-btn.active {
             background: var(--accent-light);
             color: var(--accent);
-        }
-        .nav-btn:focus {
-            outline: 3px solid var(--accent);
-            outline-offset: 2px;
         }
 
         @media (max-width: 768px) {
@@ -117,35 +99,19 @@
             padding: 1.5rem;
         }
 
-        section {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        section.active {
-            display: block;
-        }
+        section { display: none; animation: fadeIn 0.3s ease; }
+        section.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
+        h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
+        h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-muted); }
 
-        h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
+        .subtitle { color: var(--text-muted); margin-bottom: 1.5rem; }
 
         .card {
             background: var(--card);
@@ -155,9 +121,93 @@
             margin-bottom: 1rem;
         }
 
+        /* Input Panel Styles */
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+        }
+
+        .input-group h3 {
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .input-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .input-row:last-child { margin-bottom: 0; }
+
+        .input-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .input-field {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .input-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .btn-recalc {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+
+        .btn-recalc:hover { background: #1d4ed8; }
+
+        .btn-reset {
+            background: var(--bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        /* Key Numbers */
         .key-numbers {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
@@ -165,29 +215,38 @@
         .stat-card {
             background: var(--card);
             border-radius: var(--radius);
-            padding: 1.25rem;
+            padding: 1rem;
             box-shadow: var(--shadow);
         }
 
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .stat-value { font-size: 1.25rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
         .stat-value.positive { color: var(--success); }
         .stat-value.negative { color: var(--danger); }
-        .stat-value.warning { color: var(--warning); }
 
+        /* Growth Projections */
+        .growth-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .growth-card {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .growth-year { font-size: 0.875rem; color: var(--text-muted); font-weight: 500; }
+        .growth-value { font-size: 1.5rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--success); }
+        .growth-detail { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+        /* Options Grid */
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
         }
 
@@ -199,7 +258,6 @@
             border: 2px solid transparent;
             cursor: pointer;
             transition: all 0.2s;
-            position: relative;
         }
 
         .option-card:hover {
@@ -212,9 +270,7 @@
             background: var(--accent-light);
         }
 
-        .option-card.recommended {
-            border-color: var(--success);
-        }
+        .option-card.recommended { border-color: var(--success); }
 
         .option-header {
             display: flex;
@@ -230,22 +286,13 @@
             color: var(--accent);
         }
 
-        .option-name {
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .option-desc {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
+        .option-name { font-weight: 600; font-size: 1rem; margin-bottom: 0.5rem; }
+        .option-desc { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem; }
 
         .badge {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            padding: 0.25rem 0.5rem;
+            padding: 0.2rem 0.5rem;
             border-radius: 9999px;
             text-transform: uppercase;
         }
@@ -258,7 +305,7 @@
         .option-metrics {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
 
         .metric {
@@ -268,27 +315,13 @@
             border-radius: var(--radius-sm);
         }
 
-        .metric-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        .metric-label { font-size: 0.7rem; color: var(--text-muted); }
+        .metric-value { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 0.85rem; }
 
-        .metric-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
+        /* Tables */
+        .table-wrap { overflow-x: auto; margin: 1rem 0; }
 
-        .table-wrap {
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.875rem;
-        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
 
         th, td {
             padding: 0.75rem 1rem;
@@ -296,21 +329,11 @@
             border-bottom: 1px solid var(--border);
         }
 
-        th {
-            background: var(--bg);
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-        }
+        th { background: var(--bg); font-weight: 600; position: sticky; top: 0; }
+        tr:hover { background: var(--bg); }
+        .mono { font-family: 'JetBrains Mono', monospace; }
 
-        tr:hover {
-            background: var(--bg);
-        }
-
-        .mono {
-            font-family: 'JetBrains Mono', monospace;
-        }
-
+        /* Chat */
         .chat-container {
             display: flex;
             flex-direction: column;
@@ -330,31 +353,12 @@
             gap: 1rem;
         }
 
-        .chat-message {
-            display: flex;
-            gap: 0.75rem;
-            max-width: 85%;
-        }
+        .chat-message { display: flex; gap: 0.75rem; max-width: 85%; }
+        .chat-message.user { align-self: flex-end; flex-direction: row-reverse; }
 
-        .chat-message.user {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-
-        .chat-bubble {
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius);
-            font-size: 0.9rem;
-        }
-
-        .chat-message.assistant .chat-bubble {
-            background: var(--bg);
-        }
-
-        .chat-message.user .chat-bubble {
-            background: var(--accent);
-            color: white;
-        }
+        .chat-bubble { padding: 0.75rem 1rem; border-radius: var(--radius); font-size: 0.9rem; }
+        .chat-message.assistant .chat-bubble { background: var(--bg); }
+        .chat-message.user .chat-bubble { background: var(--accent); color: white; }
 
         .chat-input-area {
             display: flex;
@@ -386,11 +390,6 @@
             border-radius: var(--radius);
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .chat-send:hover {
-            background: #1d4ed8;
         }
 
         .quick-questions {
@@ -409,7 +408,6 @@
             border-radius: 9999px;
             font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .quick-q:hover {
@@ -417,9 +415,10 @@
             border-color: var(--accent);
         }
 
+        /* Splits */
         .split-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1rem;
         }
 
@@ -430,16 +429,9 @@
             box-shadow: var(--shadow);
         }
 
-        .split-rule {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
+        .split-rule { font-weight: 600; margin-bottom: 0.5rem; }
 
-        .split-values {
-            display: flex;
-            gap: 1rem;
-            margin-top: 0.75rem;
-        }
+        .split-values { display: flex; gap: 1rem; margin-top: 0.75rem; }
 
         .split-person {
             flex: 1;
@@ -449,18 +441,10 @@
             border-radius: var(--radius-sm);
         }
 
-        .split-name {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-        }
+        .split-name { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+        .split-amount { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--success); }
 
-        .split-amount {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            color: var(--success);
-        }
-
+        /* Runway bars */
         .runway-bar {
             height: 8px;
             background: var(--bg);
@@ -469,12 +453,9 @@
             margin-top: 0.5rem;
         }
 
-        .runway-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
+        .runway-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
 
+        /* Mobile FAB */
         .fab-menu {
             display: none;
             position: fixed;
@@ -484,9 +465,7 @@
         }
 
         @media (max-width: 768px) {
-            .fab-menu {
-                display: block;
-            }
+            .fab-menu { display: block; }
         }
 
         .fab-btn {
@@ -499,11 +478,6 @@
             font-size: 1.5rem;
             cursor: pointer;
             box-shadow: var(--shadow-lg);
-            transition: transform 0.2s;
-        }
-
-        .fab-btn:hover {
-            transform: scale(1.1);
         }
 
         .fab-options {
@@ -518,15 +492,7 @@
             min-width: 180px;
         }
 
-        .fab-options.open {
-            display: block;
-            animation: slideUp 0.2s ease;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .fab-options.open { display: block; }
 
         .fab-option {
             display: block;
@@ -537,13 +503,11 @@
             background: none;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: background 0.2s;
         }
 
-        .fab-option:hover {
-            background: var(--bg);
-        }
+        .fab-option:hover { background: var(--bg); }
 
+        /* Toast */
         .toast {
             position: fixed;
             bottom: 2rem;
@@ -575,10 +539,6 @@
             align-items: center;
         }
 
-        .preference-text {
-            font-weight: 500;
-        }
-
         .clear-pref {
             background: none;
             border: none;
@@ -592,14 +552,9 @@
             color: var(--warning);
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
-        }
-
-        @media print {
-            header, nav, .fab-menu, .chat-input-area, .quick-questions { display: none; }
-            section { display: block !important; page-break-inside: avoid; }
-            .card { box-shadow: none; border: 1px solid #ddd; }
+            margin-left: 0.5rem;
         }
 
         .loading {
@@ -621,12 +576,13 @@
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading.hidden { display: none; }
 
-        .loading.hidden {
-            display: none;
+        @media print {
+            header, nav, .fab-menu, .chat-input-area, .quick-questions { display: none; }
+            section { display: block !important; page-break-inside: avoid; }
+            .card { box-shadow: none; border: 1px solid #ddd; }
         }
     </style>
 </head>
@@ -639,62 +595,132 @@
 
     <header>
         <div class="header-content">
-            <div class="logo">Property<span>Pack</span> <span class="updated-badge">Updated 22 Jan</span></div>
-            <nav role="tablist" aria-label="Main navigation">
-                <button class="nav-btn active" role="tab" aria-selected="true" onclick="showSection('overview')" data-section="overview">Overview</button>
-                <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('options')" data-section="options">Options</button>
-                <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('compare')" data-section="compare">Compare</button>
-                <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('stress')" data-section="stress">Stress Test</button>
-                <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('splits')" data-section="splits">Splits</button>
-                <button class="nav-btn" role="tab" aria-selected="false" onclick="showSection('chat')" data-section="chat">Ask Questions</button>
+            <div class="logo">Property<span>Pack</span><span class="updated-badge">V7 Dynamic</span></div>
+            <nav role="tablist">
+                <button class="nav-btn active" onclick="showSection('inputs')" data-section="inputs">⚙️ Inputs</button>
+                <button class="nav-btn" onclick="showSection('overview')" data-section="overview">Overview</button>
+                <button class="nav-btn" onclick="showSection('growth')" data-section="growth">Growth</button>
+                <button class="nav-btn" onclick="showSection('options')" data-section="options">Options</button>
+                <button class="nav-btn" onclick="showSection('compare')" data-section="compare">Compare</button>
+                <button class="nav-btn" onclick="showSection('stress')" data-section="stress">Stress</button>
+                <button class="nav-btn" onclick="showSection('splits')" data-section="splits">Splits</button>
+                <button class="nav-btn" onclick="showSection('chat')" data-section="chat">Q&A</button>
             </nav>
         </div>
     </header>
 
     <main id="main-content">
+        <!-- INPUTS SECTION -->
+        <section id="inputs" class="active">
+            <h1>⚙️ Calculator Inputs</h1>
+            <p class="subtitle">Adjust values and click "Recalculate" to update all projections</p>
+
+            <div class="card">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <h3>🏠 Seabrook</h3>
+                        <div class="input-row">
+                            <label class="input-label">Current Market Value</label>
+                            <input type="number" class="input-field" id="inp-seabrook-value" value="2700000" step="10000">
+                        </div>
+                        <div class="input-row">
+                            <label class="input-label">Outstanding Loan</label>
+                            <input type="number" class="input-field" id="inp-seabrook-loan" value="1615977" step="1000">
+                        </div>
+                        <div class="input-row">
+                            <label class="input-label">Equity</label>
+                            <div class="input-field" id="calc-seabrook-equity" style="background: var(--success-light); color: var(--success);">$1,084,023</div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>🏡 Peninsular</h3>
+                        <div class="input-row">
+                            <label class="input-label">Current Market Value</label>
+                            <input type="number" class="input-field" id="inp-pen-value" value="1600000" step="10000">
+                        </div>
+                        <div class="input-row">
+                            <label class="input-label">Outstanding Loan</label>
+                            <input type="number" class="input-field" id="inp-pen-loan" value="824429" step="1000">
+                        </div>
+                        <div class="input-row">
+                            <label class="input-label">Equity</label>
+                            <div class="input-field" id="calc-pen-equity" style="background: var(--success-light); color: var(--success);">$775,571</div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>📈 Growth Assumptions</h3>
+                        <div class="input-row">
+                            <label class="input-label">Seabrook Past Growth (% p.a.)</label>
+                            <input type="number" class="input-field" id="inp-seabrook-past-growth" value="5.2" step="0.1">
+                            <span class="input-hint">Historical annual growth rate</span>
+                        </div>
+                        <div class="input-row">
+                            <label class="input-label">Seabrook Future Growth (% p.a.)</label>
+                            <input type="number" class="input-field" id="inp-seabrook-future-growth" value="4.0" step="0.1">
+                            <span class="input-hint">Expected annual growth rate</span>
+                        </div>
+                        <div class="input-row">
+                            <label class="input-label">Peninsular Past Growth (% p.a.)</label>
+                            <input type="number" class="input-field" id="inp-pen-past-growth" value="4.8" step="0.1">
+                        </div>
+                        <div class="input-row">
+                            <label class="input-label">Peninsular Future Growth (% p.a.)</label>
+                            <input type="number" class="input-field" id="inp-pen-future-growth" value="3.5" step="0.1">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <h3>💰 Financial Settings</h3>
+                        <div class="input-row">
+                            <label class="input-label">Interest Rate (%)</label>
+                            <input type="number" class="input-field" id="inp-interest-rate" value="7.0" step="0.1">
+                        </div>
+                        <div class="input-row">
+                            <label class="input-label">Selling Costs (%)</label>
+                            <input type="number" class="input-field" id="inp-selling-costs" value="3.0" step="0.1">
+                            <span class="input-hint">Agent fees, legal, etc.</span>
+                        </div>
+                        <div class="input-row">
+                            <label class="input-label">Buffer Months</label>
+                            <input type="number" class="input-field" id="inp-buffer-months" value="12" step="1">
+                            <span class="input-hint">Months of payments to keep as buffer</span>
+                        </div>
+                        <div class="input-row">
+                            <label class="input-label">Move Friction (Seabrook)</label>
+                            <input type="number" class="input-field" id="inp-move-friction" value="130000" step="5000">
+                            <span class="input-hint">Moving + contents writeoff</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-recalc" onclick="recalculate()">🔄 Recalculate All</button>
+                <button class="btn-reset" onclick="resetDefaults()">Reset to Defaults</button>
+            </div>
+
+            <div class="card">
+                <h2>📊 Current Snapshot</h2>
+                <div class="key-numbers" id="snapshot-numbers">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
         <!-- OVERVIEW SECTION -->
-        <section id="overview" class="active" role="tabpanel" aria-labelledby="tab-overview">
+        <section id="overview">
             <h1>Property Decision Pack</h1>
-            <p class="subtitle">Troy & Cassandra • Modelling only, not financial advice • Values updated 22 Jan 2026</p>
+            <p class="subtitle">Troy & Cassandra • Modelling only, not financial advice</p>
 
             <div id="preference-display"></div>
 
-            <div class="key-numbers" role="region" aria-label="Key financial numbers">
-                <div class="stat-card">
-                    <div class="stat-label">Seabrook Value</div>
-                    <div class="stat-value">$2.70M</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Peninsular Value</div>
-                    <div class="stat-value">$1.60M</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Combined Equity</div>
-                    <div class="stat-value positive">$1.86M</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Combined Debt</div>
-                    <div class="stat-value negative">$2.44M</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Net if Sell Both</div>
-                    <div class="stat-value positive">$1.73M</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Recommended</div>
-                    <div class="stat-value" style="color: var(--accent)">B2</div>
-                </div>
-            </div>
+            <div class="key-numbers" id="overview-numbers"></div>
 
             <div class="card">
                 <h2>🎯 Recommended Option: B2</h2>
                 <p><strong>Sell Peninsular, keep Seabrook, keep 12-month buffer</strong></p>
-                <p style="margin-top: 0.5rem; color: var(--text-muted);">Best balance of reduced stress, staying in market, and keeping a safety runway. Cassandra's value protected via preserved credit mechanism.</p>
-                <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <span class="badge badge-success">Low-Medium Risk</span>
-                    <span class="badge badge-info">$129k Buffer</span>
-                    <span class="badge badge-warning">$1.02M Debt</span>
-                </div>
+                <p style="margin-top: 0.5rem; color: var(--text-muted);">Best balance of reduced stress, staying in market, and keeping a safety runway.</p>
+                <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;" id="rec-badges"></div>
             </div>
 
             <div class="card">
@@ -702,77 +728,82 @@
                 <div class="table-wrap">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Current</th>
-                                <th>After B2</th>
-                            </tr>
+                            <tr><th>Item</th><th>Current</th><th>After B2</th></tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Total Debt</td>
-                                <td class="mono">$2,440,406</td>
-                                <td class="mono" style="color: var(--success)">$1,017,420</td>
-                            </tr>
-                            <tr>
-                                <td>Monthly Repayment (7%)</td>
-                                <td class="mono">$10,751</td>
-                                <td class="mono" style="color: var(--success)">~$6,770</td>
-                            </tr>
-                            <tr>
-                                <td>Cash Buffer</td>
-                                <td class="mono">$0</td>
-                                <td class="mono" style="color: var(--success)">$129,014</td>
-                            </tr>
-                            <tr>
-                                <td>Properties</td>
-                                <td>2</td>
-                                <td>1 (Seabrook)</td>
-                            </tr>
-                        </tbody>
+                        <tbody id="summary-tbody"></tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- OPTIONS SECTION -->
-        <section id="options" role="tabpanel" aria-labelledby="tab-options">
-            <h1>All Options</h1>
-            <p class="subtitle">Click any option to mark as your preference</p>
+        <!-- GROWTH SECTION -->
+        <section id="growth">
+            <h1>📈 Growth Projections</h1>
+            <p class="subtitle">Future value scenarios based on growth assumptions</p>
 
-            <div id="preference-display-options"></div>
+            <div class="card">
+                <h2>Seabrook Value Projections</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">At <span id="seabrook-growth-rate">4.0</span>% annual growth</p>
+                <div class="growth-grid" id="seabrook-growth-grid"></div>
+            </div>
 
-            <div class="options-grid" id="options-grid" role="list">
+            <div class="card">
+                <h2>Peninsular Value Projections</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">At <span id="pen-growth-rate">3.5</span>% annual growth</p>
+                <div class="growth-grid" id="pen-growth-grid"></div>
+            </div>
+
+            <div class="card">
+                <h2>Combined Equity Growth (if keeping both)</h2>
+                <div class="growth-grid" id="combined-growth-grid"></div>
+            </div>
+
+            <div class="card">
+                <h2>📉 Opportunity Cost: Selling Peninsular Now</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">What you give up by selling Peninsular today</p>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Year</th><th>Pen Future Value</th><th>Pen Future Equity</th><th>Lost Growth</th></tr>
+                        </thead>
+                        <tbody id="opportunity-cost-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🏆 Seabrook Equity if Sell Pen & Pay Down</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem;">Seabrook grows, debt stays reduced</p>
+                <div class="growth-grid" id="seabrook-after-sale-grid"></div>
             </div>
         </section>
 
+        <!-- OPTIONS SECTION -->
+        <section id="options">
+            <h1>All Options</h1>
+            <p class="subtitle">Click any option to mark as your preference</p>
+            <div id="preference-display-options"></div>
+            <div class="options-grid" id="options-grid"></div>
+        </section>
+
         <!-- COMPARE SECTION -->
-        <section id="compare" role="tabpanel" aria-labelledby="tab-compare">
+        <section id="compare">
             <h1>Compare Options</h1>
             <p class="subtitle">Side-by-side comparison of all scenarios</p>
-
             <div class="card">
                 <div class="table-wrap">
-                    <table id="compare-table">
+                    <table>
                         <thead>
-                            <tr>
-                                <th>Code</th>
-                                <th>Option</th>
-                                <th>Debt After</th>
-                                <th>Cash After</th>
-                                <th>Risk</th>
-                                <th>Move Cost</th>
-                            </tr>
+                            <tr><th>Code</th><th>Option</th><th>Debt After</th><th>Cash After</th><th>Risk</th><th>Move Cost</th></tr>
                         </thead>
-                        <tbody id="compare-tbody">
-                        </tbody>
+                        <tbody id="compare-tbody"></tbody>
                     </table>
                 </div>
             </div>
         </section>
 
         <!-- STRESS TEST SECTION -->
-        <section id="stress" role="tabpanel" aria-labelledby="tab-stress">
+        <section id="stress">
             <h1>Stress Test</h1>
             <p class="subtitle">What happens if income stops?</p>
 
@@ -781,16 +812,9 @@
                 <div class="table-wrap">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Option</th>
-                                <th>Weekly Mortgage</th>
-                                <th>Net Cashflow</th>
-                                <th>Buffer</th>
-                                <th>Runway</th>
-                            </tr>
+                            <tr><th>Option</th><th>Weekly Mortgage</th><th>Buffer</th><th>Runway</th></tr>
                         </thead>
-                        <tbody id="stress-tbody">
-                        </tbody>
+                        <tbody id="stress-tbody"></tbody>
                     </table>
                 </div>
             </div>
@@ -800,59 +824,44 @@
                 <div class="table-wrap">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Rate</th>
-                                <th>Current Loan/month</th>
-                                <th>Reduced Loan/month</th>
-                                <th>Monthly Savings</th>
-                            </tr>
+                            <tr><th>Rate</th><th>Current/month</th><th>Reduced/month</th><th>Savings</th></tr>
                         </thead>
-                        <tbody id="rate-tbody">
-                        </tbody>
+                        <tbody id="rate-tbody"></tbody>
                     </table>
                 </div>
             </div>
         </section>
 
         <!-- SPLITS SECTION -->
-        <section id="splits" role="tabpanel" aria-labelledby="tab-splits">
+        <section id="splits">
             <h1>Split Scenarios</h1>
             <p class="subtitle">Different ways to divide if selling both</p>
-
-            <div class="split-grid" id="split-grid">
-            </div>
+            <div class="split-grid" id="split-grid"></div>
         </section>
 
         <!-- CHAT SECTION -->
-        <section id="chat" role="tabpanel" aria-labelledby="tab-chat">
+        <section id="chat">
             <h1>Ask Questions</h1>
             <p class="subtitle">Get answers about your options</p>
 
             <div class="chat-container">
-                <div class="chat-messages" id="chat-messages" role="log" aria-live="polite">
+                <div class="chat-messages" id="chat-messages">
                     <div class="chat-message assistant">
                         <div class="chat-bubble">
-                            Hi! I can help you understand your property options. Try asking about:
-                            <ul style="margin: 0.5rem 0 0 1rem;">
-                                <li>What's the safest option?</li>
-                                <li>Compare keeping vs selling</li>
-                                <li>What happens if rates rise?</li>
-                                <li>How do splits work?</li>
-                            </ul>
+                            Hi! I can help you understand your property options. Try asking about the safest option, comparing scenarios, rate impacts, splits, or growth projections.
                         </div>
                     </div>
                 </div>
                 <div class="quick-questions">
                     <button class="quick-q" onclick="askQuestion('What is the safest option?')">Safest option?</button>
                     <button class="quick-q" onclick="askQuestion('Compare B2 vs keeping both')">B2 vs Keep Both</button>
-                    <button class="quick-q" onclick="askQuestion('What if rates rise to 8%?')">Rate rise impact</button>
+                    <button class="quick-q" onclick="askQuestion('What if rates rise?')">Rate rise impact</button>
+                    <button class="quick-q" onclick="askQuestion('How much growth am I giving up?')">Growth opportunity cost</button>
                     <button class="quick-q" onclick="askQuestion('How is the split calculated?')">Split rules</button>
-                    <button class="quick-q" onclick="askQuestion('What is move friction?')">Move friction?</button>
-                    <button class="quick-q" onclick="askQuestion('Why sell Peninsular not Seabrook?')">Why Peninsular?</button>
                 </div>
                 <div class="chat-input-area">
-                    <input type="text" class="chat-input" id="chat-input" placeholder="Ask a question..." aria-label="Ask a question" onkeypress="if(event.key==='Enter')sendChat()">
-                    <button class="chat-send" onclick="sendChat()" aria-label="Send message">Send</button>
+                    <input type="text" class="chat-input" id="chat-input" placeholder="Ask a question..." onkeypress="if(event.key==='Enter')sendChat()">
+                    <button class="chat-send" onclick="sendChat()">Send</button>
                 </div>
             </div>
         </section>
@@ -861,133 +870,323 @@
     <!-- Mobile FAB Menu -->
     <div class="fab-menu">
         <div class="fab-options" id="fab-options">
+            <button class="fab-option" onclick="showSection('inputs');toggleFab()">⚙️ Inputs</button>
             <button class="fab-option" onclick="showSection('overview');toggleFab()">📊 Overview</button>
+            <button class="fab-option" onclick="showSection('growth');toggleFab()">📈 Growth</button>
             <button class="fab-option" onclick="showSection('options');toggleFab()">🏠 Options</button>
             <button class="fab-option" onclick="showSection('compare');toggleFab()">⚖️ Compare</button>
-            <button class="fab-option" onclick="showSection('stress');toggleFab()">🧪 Stress Test</button>
+            <button class="fab-option" onclick="showSection('stress');toggleFab()">🧪 Stress</button>
             <button class="fab-option" onclick="showSection('splits');toggleFab()">💰 Splits</button>
-            <button class="fab-option" onclick="showSection('chat');toggleFab()">💬 Questions</button>
+            <button class="fab-option" onclick="showSection('chat');toggleFab()">💬 Q&A</button>
         </div>
-        <button class="fab-btn" onclick="toggleFab()" aria-label="Navigation menu" aria-expanded="false">☰</button>
+        <button class="fab-btn" onclick="toggleFab()">☰</button>
     </div>
 
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <script>
     // ========================================
-    // EDITABLE INPUTS - Change values here
+    // DEFAULT VALUES
     // ========================================
-    const INPUTS = {
-        seabrook_value: 2700000,      // Current market value
-        peninsular_value: 1600000,    // Current market value
-        seabrook_loan: 1615977,       // Outstanding loan
-        peninsular_loan: 824429,      // Outstanding loan
-        selling_costs_pct: 0.03,      // 3% selling costs (agent, legal, etc)
-        move_friction_seabrook: 130000,  // Cost to move from Seabrook
-        move_friction_pen_only: 30000,   // Cost if just renting out Seabrook
-        buffer_months: 12,            // Months of buffer for B2
-        interest_rate: 0.07           // Current interest rate for calcs
+    const DEFAULTS = {
+        seabrook_value: 2700000,
+        seabrook_loan: 1615977,
+        pen_value: 1600000,
+        pen_loan: 824429,
+        seabrook_past_growth: 5.2,
+        seabrook_future_growth: 4.0,
+        pen_past_growth: 4.8,
+        pen_future_growth: 3.5,
+        interest_rate: 7.0,
+        selling_costs: 3.0,
+        buffer_months: 12,
+        move_friction: 130000
     };
 
     // ========================================
-    // CALCULATED VALUES - Don't edit these
+    // LIVE INPUTS (will be updated from UI)
     // ========================================
-    const CALC = {
-        get combined_debt() { return INPUTS.seabrook_loan + INPUTS.peninsular_loan; },
-        get seabrook_equity() { return INPUTS.seabrook_value - INPUTS.seabrook_loan; },
-        get peninsular_equity() { return INPUTS.peninsular_value - INPUTS.peninsular_loan; },
-        get combined_equity() { return this.seabrook_equity + this.peninsular_equity; },
-        
-        get pen_net_proceeds() { 
-            return (INPUTS.peninsular_value * (1 - INPUTS.selling_costs_pct)) - INPUTS.peninsular_loan; 
-        },
-        get seabrook_net_proceeds() { 
-            return (INPUTS.seabrook_value * (1 - INPUTS.selling_costs_pct)) - INPUTS.seabrook_loan; 
-        },
-        get both_net_proceeds() { 
-            return this.pen_net_proceeds + this.seabrook_net_proceeds; 
-        },
-        
-        get monthly_payment_current() {
-            return this.calcMonthlyPayment(this.combined_debt, INPUTS.interest_rate);
-        },
-        get buffer_amount() {
-            return this.monthly_payment_current * INPUTS.buffer_months;
-        },
-        
-        // B1: Sell Pen, pay all into Seabrook
-        get b1_remaining_debt() { return INPUTS.seabrook_loan - this.pen_net_proceeds; },
-        
-        // B2: Sell Pen, keep buffer
-        get b2_debt_reduction() { return this.pen_net_proceeds - this.buffer_amount; },
-        get b2_remaining_debt() { return INPUTS.seabrook_loan - this.b2_debt_reduction; },
-        
-        // D1/D2: Sell Seabrook
-        get d1_cash_after() { return this.seabrook_net_proceeds - INPUTS.peninsular_loan; },
-        
-        calcMonthlyPayment(principal, rate) {
-            const r = rate / 12;
-            const n = 30 * 12;
-            return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-        }
-    };
+    let INPUTS = { ...DEFAULTS };
 
-    // Data using calculated values
-    const DATA = {
-        options: [
-            { code: "A", name: "Keep both houses", description: "No sale. Formalise internal settlement.", debt_after: CALC.combined_debt, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
-            { code: "B1", name: "Sell Peninsular, pay all into Seabrook", description: "Maximum debt reduction.", debt_after: Math.max(0, CALC.b1_remaining_debt), cash_after: Math.max(0, -CALC.b1_remaining_debt), move_friction: 0, risk: "Medium", recommended: false },
-            { code: "B2", name: "Sell Peninsular, keep 1-year buffer", description: "Keep 12 months of repayments as safety buffer.", debt_after: Math.max(0, CALC.b2_remaining_debt), cash_after: Math.round(CALC.buffer_amount), move_friction: 0, risk: "Low-Medium", recommended: true },
-            { code: "B3", name: "Sell Peninsular, put into offset", description: "Interest drops but liquidity preserved.", debt_after: INPUTS.seabrook_loan, cash_after: 0, move_friction: 0, risk: "Medium", recommended: false },
-            { code: "C", name: "Sell Peninsular, rent Seabrook out", description: "Rent Seabrook, family lives with relatives.", debt_after: Math.max(0, CALC.b1_remaining_debt), cash_after: 0, move_friction: INPUTS.move_friction_pen_only, risk: "Medium", recommended: false },
-            { code: "D1", name: "Sell Seabrook, keep Peninsular", description: "Debt free with buffer.", debt_after: 0, cash_after: Math.max(0, CALC.d1_cash_after), move_friction: INPUTS.move_friction_seabrook, risk: "Very Low", recommended: false },
-            { code: "D2", name: "Sell Seabrook, rent Peninsular", description: "Rent Peninsular out.", debt_after: 0, cash_after: Math.max(0, CALC.d1_cash_after), move_friction: INPUTS.move_friction_seabrook, risk: "Low", recommended: false },
-            { code: "E1", name: "Sell both, hold cash", description: "Maximum flexibility. Rent while deciding.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds), move_friction: INPUTS.move_friction_seabrook, risk: "Flexible", recommended: false },
-            { code: "E2", name: "Sell both, buy new quickly", description: "Clean slate with ideal home.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds - INPUTS.move_friction_seabrook), move_friction: INPUTS.move_friction_seabrook, risk: "Medium", recommended: false },
-            { code: "F", name: "Keep both, formalise agreement", description: "Write formal ownership agreement.", debt_after: CALC.combined_debt, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
-            { code: "G", name: "Sell both, live with family", description: "Hold cash, buy when ready.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds - INPUTS.move_friction_seabrook), move_friction: INPUTS.move_friction_seabrook, risk: "Medium", recommended: false },
-            { code: "H", name: "Sell Peninsular, aggressive payoff", description: "Kill loan fast (~8 years).", debt_after: Math.max(0, CALC.b1_remaining_debt), cash_after: 0, move_friction: 0, risk: "Medium", recommended: false }
-        ],
-        stress: [
-            { option: "Keep both (current)", weekly_mortgage: Math.round(CALC.monthly_payment_current * 12 / 52), net_cashflow: -Math.round(CALC.monthly_payment_current * 12 / 52), buffer: 0, runway: 0 },
-            { option: "Sell Pen, pay all in", weekly_mortgage: Math.round(CALC.calcMonthlyPayment(Math.max(0, CALC.b1_remaining_debt), INPUTS.interest_rate) * 12 / 52), net_cashflow: -Math.round(CALC.calcMonthlyPayment(Math.max(0, CALC.b1_remaining_debt), INPUTS.interest_rate) * 12 / 52), buffer: 0, runway: 0 },
-            { option: "B2: Sell Pen, keep buffer", weekly_mortgage: Math.round(CALC.calcMonthlyPayment(CALC.b2_remaining_debt, INPUTS.interest_rate) * 12 / 52), net_cashflow: -Math.round(CALC.calcMonthlyPayment(CALC.b2_remaining_debt, INPUTS.interest_rate) * 12 / 52), buffer: Math.round(CALC.buffer_amount), runway: Math.round(CALC.buffer_amount / (CALC.calcMonthlyPayment(CALC.b2_remaining_debt, INPUTS.interest_rate) * 12 / 52) * 10) / 10 },
-            { option: "Sell Seabrook, keep Pen", weekly_mortgage: 0, net_cashflow: 0, buffer: Math.max(0, Math.round(CALC.d1_cash_after)), runway: "∞" },
-            { option: "Sell both", weekly_mortgage: 0, net_cashflow: 0, buffer: Math.round(CALC.both_net_proceeds), runway: "∞" }
-        ],
-        rates: [
-            { rate: "5.5%", current: Math.round(CALC.calcMonthlyPayment(CALC.combined_debt, 0.055)), reduced: Math.round(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.055)) },
-            { rate: "6.0%", current: Math.round(CALC.calcMonthlyPayment(CALC.combined_debt, 0.060)), reduced: Math.round(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.060)) },
-            { rate: "6.5%", current: Math.round(CALC.calcMonthlyPayment(CALC.combined_debt, 0.065)), reduced: Math.round(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.065)) },
-            { rate: "7.0%", current: Math.round(CALC.calcMonthlyPayment(CALC.combined_debt, 0.070)), reduced: Math.round(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.070)) },
-            { rate: "7.5%", current: Math.round(CALC.calcMonthlyPayment(CALC.combined_debt, 0.075)), reduced: Math.round(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.075)) }
-        ],
-        splits: [
-            { rule: "50/50 equal", cassandra: Math.round(CALC.both_net_proceeds / 2), troy: Math.round(CALC.both_net_proceeds / 2), note: "Simple equal split" },
-            { rule: "70/30 to Cassandra", cassandra: Math.round(CALC.both_net_proceeds * 0.7), troy: Math.round(CALC.both_net_proceeds * 0.3), note: "Proposed ratio" },
-            { rule: "Each keeps own sale net", cassandra: Math.round(CALC.pen_net_proceeds), troy: Math.round(CALC.seabrook_net_proceeds), note: "By property ownership" },
-            { rule: "Cass gets Pen first, then 70/30", cassandra: Math.round(CALC.pen_net_proceeds + CALC.seabrook_net_proceeds * 0.7), troy: Math.round(CALC.seabrook_net_proceeds * 0.3), note: "Preserves Pen value first" },
-            { rule: "60/40 to Cassandra", cassandra: Math.round(CALC.both_net_proceeds * 0.6), troy: Math.round(CALC.both_net_proceeds * 0.4), note: "Middle ground" },
-            { rule: "Proportional to equity", cassandra: Math.round(CALC.both_net_proceeds * (CALC.peninsular_equity / CALC.combined_equity)), troy: Math.round(CALC.both_net_proceeds * (CALC.seabrook_equity / CALC.combined_equity)), note: "Based on equity %" }
-        ],
-        qa: {
-            "safest": `The safest options are D1 (Sell Seabrook, keep Peninsular debt-free) or E1 (Sell both, hold cash). Both give you zero debt. D1 gives ${fmt(CALC.d1_cash_after)} buffer, E1 gives ${fmt(CALC.both_net_proceeds)} buffer. B2 is the safest if you want to stay in Seabrook - gives ${fmt(CALC.buffer_amount)} buffer.`,
-            "b2": `B2 (Sell Peninsular, keep 1-year buffer) reduces your debt from ${fmt(CALC.combined_debt)} to ${fmt(CALC.b2_remaining_debt)}. Monthly repayments drop significantly. You keep ${fmt(CALC.buffer_amount)} cash buffer. Compared to keeping both: you lose Peninsular's growth potential but gain massive stress reduction.`,
-            "rate": `If rates rise to 7.5%, your current monthly repayment jumps to ${fmt(CALC.calcMonthlyPayment(CALC.combined_debt, 0.075))}. With reduced loan (after selling Pen): ${fmt(CALC.calcMonthlyPayment(CALC.b1_remaining_debt, 0.075))}. Selling Peninsular cuts your rate exposure significantly.`,
-            "split": `Six split options exist: 50/50 gives each ${fmt(CALC.both_net_proceeds / 2)}. 70/30 gives Cassandra ${fmt(CALC.both_net_proceeds * 0.7)}. 'Each keeps own' gives Cass ${fmt(CALC.pen_net_proceeds)}, Troy ${fmt(CALC.seabrook_net_proceeds)}.`,
-            "friction": `Move friction = moving costs (~$30k) + contents writeoff (~$100k). Furniture bought retail can't be resold at value. Moving from Seabrook = $130k friction. Staying in Seabrook = $0 friction.`,
-            "peninsular": `Sell Peninsular not Seabrook because: 1) You prefer living in Seabrook, 2) Seabrook has more growth potential (${fmt(INPUTS.seabrook_value)} vs ${fmt(INPUTS.peninsular_value)} - same % gain = more $), 3) Moving from Seabrook costs $130k in friction, 4) Cassandra's equity is protected via preserved credit mechanism.`,
-            "default": "I can help with questions about your property options. Try asking about the safest option, comparing B2 vs keeping both, rate rise impacts, how splits work, move friction costs, or why sell Peninsular."
-        }
-    };
+    // ========================================
+    // CALCULATED VALUES
+    // ========================================
+    let CALC = {};
 
-    // Add savings to rates
-    DATA.rates = DATA.rates.map(r => ({...r, savings: r.current - r.reduced}));
+    function updateCalc() {
+        const r = INPUTS.interest_rate / 100;
+        const sellPct = 1 - (INPUTS.selling_costs / 100);
+
+        CALC = {
+            seabrook_equity: INPUTS.seabrook_value - INPUTS.seabrook_loan,
+            pen_equity: INPUTS.pen_value - INPUTS.pen_loan,
+            combined_debt: INPUTS.seabrook_loan + INPUTS.pen_loan,
+            
+            get combined_equity() { return this.seabrook_equity + this.pen_equity; },
+            
+            pen_net_proceeds: (INPUTS.pen_value * sellPct) - INPUTS.pen_loan,
+            seabrook_net_proceeds: (INPUTS.seabrook_value * sellPct) - INPUTS.seabrook_loan,
+            
+            get both_net_proceeds() { return this.pen_net_proceeds + this.seabrook_net_proceeds; },
+            
+            monthly_payment_current: calcMonthlyPayment(INPUTS.seabrook_loan + INPUTS.pen_loan, r),
+            
+            get buffer_amount() { return this.monthly_payment_current * INPUTS.buffer_months; },
+            
+            get b1_remaining_debt() { return Math.max(0, INPUTS.seabrook_loan - this.pen_net_proceeds); },
+            get b2_remaining_debt() { return Math.max(0, INPUTS.seabrook_loan - (this.pen_net_proceeds - this.buffer_amount)); },
+            get d1_cash_after() { return Math.max(0, this.seabrook_net_proceeds - INPUTS.pen_loan); }
+        };
+    }
+
+    function calcMonthlyPayment(principal, rate) {
+        if (principal <= 0) return 0;
+        const r = rate / 12;
+        const n = 30 * 12;
+        return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    }
+
+    function futureValue(pv, rate, years) {
+        return pv * Math.pow(1 + rate / 100, years);
+    }
 
     function fmt(n) {
-        if (n === null || n === undefined) return '-';
-        return '$' + Math.abs(Math.round(n)).toLocaleString('en-AU');
+        if (n === null || n === undefined || isNaN(n)) return '-';
+        return '$' + Math.round(Math.abs(n)).toLocaleString('en-AU');
+    }
+
+    function fmtPct(n) {
+        return n.toFixed(1) + '%';
+    }
+
+    // ========================================
+    // READ INPUTS FROM UI
+    // ========================================
+    function readInputs() {
+        INPUTS.seabrook_value = parseFloat(document.getElementById('inp-seabrook-value').value) || 0;
+        INPUTS.seabrook_loan = parseFloat(document.getElementById('inp-seabrook-loan').value) || 0;
+        INPUTS.pen_value = parseFloat(document.getElementById('inp-pen-value').value) || 0;
+        INPUTS.pen_loan = parseFloat(document.getElementById('inp-pen-loan').value) || 0;
+        INPUTS.seabrook_past_growth = parseFloat(document.getElementById('inp-seabrook-past-growth').value) || 0;
+        INPUTS.seabrook_future_growth = parseFloat(document.getElementById('inp-seabrook-future-growth').value) || 0;
+        INPUTS.pen_past_growth = parseFloat(document.getElementById('inp-pen-past-growth').value) || 0;
+        INPUTS.pen_future_growth = parseFloat(document.getElementById('inp-pen-future-growth').value) || 0;
+        INPUTS.interest_rate = parseFloat(document.getElementById('inp-interest-rate').value) || 0;
+        INPUTS.selling_costs = parseFloat(document.getElementById('inp-selling-costs').value) || 0;
+        INPUTS.buffer_months = parseFloat(document.getElementById('inp-buffer-months').value) || 0;
+        INPUTS.move_friction = parseFloat(document.getElementById('inp-move-friction').value) || 0;
+
+        // Update equity displays
+        document.getElementById('calc-seabrook-equity').textContent = fmt(INPUTS.seabrook_value - INPUTS.seabrook_loan);
+        document.getElementById('calc-pen-equity').textContent = fmt(INPUTS.pen_value - INPUTS.pen_loan);
+    }
+
+    function resetDefaults() {
+        INPUTS = { ...DEFAULTS };
+        document.getElementById('inp-seabrook-value').value = DEFAULTS.seabrook_value;
+        document.getElementById('inp-seabrook-loan').value = DEFAULTS.seabrook_loan;
+        document.getElementById('inp-pen-value').value = DEFAULTS.pen_value;
+        document.getElementById('inp-pen-loan').value = DEFAULTS.pen_loan;
+        document.getElementById('inp-seabrook-past-growth').value = DEFAULTS.seabrook_past_growth;
+        document.getElementById('inp-seabrook-future-growth').value = DEFAULTS.seabrook_future_growth;
+        document.getElementById('inp-pen-past-growth').value = DEFAULTS.pen_past_growth;
+        document.getElementById('inp-pen-future-growth').value = DEFAULTS.pen_future_growth;
+        document.getElementById('inp-interest-rate').value = DEFAULTS.interest_rate;
+        document.getElementById('inp-selling-costs').value = DEFAULTS.selling_costs;
+        document.getElementById('inp-buffer-months').value = DEFAULTS.buffer_months;
+        document.getElementById('inp-move-friction').value = DEFAULTS.move_friction;
+        recalculate();
+        showToast('Reset to defaults');
+    }
+
+    // ========================================
+    // RECALCULATE EVERYTHING
+    // ========================================
+    function recalculate() {
+        readInputs();
+        updateCalc();
+        renderAll();
+        showToast('✓ Recalculated');
+    }
+
+    // ========================================
+    // RENDER FUNCTIONS
+    // ========================================
+    function renderAll() {
+        renderSnapshot();
+        renderOverview();
+        renderGrowth();
+        renderOptions();
+        renderCompare();
+        renderStress();
+        renderSplits();
+    }
+
+    function renderSnapshot() {
+        const html = `
+            <div class="stat-card">
+                <div class="stat-label">Combined Value</div>
+                <div class="stat-value">${fmt(INPUTS.seabrook_value + INPUTS.pen_value)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Combined Debt</div>
+                <div class="stat-value negative">${fmt(CALC.combined_debt)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Combined Equity</div>
+                <div class="stat-value positive">${fmt(CALC.combined_equity)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Net if Sell Both</div>
+                <div class="stat-value positive">${fmt(CALC.both_net_proceeds)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Monthly Payment</div>
+                <div class="stat-value negative">${fmt(CALC.monthly_payment_current)}</div>
+            </div>
+        `;
+        document.getElementById('snapshot-numbers').innerHTML = html;
+    }
+
+    function renderOverview() {
+        const html = `
+            <div class="stat-card">
+                <div class="stat-label">Seabrook Value</div>
+                <div class="stat-value">${fmt(INPUTS.seabrook_value)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Peninsular Value</div>
+                <div class="stat-value">${fmt(INPUTS.pen_value)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Combined Equity</div>
+                <div class="stat-value positive">${fmt(CALC.combined_equity)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Combined Debt</div>
+                <div class="stat-value negative">${fmt(CALC.combined_debt)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Net if Sell Both</div>
+                <div class="stat-value positive">${fmt(CALC.both_net_proceeds)}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Recommended</div>
+                <div class="stat-value" style="color: var(--accent)">B2</div>
+            </div>
+        `;
+        document.getElementById('overview-numbers').innerHTML = html;
+
+        document.getElementById('rec-badges').innerHTML = `
+            <span class="badge badge-success">Low-Medium Risk</span>
+            <span class="badge badge-info">${fmt(CALC.buffer_amount)} Buffer</span>
+            <span class="badge badge-warning">${fmt(CALC.b2_remaining_debt)} Debt</span>
+        `;
+
+        const b2Payment = calcMonthlyPayment(CALC.b2_remaining_debt, INPUTS.interest_rate / 100);
+        document.getElementById('summary-tbody').innerHTML = `
+            <tr>
+                <td>Total Debt</td>
+                <td class="mono">${fmt(CALC.combined_debt)}</td>
+                <td class="mono" style="color: var(--success)">${fmt(CALC.b2_remaining_debt)}</td>
+            </tr>
+            <tr>
+                <td>Monthly Repayment</td>
+                <td class="mono">${fmt(CALC.monthly_payment_current)}</td>
+                <td class="mono" style="color: var(--success)">~${fmt(b2Payment)}</td>
+            </tr>
+            <tr>
+                <td>Cash Buffer</td>
+                <td class="mono">$0</td>
+                <td class="mono" style="color: var(--success)">${fmt(CALC.buffer_amount)}</td>
+            </tr>
+            <tr>
+                <td>Properties</td>
+                <td>2</td>
+                <td>1 (Seabrook)</td>
+            </tr>
+        `;
+    }
+
+    function renderGrowth() {
+        const years = [1, 3, 5, 10];
+        
+        document.getElementById('seabrook-growth-rate').textContent = INPUTS.seabrook_future_growth;
+        document.getElementById('pen-growth-rate').textContent = INPUTS.pen_future_growth;
+
+        // Seabrook projections
+        let html = years.map(y => {
+            const fv = futureValue(INPUTS.seabrook_value, INPUTS.seabrook_future_growth, y);
+            const eq = fv - INPUTS.seabrook_loan;
+            return `
+                <div class="growth-card">
+                    <div class="growth-year">${y} Year${y > 1 ? 's' : ''}</div>
+                    <div class="growth-value">${fmt(fv)}</div>
+                    <div class="growth-detail">Equity: ${fmt(eq)}</div>
+                </div>
+            `;
+        }).join('');
+        document.getElementById('seabrook-growth-grid').innerHTML = html;
+
+        // Peninsular projections
+        html = years.map(y => {
+            const fv = futureValue(INPUTS.pen_value, INPUTS.pen_future_growth, y);
+            const eq = fv - INPUTS.pen_loan;
+            return `
+                <div class="growth-card">
+                    <div class="growth-year">${y} Year${y > 1 ? 's' : ''}</div>
+                    <div class="growth-value">${fmt(fv)}</div>
+                    <div class="growth-detail">Equity: ${fmt(eq)}</div>
+                </div>
+            `;
+        }).join('');
+        document.getElementById('pen-growth-grid').innerHTML = html;
+
+        // Combined projections
+        html = years.map(y => {
+            const sfv = futureValue(INPUTS.seabrook_value, INPUTS.seabrook_future_growth, y);
+            const pfv = futureValue(INPUTS.pen_value, INPUTS.pen_future_growth, y);
+            const eq = (sfv - INPUTS.seabrook_loan) + (pfv - INPUTS.pen_loan);
+            return `
+                <div class="growth-card">
+                    <div class="growth-year">${y} Year${y > 1 ? 's' : ''}</div>
+                    <div class="growth-value">${fmt(eq)}</div>
+                    <div class="growth-detail">Total: ${fmt(sfv + pfv)}</div>
+                </div>
+            `;
+        }).join('');
+        document.getElementById('combined-growth-grid').innerHTML = html;
+
+        // Opportunity cost table
+        html = years.map(y => {
+            const fv = futureValue(INPUTS.pen_value, INPUTS.pen_future_growth, y);
+            const eq = fv - INPUTS.pen_loan;
+            const lost = fv - INPUTS.pen_value;
+            return `
+                <tr>
+                    <td>${y} Year${y > 1 ? 's' : ''}</td>
+                    <td class="mono">${fmt(fv)}</td>
+                    <td class="mono">${fmt(eq)}</td>
+                    <td class="mono" style="color: var(--danger)">${fmt(lost)}</td>
+                </tr>
+            `;
+        }).join('');
+        document.getElementById('opportunity-cost-tbody').innerHTML = html;
+
+        // Seabrook after selling Pen
+        const reducedDebt = CALC.b1_remaining_debt;
+        html = years.map(y => {
+            const fv = futureValue(INPUTS.seabrook_value, INPUTS.seabrook_future_growth, y);
+            const eq = fv - reducedDebt;
+            return `
+                <div class="growth-card">
+                    <div class="growth-year">${y} Year${y > 1 ? 's' : ''}</div>
+                    <div class="growth-value">${fmt(eq)}</div>
+                    <div class="growth-detail">Value: ${fmt(fv)} | Debt: ${fmt(reducedDebt)}</div>
+                </div>
+            `;
+        }).join('');
+        document.getElementById('seabrook-after-sale-grid').innerHTML = html;
     }
 
     function riskBadge(risk) {
@@ -1002,16 +1201,31 @@
         return map[risk] || 'badge-info';
     }
 
+    function getOptions() {
+        return [
+            { code: "A", name: "Keep both houses", description: "No sale. Formalise internal settlement.", debt_after: CALC.combined_debt, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
+            { code: "B1", name: "Sell Peninsular, pay all into Seabrook", description: "Maximum debt reduction.", debt_after: CALC.b1_remaining_debt, cash_after: Math.max(0, -CALC.b1_remaining_debt + INPUTS.seabrook_loan), move_friction: 0, risk: "Medium", recommended: false },
+            { code: "B2", name: "Sell Peninsular, keep buffer", description: `Keep ${INPUTS.buffer_months} months of repayments as buffer.`, debt_after: CALC.b2_remaining_debt, cash_after: Math.round(CALC.buffer_amount), move_friction: 0, risk: "Low-Medium", recommended: true },
+            { code: "B3", name: "Sell Peninsular, put into offset", description: "Interest drops but liquidity preserved.", debt_after: INPUTS.seabrook_loan, cash_after: Math.round(CALC.pen_net_proceeds), move_friction: 0, risk: "Medium", recommended: false },
+            { code: "C", name: "Sell Peninsular, rent Seabrook", description: "Rent Seabrook, family lives elsewhere.", debt_after: CALC.b1_remaining_debt, cash_after: 0, move_friction: 30000, risk: "Medium", recommended: false },
+            { code: "D1", name: "Sell Seabrook, keep Peninsular", description: "Debt free with buffer.", debt_after: 0, cash_after: CALC.d1_cash_after, move_friction: INPUTS.move_friction, risk: "Very Low", recommended: false },
+            { code: "D2", name: "Sell Seabrook, rent Peninsular", description: "Rent Peninsular out.", debt_after: 0, cash_after: CALC.d1_cash_after, move_friction: INPUTS.move_friction, risk: "Low", recommended: false },
+            { code: "E1", name: "Sell both, hold cash", description: "Maximum flexibility. Rent while deciding.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds), move_friction: INPUTS.move_friction, risk: "Flexible", recommended: false },
+            { code: "E2", name: "Sell both, buy new quickly", description: "Clean slate with ideal home.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds - INPUTS.move_friction), move_friction: INPUTS.move_friction, risk: "Medium", recommended: false },
+            { code: "F", name: "Keep both, formalise agreement", description: "Write formal ownership agreement.", debt_after: CALC.combined_debt, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
+            { code: "G", name: "Sell both, live with family", description: "Hold cash, buy when ready.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds - INPUTS.move_friction), move_friction: INPUTS.move_friction, risk: "Medium", recommended: false },
+            { code: "H", name: "Sell Peninsular, aggressive payoff", description: "Kill loan fast (~8 years).", debt_after: CALC.b1_remaining_debt, cash_after: 0, move_friction: 0, risk: "Medium", recommended: false }
+        ];
+    }
+
     function renderOptions() {
         const grid = document.getElementById('options-grid');
         const pref = localStorage.getItem('property_preference');
+        const options = getOptions();
         
-        grid.innerHTML = DATA.options.map(opt => `
+        grid.innerHTML = options.map(opt => `
             <div class="option-card ${opt.recommended ? 'recommended' : ''} ${pref === opt.code ? 'selected' : ''}" 
-                 role="listitem" 
-                 tabindex="0"
-                 onclick="selectOption('${opt.code}')"
-                 onkeypress="if(event.key==='Enter')selectOption('${opt.code}')">
+                 onclick="selectOption('${opt.code}')">
                 <div class="option-header">
                     <span class="option-code">${opt.code}</span>
                     <span class="badge ${riskBadge(opt.risk)}">${opt.risk}</span>
@@ -1041,8 +1255,8 @@
     }
 
     function renderCompare() {
-        const tbody = document.getElementById('compare-tbody');
-        tbody.innerHTML = DATA.options.map(opt => `
+        const options = getOptions();
+        document.getElementById('compare-tbody').innerHTML = options.map(opt => `
             <tr style="${opt.recommended ? 'background: var(--success-light);' : ''}">
                 <td class="mono">${opt.code}</td>
                 <td>${opt.name}</td>
@@ -1055,15 +1269,27 @@
     }
 
     function renderStress() {
-        const tbody = document.getElementById('stress-tbody');
-        tbody.innerHTML = DATA.stress.map(s => {
+        const r = INPUTS.interest_rate / 100;
+        const weeklyCurrentMortgage = Math.round(CALC.monthly_payment_current * 12 / 52);
+        const weeklyB1 = Math.round(calcMonthlyPayment(CALC.b1_remaining_debt, r) * 12 / 52);
+        const weeklyB2 = Math.round(calcMonthlyPayment(CALC.b2_remaining_debt, r) * 12 / 52);
+        const b2Runway = CALC.buffer_amount / (weeklyB2 || 1);
+
+        const stress = [
+            { option: "Keep both (current)", weekly: weeklyCurrentMortgage, buffer: 0, runway: 0 },
+            { option: "Sell Pen, pay all in (B1)", weekly: weeklyB1, buffer: 0, runway: 0 },
+            { option: "Sell Pen, keep buffer (B2)", weekly: weeklyB2, buffer: Math.round(CALC.buffer_amount), runway: Math.round(b2Runway * 10) / 10 },
+            { option: "Sell Seabrook (D1)", weekly: 0, buffer: Math.round(CALC.d1_cash_after), runway: "∞" },
+            { option: "Sell both (E1)", weekly: 0, buffer: Math.round(CALC.both_net_proceeds), runway: "∞" }
+        ];
+
+        document.getElementById('stress-tbody').innerHTML = stress.map(s => {
             const runwayPct = typeof s.runway === 'number' ? Math.min(s.runway / 100 * 100, 100) : 100;
             const runwayColor = s.runway === '∞' ? 'var(--success)' : (s.runway > 50 ? 'var(--warning)' : 'var(--danger)');
             return `
                 <tr>
                     <td>${s.option}</td>
-                    <td class="mono">${fmt(s.weekly_mortgage)}</td>
-                    <td class="mono" style="color: ${s.net_cashflow < 0 ? 'var(--danger)' : 'var(--success)'}">${s.net_cashflow === 0 ? '-' : fmt(s.net_cashflow)}</td>
+                    <td class="mono">${fmt(s.weekly)}/wk</td>
                     <td class="mono" style="color: ${s.buffer > 0 ? 'var(--success)' : ''}">${s.buffer === 0 ? '-' : fmt(s.buffer)}</td>
                     <td>
                         <span style="color: ${runwayColor}; font-weight: 600;">${s.runway === '∞' ? '∞ Safe' : s.runway + ' weeks'}</span>
@@ -1075,23 +1301,37 @@
             `;
         }).join('');
 
-        const rateTbody = document.getElementById('rate-tbody');
-        rateTbody.innerHTML = DATA.rates.map(r => `
-            <tr>
-                <td class="mono">${r.rate}</td>
-                <td class="mono">${fmt(r.current)}</td>
-                <td class="mono">${fmt(r.reduced)}</td>
-                <td class="mono" style="color: var(--success)">${fmt(r.savings)}</td>
-            </tr>
-        `).join('');
+        // Rate sensitivity
+        const rates = [5.5, 6.0, 6.5, 7.0, 7.5, 8.0];
+        document.getElementById('rate-tbody').innerHTML = rates.map(rate => {
+            const currentP = calcMonthlyPayment(CALC.combined_debt, rate / 100);
+            const reducedP = calcMonthlyPayment(CALC.b1_remaining_debt, rate / 100);
+            return `
+                <tr ${rate === INPUTS.interest_rate ? 'style="background: var(--accent-light);"' : ''}>
+                    <td class="mono">${rate.toFixed(1)}%</td>
+                    <td class="mono">${fmt(currentP)}</td>
+                    <td class="mono">${fmt(reducedP)}</td>
+                    <td class="mono" style="color: var(--success)">${fmt(currentP - reducedP)}</td>
+                </tr>
+            `;
+        }).join('');
     }
 
     function renderSplits() {
-        const grid = document.getElementById('split-grid');
-        grid.innerHTML = DATA.splits.map(s => `
+        const net = CALC.both_net_proceeds;
+        const splits = [
+            { rule: "50/50 equal", cassandra: net / 2, troy: net / 2, note: "Simple equal split" },
+            { rule: "70/30 to Cassandra", cassandra: net * 0.7, troy: net * 0.3, note: "Proposed ratio" },
+            { rule: "Each keeps own sale net", cassandra: CALC.pen_net_proceeds, troy: CALC.seabrook_net_proceeds, note: "By property ownership" },
+            { rule: "Cass gets Pen first, then 70/30", cassandra: CALC.pen_net_proceeds + CALC.seabrook_net_proceeds * 0.7, troy: CALC.seabrook_net_proceeds * 0.3, note: "Preserves Pen value first" },
+            { rule: "60/40 to Cassandra", cassandra: net * 0.6, troy: net * 0.4, note: "Middle ground" },
+            { rule: "Proportional to equity", cassandra: net * (CALC.pen_equity / CALC.combined_equity), troy: net * (CALC.seabrook_equity / CALC.combined_equity), note: "Based on equity %" }
+        ];
+
+        document.getElementById('split-grid').innerHTML = splits.map(s => `
             <div class="split-card">
                 <div class="split-rule">${s.rule}</div>
-                <div style="font-size: 0.875rem; color: var(--text-muted);">${s.note}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${s.note}</div>
                 <div class="split-values">
                     <div class="split-person">
                         <div class="split-name">Cassandra</div>
@@ -1106,6 +1346,9 @@
         `).join('');
     }
 
+    // ========================================
+    // UI FUNCTIONS
+    // ========================================
     function selectOption(code) {
         localStorage.setItem('property_preference', code);
         renderOptions();
@@ -1116,18 +1359,21 @@
     function updatePreferenceDisplay() {
         const pref = localStorage.getItem('property_preference');
         const displays = ['preference-display', 'preference-display-options'];
+        const options = getOptions();
         
         displays.forEach(id => {
             const el = document.getElementById(id);
             if (el) {
                 if (pref) {
-                    const opt = DATA.options.find(o => o.code === pref);
-                    el.innerHTML = `
-                        <div class="preference-banner">
-                            <span class="preference-text">✅ Your preference: <strong>${opt.code} - ${opt.name}</strong></span>
-                            <button class="clear-pref" onclick="clearPreference()">Clear</button>
-                        </div>
-                    `;
+                    const opt = options.find(o => o.code === pref);
+                    if (opt) {
+                        el.innerHTML = `
+                            <div class="preference-banner">
+                                <span>✅ Your preference: <strong>${opt.code} - ${opt.name}</strong></span>
+                                <button class="clear-pref" onclick="clearPreference()">Clear</button>
+                            </div>
+                        `;
+                    }
                 } else {
                     el.innerHTML = '';
                 }
@@ -1148,26 +1394,19 @@
         
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.classList.remove('active');
-            btn.setAttribute('aria-selected', 'false');
-            if (btn.dataset.section === sectionId) {
-                btn.classList.add('active');
-                btn.setAttribute('aria-selected', 'true');
-            }
+            if (btn.dataset.section === sectionId) btn.classList.add('active');
         });
     }
 
     function toggleFab() {
-        const options = document.getElementById('fab-options');
-        const btn = document.querySelector('.fab-btn');
-        options.classList.toggle('open');
-        btn.setAttribute('aria-expanded', options.classList.contains('open'));
+        document.getElementById('fab-options').classList.toggle('open');
     }
 
     function showToast(message) {
         const toast = document.getElementById('toast');
         toast.textContent = message;
         toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
+        setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
     function askQuestion(q) {
@@ -1183,14 +1422,7 @@
         const messages = document.getElementById('chat-messages');
         messages.innerHTML += `<div class="chat-message user"><div class="chat-bubble">${q}</div></div>`;
 
-        let answer = DATA.qa.default;
-        const ql = q.toLowerCase();
-        if (ql.includes('safe')) answer = DATA.qa.safest;
-        else if (ql.includes('b2') || (ql.includes('keep') && ql.includes('both'))) answer = DATA.qa.b2;
-        else if (ql.includes('rate') || ql.includes('interest') || ql.includes('7.5') || ql.includes('8%')) answer = DATA.qa.rate;
-        else if (ql.includes('split') || ql.includes('divide') || ql.includes('fair')) answer = DATA.qa.split;
-        else if (ql.includes('friction') || ql.includes('move') || ql.includes('moving')) answer = DATA.qa.friction;
-        else if (ql.includes('peninsular') || ql.includes('why sell')) answer = DATA.qa.peninsular;
+        let answer = getAnswer(q.toLowerCase());
 
         setTimeout(() => {
             messages.innerHTML += `<div class="chat-message assistant"><div class="chat-bubble">${answer}</div></div>`;
@@ -1200,30 +1432,49 @@
         input.value = '';
     }
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-            const tabs = [...document.querySelectorAll('.nav-btn')];
-            const current = tabs.findIndex(t => t.classList.contains('active'));
-            if (current >= 0) {
-                const next = e.key === 'ArrowRight' 
-                    ? (current + 1) % tabs.length 
-                    : (current - 1 + tabs.length) % tabs.length;
-                tabs[next].click();
-                tabs[next].focus();
-            }
+    function getAnswer(q) {
+        if (q.includes('safe')) {
+            return `The safest options are D1 (Sell Seabrook) or E1 (Sell both). Both give zero debt. D1 gives ${fmt(CALC.d1_cash_after)} buffer, E1 gives ${fmt(CALC.both_net_proceeds)}. B2 is safest if staying in Seabrook - ${fmt(CALC.buffer_amount)} buffer.`;
         }
-    });
+        if (q.includes('b2') || (q.includes('keep') && q.includes('both'))) {
+            return `B2 reduces debt from ${fmt(CALC.combined_debt)} to ${fmt(CALC.b2_remaining_debt)}. You keep ${fmt(CALC.buffer_amount)} cash buffer. Compared to keeping both: you lose Peninsular's growth (${INPUTS.pen_future_growth}% p.a.) but gain massive stress reduction.`;
+        }
+        if (q.includes('rate') || q.includes('interest')) {
+            const current8 = calcMonthlyPayment(CALC.combined_debt, 0.08);
+            const reduced8 = calcMonthlyPayment(CALC.b1_remaining_debt, 0.08);
+            return `At 8%, current loan = ${fmt(current8)}/month. After selling Pen = ${fmt(reduced8)}/month. Selling Peninsular halves your rate exposure.`;
+        }
+        if (q.includes('growth') || q.includes('opportunity')) {
+            const penIn5 = futureValue(INPUTS.pen_value, INPUTS.pen_future_growth, 5);
+            const lost = penIn5 - INPUTS.pen_value;
+            return `At ${INPUTS.pen_future_growth}% growth, Peninsular would be worth ${fmt(penIn5)} in 5 years. That's ${fmt(lost)} in growth you'd give up by selling now. However, the stress reduction and debt paydown may be worth it.`;
+        }
+        if (q.includes('split') || q.includes('divide')) {
+            return `Six split options exist: 50/50 = ${fmt(CALC.both_net_proceeds / 2)} each. 70/30 gives Cass ${fmt(CALC.both_net_proceeds * 0.7)}. 'Each keeps own' gives Cass ${fmt(CALC.pen_net_proceeds)}, Troy ${fmt(CALC.seabrook_net_proceeds)}.`;
+        }
+        if (q.includes('friction') || q.includes('move')) {
+            return `Move friction = ${fmt(INPUTS.move_friction)} (moving costs + contents writeoff). Furniture bought retail can't be resold at value. Staying in Seabrook = $0 friction.`;
+        }
+        return "I can help with: safest option, B2 comparison, rate impacts, growth projections, splits, or move friction. Try one of those!";
+    }
 
+    // ========================================
+    // INIT
+    // ========================================
     document.addEventListener('DOMContentLoaded', () => {
-        renderOptions();
-        renderCompare();
-        renderStress();
-        renderSplits();
+        readInputs();
+        updateCalc();
+        renderAll();
         updatePreferenceDisplay();
+        
+        // Auto-recalc on input change
+        document.querySelectorAll('.input-field').forEach(inp => {
+            inp.addEventListener('change', recalculate);
+        });
         
         setTimeout(() => {
             document.getElementById('loading').classList.add('hidden');
-        }, 500);
+        }, 300);
     });
     </script>
 </body>
