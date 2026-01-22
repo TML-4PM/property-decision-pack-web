@@ -579,6 +579,61 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading.hidden { display: none; }
 
+        /* Help button and modal */
+        .help-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .help-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 400;
+            padding: 1rem;
+        }
+
+        .help-modal.show { display: flex; }
+
+        .help-content {
+            background: var(--card);
+            border-radius: var(--radius);
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .help-content h2 { margin-bottom: 1rem; }
+        .help-content h3 { margin: 1.5rem 0 0.5rem; color: var(--accent); }
+        .help-content p { margin-bottom: 0.75rem; }
+        .help-content ul { margin: 0.5rem 0 1rem 1.5rem; }
+        .help-content li { margin-bottom: 0.25rem; }
+
+        .help-close {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
         @media print {
             header, nav, .fab-menu, .chat-input-area, .quick-questions { display: none; }
             section { display: block !important; page-break-inside: avoid; }
@@ -595,7 +650,8 @@
 
     <header>
         <div class="header-content">
-            <div class="logo">Property<span>Pack</span><span class="updated-badge">V7 Dynamic</span></div>
+            <div class="logo">Property<span>Pack</span><span class="updated-badge">V7</span></div>
+            <button class="help-btn" onclick="showHelp()" title="Help">?</button>
             <nav role="tablist">
                 <button class="nav-btn active" onclick="showSection('inputs')" data-section="inputs">⚙️ Inputs</button>
                 <button class="nav-btn" onclick="showSection('overview')" data-section="overview">Overview</button>
@@ -883,6 +939,50 @@
     </div>
 
     <div class="toast" id="toast"></div>
+
+    <!-- Help Modal -->
+    <div class="help-modal" id="help-modal" onclick="if(event.target===this)hideHelp()">
+        <div class="help-content">
+            <h2>👋 Hi Cass! Quick Guide</h2>
+            
+            <h3>📱 Getting Started</h3>
+            <p>This calculator shows all our property options. No login needed - just use the tabs at the top.</p>
+            
+            <h3>🔢 The Tabs</h3>
+            <ul>
+                <li><strong>⚙️ Inputs</strong> - Change property values, loans, growth rates</li>
+                <li><strong>Overview</strong> - Key numbers at a glance</li>
+                <li><strong>Growth</strong> - Future value projections (1-10 years)</li>
+                <li><strong>Options</strong> - All 12 scenarios with risk levels</li>
+                <li><strong>Compare</strong> - Side-by-side table</li>
+                <li><strong>Stress</strong> - What if income stops?</li>
+                <li><strong>Splits</strong> - How to divide if selling both</li>
+                <li><strong>Q&A</strong> - Ask questions</li>
+            </ul>
+            
+            <h3>🎯 Recommended: Option B2</h3>
+            <p>Sell Peninsular, keep Seabrook, keep 12-month buffer. This:</p>
+            <ul>
+                <li>Cuts debt roughly in half</li>
+                <li>Keeps us in Seabrook</li>
+                <li>Gives ~$130k safety buffer</li>
+                <li>Protects your equity</li>
+            </ul>
+            
+            <h3>💡 Tips</h3>
+            <ul>
+                <li>Tap any option card to mark as your preference</li>
+                <li>Change numbers in ⚙️ Inputs - everything auto-updates</li>
+                <li>Green = safer, Red = higher risk</li>
+                <li>Use Q&A tab to ask "what if" questions</li>
+            </ul>
+            
+            <h3>⚠️ Important</h3>
+            <p>This is <strong>modelling only</strong> - not financial advice. It helps us think through options together.</p>
+            
+            <button class="help-close" onclick="hideHelp()">Got it!</button>
+        </div>
+    </div>
 
     <script>
     // ========================================
@@ -1402,6 +1502,14 @@
         document.getElementById('fab-options').classList.toggle('open');
     }
 
+    function showHelp() {
+        document.getElementById('help-modal').classList.add('show');
+    }
+
+    function hideHelp() {
+        document.getElementById('help-modal').classList.remove('show');
+    }
+
     function showToast(message) {
         const toast = document.getElementById('toast');
         toast.textContent = message;
@@ -1474,6 +1582,11 @@
         
         setTimeout(() => {
             document.getElementById('loading').classList.add('hidden');
+            // Show help on first visit
+            if (!localStorage.getItem('help_seen')) {
+                showHelp();
+                localStorage.setItem('help_seen', 'true');
+            }
         }, 300);
     });
     </script>
