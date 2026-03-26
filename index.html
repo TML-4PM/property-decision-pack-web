@@ -1,1892 +1,694 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Decision Pack | Troy & Cassandra</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #f8f9fa;
-            --card: #ffffff;
-            --text: #1a1a2e;
-            --text-muted: #6b7280;
-            --accent: #2563eb;
-            --accent-light: #dbeafe;
-            --success: #059669;
-            --success-light: #d1fae5;
-            --warning: #d97706;
-            --warning-light: #fef3c7;
-            --danger: #dc2626;
-            --danger-light: #fee2e2;
-            --border: #e5e7eb;
-            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-            --radius: 12px;
-            --radius-sm: 8px;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: var(--accent);
-            color: white;
-            padding: 8px 16px;
-            z-index: 100;
-            transition: top 0.3s;
-        }
-        .skip-link:focus { top: 0; }
-
-        header {
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .logo { font-weight: 700; font-size: 1.25rem; color: var(--text); }
-        .logo span { color: var(--accent); }
-
-        nav { display: flex; gap: 0.25rem; flex-wrap: wrap; }
-
-        .nav-btn {
-            padding: 0.5rem 0.75rem;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: var(--radius-sm);
-            transition: all 0.2s;
-        }
-        .nav-btn:hover, .nav-btn.active {
-            background: var(--accent-light);
-            color: var(--accent);
-        }
-
-        @media (max-width: 768px) {
-            nav { display: none; }
-        }
-
-        main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
-
-        section { display: none; animation: fadeIn 0.3s ease; }
-        section.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
-        h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
-        h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-muted); }
-
-        .subtitle { color: var(--text-muted); margin-bottom: 1.5rem; }
-
-        .card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 1rem;
-        }
-
-        /* Input Panel Styles */
-        .input-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .input-group {
-            background: var(--bg);
-            border-radius: var(--radius-sm);
-            padding: 1rem;
-        }
-
-        .input-group h3 {
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .input-row {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .input-row:last-child { margin-bottom: 0; }
-
-        .input-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .input-field {
-            padding: 0.5rem 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 1rem;
-            font-family: 'JetBrains Mono', monospace;
-            width: 100%;
-            transition: border-color 0.2s;
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-light);
-        }
-
-        .input-hint {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-
-        .btn-recalc {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 1rem;
-            transition: background 0.2s;
-        }
-
-        .btn-recalc:hover { background: #1d4ed8; }
-
-        .btn-reset {
-            background: var(--bg);
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            font-size: 0.875rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            width: 100%;
-        }
-
-        /* Key Numbers */
-        .key-numbers {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 1rem;
-            box-shadow: var(--shadow);
-        }
-
-        .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem; }
-        .stat-value { font-size: 1.25rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
-        .stat-value.positive { color: var(--success); }
-        .stat-value.negative { color: var(--danger); }
-
-        /* Growth Projections */
-        .growth-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .growth-card {
-            background: var(--bg);
-            border-radius: var(--radius-sm);
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .growth-year { font-size: 0.875rem; color: var(--text-muted); font-weight: 500; }
-        .growth-value { font-size: 1.5rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--success); }
-        .growth-detail { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
-
-        /* Options Grid */
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-
-        .option-card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 1.25rem;
-            box-shadow: var(--shadow);
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .option-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-
-        .option-card.selected {
-            border-color: var(--accent);
-            background: var(--accent-light);
-        }
-
-        .option-card.recommended { border-color: var(--success); }
-
-        .option-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.75rem;
-        }
-
-        .option-code {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: var(--accent);
-        }
-
-        .option-name { font-weight: 600; font-size: 1rem; margin-bottom: 0.5rem; }
-        .option-desc { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem; }
-
-        .badge {
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 0.2rem 0.5rem;
-            border-radius: 9999px;
-            text-transform: uppercase;
-        }
-
-        .badge-success { background: var(--success-light); color: var(--success); }
-        .badge-warning { background: var(--warning-light); color: var(--warning); }
-        .badge-danger { background: var(--danger-light); color: var(--danger); }
-        .badge-info { background: var(--accent-light); color: var(--accent); }
-
-        .option-metrics {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-        }
-
-        .metric {
-            text-align: center;
-            padding: 0.5rem;
-            background: var(--bg);
-            border-radius: var(--radius-sm);
-        }
-
-        .metric-label { font-size: 0.7rem; color: var(--text-muted); }
-        .metric-value { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 0.85rem; }
-
-        /* Tables */
-        .table-wrap { overflow-x: auto; margin: 1rem 0; }
-
-        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th { background: var(--bg); font-weight: 600; position: sticky; top: 0; }
-        tr:hover { background: var(--bg); }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-
-        /* Chat */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 500px;
-            background: var(--card);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .chat-message { display: flex; gap: 0.75rem; max-width: 85%; }
-        .chat-message.user { align-self: flex-end; flex-direction: row-reverse; }
-
-        .chat-bubble { padding: 0.75rem 1rem; border-radius: var(--radius); font-size: 0.9rem; }
-        .chat-message.assistant .chat-bubble { background: var(--bg); }
-        .chat-message.user .chat-bubble { background: var(--accent); color: white; }
-
-        .chat-input-area {
-            display: flex;
-            gap: 0.5rem;
-            padding: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            font-family: inherit;
-        }
-
-        .chat-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-light);
-        }
-
-        .chat-send {
-            padding: 0.75rem 1.5rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .quick-questions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            padding: 0.75rem 1rem;
-            border-top: 1px solid var(--border);
-            background: var(--bg);
-        }
-
-        .quick-q {
-            padding: 0.5rem 0.75rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 9999px;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
-
-        .quick-q:hover {
-            background: var(--accent-light);
-            border-color: var(--accent);
-        }
-
-        /* Splits */
-        .split-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1rem;
-        }
-
-        .split-card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 1.25rem;
-            box-shadow: var(--shadow);
-        }
-
-        .split-rule { font-weight: 600; margin-bottom: 0.5rem; }
-
-        .split-values { display: flex; gap: 1rem; margin-top: 0.75rem; }
-
-        .split-person {
-            flex: 1;
-            text-align: center;
-            padding: 0.75rem;
-            background: var(--bg);
-            border-radius: var(--radius-sm);
-        }
-
-        .split-name { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem; }
-        .split-amount { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--success); }
-
-        /* Runway bars */
-        .runway-bar {
-            height: 8px;
-            background: var(--bg);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-        }
-
-        .runway-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
-
-        /* Mobile FAB */
-        .fab-menu {
-            display: none;
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 100;
-        }
-
-        @media (max-width: 768px) {
-            .fab-menu { display: block; }
-        }
-
-        .fab-btn {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: white;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .fab-options {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            overflow: hidden;
-            display: none;
-            min-width: 180px;
-        }
-
-        .fab-options.open { display: block; }
-
-        .fab-option {
-            display: block;
-            width: 100%;
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border: none;
-            background: none;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .fab-option:hover { background: var(--bg); }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--text);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 200;
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        .preference-banner {
-            background: var(--success-light);
-            border: 1px solid var(--success);
-            border-radius: var(--radius);
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .clear-pref {
-            background: none;
-            border: none;
-            color: var(--danger);
-            cursor: pointer;
-            font-size: 0.875rem;
-        }
-
-        .updated-badge {
-            background: var(--warning-light);
-            color: var(--warning);
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-
-        .loading {
-            position: fixed;
-            inset: 0;
-            background: rgba(255,255,255,0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 300;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .loading.hidden { display: none; }
-
-        /* Checklist styles */
-        .checklist-progress {
-            text-align: center;
-        }
-
-        .progress-text {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .progress-bar {
-            height: 12px;
-            background: var(--bg);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--success);
-            border-radius: 6px;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-
-        .checklist-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1rem;
-        }
-
-        .checklist-group {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 1.25rem;
-            box-shadow: var(--shadow);
-        }
-
-        .checklist-group-title {
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .checklist-item:last-child {
-            border-bottom: none;
-        }
-
-        .checklist-item:hover {
-            background: var(--bg);
-            margin: 0 -0.5rem;
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-            border-radius: var(--radius-sm);
-        }
-
-        .checklist-checkbox {
-            width: 22px;
-            height: 22px;
-            border: 2px solid var(--border);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-top: 2px;
-            transition: all 0.2s;
-        }
-
-        .checklist-item.done .checklist-checkbox {
-            background: var(--success);
-            border-color: var(--success);
-            color: white;
-        }
-
-        .checklist-item.done .checklist-text {
-            text-decoration: line-through;
-            color: var(--text-muted);
-        }
-
-        .checklist-content {
-            flex: 1;
-        }
-
-        .checklist-text {
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        .checklist-hint {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-
-        .notes-area {
-            width: 100%;
-            min-height: 120px;
-            padding: 1rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 0.95rem;
-            resize: vertical;
-        }
-
-        .notes-area:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-light);
-        }
-
-        /* Help button and modal */
-        .help-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: white;
-            border: none;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-left: auto;
-        }
-
-        .help-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 400;
-            padding: 1rem;
-        }
-
-        .help-modal.show { display: flex; }
-
-        .help-content {
-            background: var(--card);
-            border-radius: var(--radius);
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 2rem;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .help-content h2 { margin-bottom: 1rem; }
-        .help-content h3 { margin: 1.5rem 0 0.5rem; color: var(--accent); }
-        .help-content p { margin-bottom: 0.75rem; }
-        .help-content ul { margin: 0.5rem 0 1rem 1.5rem; }
-        .help-content li { margin-bottom: 0.25rem; }
-
-        .help-close {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: var(--radius);
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            width: 100%;
-        }
-
-        @media print {
-            header, nav, .fab-menu, .chat-input-area, .quick-questions { display: none; }
-            section { display: block !important; page-break-inside: avoid; }
-            .card { box-shadow: none; border: 1px solid #ddd; }
-        }
-    </style>
-<!-- T4H-BRAND-INJECT v1 group=G6 -->
-<link rel="icon" type="image/png" sizes="32x32" href="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
-<link rel="icon" type="image/x-icon" href="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.ico">
-<link rel="apple-touch-icon" href="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
-<meta property="og:image" content="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
-<!-- /T4H-BRAND-INJECT -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Property Decision Pack | Troy & Cassandra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#121931;
+      --panel-2:#18213f;
+      --card:rgba(255,255,255,0.06);
+      --card-strong:rgba(255,255,255,0.1);
+      --text:#f5f7fb;
+      --muted:#9fb0d3;
+      --line:rgba(255,255,255,0.12);
+      --blue:#74a7ff;
+      --blue-2:#4f7cff;
+      --green:#45d483;
+      --amber:#ffbe55;
+      --red:#ff7575;
+      --shadow:0 20px 40px rgba(0,0,0,0.28);
+      --radius:20px;
+      --radius-sm:14px;
+      --mono:'JetBrains Mono', monospace;
+      --sans:'Inter', system-ui, sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:var(--sans);
+      background:
+        radial-gradient(circle at top left, rgba(79,124,255,0.24), transparent 30%),
+        radial-gradient(circle at top right, rgba(69,212,131,0.16), transparent 24%),
+        linear-gradient(180deg, #0b1020 0%, #0e1428 100%);
+      color:var(--text);
+      min-height:100vh;
+      line-height:1.5;
+    }
+    a{color:var(--blue)}
+    .shell{max-width:1380px;margin:0 auto;padding:28px 20px 72px}
+    .hero{
+      background:linear-gradient(135deg, rgba(79,124,255,0.2), rgba(255,255,255,0.04));
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      margin-bottom:20px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(120deg, rgba(255,255,255,0.04), transparent 40%);
+      pointer-events:none;
+    }
+    .hero-top{
+      display:flex; justify-content:space-between; gap:16px; align-items:flex-start; flex-wrap:wrap;
+    }
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; background:rgba(255,255,255,0.08);
+      color:#d8e4ff; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+      margin-bottom:14px;
+    }
+    h1{font-size:clamp(34px, 5vw, 54px); line-height:1; letter-spacing:-0.04em; margin-bottom:12px}
+    .hero p{max-width:880px; color:#d4ddf0; font-size:16px}
+    .hero-grid{
+      display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-top:22px;
+    }
+    .hero-stat{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:16px;
+      backdrop-filter: blur(6px);
+    }
+    .hero-stat .label{font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:8px}
+    .hero-stat .value{font-family:var(--mono); font-size:clamp(18px, 2vw, 24px); font-weight:700}
+    .value.good{color:var(--green)}
+    .value.warn{color:var(--amber)}
+    .value.bad{color:var(--red)}
+
+    .nav{
+      display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 20px;
+    }
+    .nav button{
+      border:1px solid var(--line); color:var(--text); background:rgba(255,255,255,0.04);
+      padding:10px 14px; border-radius:999px; font-weight:600; cursor:pointer;
+    }
+    .nav button.active,.nav button:hover{background:rgba(116,167,255,0.18); border-color:rgba(116,167,255,0.4)}
+
+    section{display:none}
+    section.active{display:block}
+    .grid{
+      display:grid; grid-template-columns: 1.15fr .85fr; gap:20px;
+    }
+    .stack{display:grid; gap:20px}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.04));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow:var(--shadow);
+    }
+    .card h2{
+      font-size:22px; letter-spacing:-0.03em; margin-bottom:8px;
+    }
+    .sub{color:var(--muted); margin-bottom:18px}
+    .input-grid{
+      display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px;
+    }
+    .field{
+      display:flex; flex-direction:column; gap:8px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:14px;
+    }
+    .field label{
+      font-size:12px; font-weight:700; color:#c8d6f7; letter-spacing:.05em; text-transform:uppercase;
+    }
+    .field input{
+      width:100%; border:none; outline:none;
+      background:rgba(0,0,0,0.18);
+      color:var(--text); border-radius:12px; padding:12px 14px;
+      font:600 16px var(--mono);
+    }
+    .hint{font-size:12px; color:var(--muted)}
+    .btn-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px}
+    .btn{
+      border:none; border-radius:14px; padding:12px 18px; cursor:pointer; font-weight:700;
+    }
+    .btn.primary{background:linear-gradient(135deg, var(--blue-2), var(--blue)); color:white}
+    .btn.secondary{background:rgba(255,255,255,0.07); color:var(--text); border:1px solid var(--line)}
+
+    .summary-grid{
+      display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px;
+    }
+    .summary-box{
+      background:rgba(255,255,255,0.045);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px; padding:16px;
+    }
+    .summary-box .k{font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:8px}
+    .summary-box .v{font-family:var(--mono); font-size:22px; font-weight:700}
+    .summary-box .mini{font-size:13px; color:var(--muted); margin-top:6px}
+    .pill-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .pill{
+      padding:8px 12px; border-radius:999px; font-size:13px; font-weight:700;
+      border:1px solid transparent;
+    }
+    .pill.blue{background:rgba(116,167,255,0.15); color:#dce8ff; border-color:rgba(116,167,255,0.25)}
+    .pill.green{background:rgba(69,212,131,0.15); color:#dff8ea; border-color:rgba(69,212,131,0.25)}
+    .pill.amber{background:rgba(255,190,85,0.15); color:#fff0d1; border-color:rgba(255,190,85,0.25)}
+
+    table{width:100%; border-collapse:collapse; font-size:14px}
+    th,td{padding:12px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top}
+    th{color:#dce6fb; font-size:12px; text-transform:uppercase; letter-spacing:.08em}
+    td.mono{font-family:var(--mono)}
+    tr:hover td{background:rgba(255,255,255,0.02)}
+
+    .option-grid{
+      display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px;
+    }
+    .option{
+      background:rgba(255,255,255,0.045);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px; padding:18px;
+      transition:transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .option:hover{transform:translateY(-2px); border-color:rgba(116,167,255,0.35)}
+    .option h3{font-size:18px; margin-bottom:8px}
+    .option p{color:var(--muted); font-size:14px; margin-bottom:12px}
+    .option .meta{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
+    .meta-box{background:rgba(0,0,0,0.18); border-radius:14px; padding:12px}
+    .meta-box .k{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:6px}
+    .meta-box .v{font-family:var(--mono); font-weight:700}
+    .rule-card{
+      border-radius:22px;
+      padding:20px;
+      background:linear-gradient(135deg, rgba(69,212,131,0.1), rgba(116,167,255,0.08));
+      border:1px solid rgba(116,167,255,0.2);
+    }
+    .rule-card ul{margin:10px 0 0 18px; color:#d8e2f4}
+    .rule-card li{margin:8px 0}
+    .callout{
+      margin-top:16px;
+      padding:14px 16px;
+      border-radius:16px;
+      background:rgba(255,190,85,0.12);
+      border:1px solid rgba(255,190,85,0.25);
+      color:#fff0d1;
+      font-size:14px;
+    }
+    .footer{
+      margin-top:24px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+    }
+    .footer a{color:#9fd4ff; text-decoration:none}
+    @media (max-width: 1080px){
+      .grid{grid-template-columns:1fr}
+      .hero-grid,.option-grid,.summary-grid,.input-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 720px){
+      .hero, .card{padding:18px}
+      .hero-grid,.option-grid,.summary-grid,.input-grid{grid-template-columns:1fr}
+      h1{font-size:34px}
+    }
+  </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
+  <link rel="icon" type="image/x-icon" href="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.ico">
+  <link rel="apple-touch-icon" href="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
+  <meta property="og:image" content="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
 </head>
 <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
+  <div class="shell">
+    <div class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">Property Decision Pack · v8 rule model</div>
+          <h1>Troy + Cassandra split model</h1>
+          <p>
+            Rebuilt around the new rule. Cass keeps the Peninsular sale proceeds. Troy keeps the agreed Seabrook baseline valuation.
+            Growth above the agreed Seabrook baseline is split 50/50 after debt and selling costs are paid. Troy-only business or other discretionary spend
+            comes out of Troy’s side. Looking for work is not treated as that spend.
+          </p>
+        </div>
+      </div>
+      <div class="hero-grid" id="heroStats"></div>
     </div>
 
-    <header>
-        <div class="header-content">
-            <div class="logo">Property<span>Pack</span><span class="updated-badge">V7</span></div>
-            <button class="help-btn" onclick="showHelp()" title="Help">?</button>
-            <nav role="tablist">
-                <button class="nav-btn active" onclick="showSection('inputs')" data-section="inputs">⚙️ Inputs</button>
-                <button class="nav-btn" onclick="showSection('overview')" data-section="overview">Overview</button>
-                <button class="nav-btn" onclick="showSection('growth')" data-section="growth">Growth</button>
-                <button class="nav-btn" onclick="showSection('options')" data-section="options">Options</button>
-                <button class="nav-btn" onclick="showSection('compare')" data-section="compare">Compare</button>
-                <button class="nav-btn" onclick="showSection('stress')" data-section="stress">Stress</button>
-                <button class="nav-btn" onclick="showSection('splits')" data-section="splits">Splits</button>
-                <button class="nav-btn" onclick="showSection('chat')" data-section="chat">Q&A</button>
-                <button class="nav-btn" onclick="showSection('checklist')" data-section="checklist">✓ Checklist</button>
-            </nav>
-        </div>
-    </header>
-
-    <main id="main-content">
-        <!-- INPUTS SECTION -->
-        <section id="inputs" class="active">
-            <h1>⚙️ Calculator Inputs</h1>
-            <p class="subtitle">Adjust values and click "Recalculate" to update all projections</p>
-
-            <div class="card">
-                <div class="input-grid">
-                    <div class="input-group">
-                        <h3>🏠 Seabrook</h3>
-                        <div class="input-row">
-                            <label class="input-label">Current Market Value</label>
-                            <input type="number" class="input-field" id="inp-seabrook-value" value="2700000" step="10000">
-                        </div>
-                        <div class="input-row">
-                            <label class="input-label">Outstanding Loan</label>
-                            <input type="number" class="input-field" id="inp-seabrook-loan" value="1615977" step="1000">
-                        </div>
-                        <div class="input-row">
-                            <label class="input-label">Equity</label>
-                            <div class="input-field" id="calc-seabrook-equity" style="background: var(--success-light); color: var(--success);">$1,084,023</div>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <h3>🏡 Peninsular</h3>
-                        <div class="input-row">
-                            <label class="input-label">Current Market Value</label>
-                            <input type="number" class="input-field" id="inp-pen-value" value="1600000" step="10000">
-                        </div>
-                        <div class="input-row">
-                            <label class="input-label">Outstanding Loan</label>
-                            <input type="number" class="input-field" id="inp-pen-loan" value="824429" step="1000">
-                        </div>
-                        <div class="input-row">
-                            <label class="input-label">Equity</label>
-                            <div class="input-field" id="calc-pen-equity" style="background: var(--success-light); color: var(--success);">$775,571</div>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <h3>📈 Growth Assumptions</h3>
-                        <div class="input-row">
-                            <label class="input-label">Seabrook Past Growth (% p.a.)</label>
-                            <input type="number" class="input-field" id="inp-seabrook-past-growth" value="5.2" step="0.1">
-                            <span class="input-hint">Historical annual growth rate</span>
-                        </div>
-                        <div class="input-row">
-                            <label class="input-label">Seabrook Future Growth (% p.a.)</label>
-                            <input type="number" class="input-field" id="inp-seabrook-future-growth" value="4.0" step="0.1">
-                            <span class="input-hint">Expected annual growth rate</span>
-                        </div>
-                        <div class="input-row">
-                            <label class="input-label">Peninsular Past Growth (% p.a.)</label>
-                            <input type="number" class="input-field" id="inp-pen-past-growth" value="4.8" step="0.1">
-                        </div>
-                        <div class="input-row">
-                            <label class="input-label">Peninsular Future Growth (% p.a.)</label>
-                            <input type="number" class="input-field" id="inp-pen-future-growth" value="3.5" step="0.1">
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <h3>💰 Financial Settings</h3>
-                        <div class="input-row">
-                            <label class="input-label">Interest Rate (%)</label>
-                            <input type="number" class="input-field" id="inp-interest-rate" value="7.0" step="0.1">
-                        </div>
-                        <div class="input-row">
-                            <label class="input-label">Selling Costs (%)</label>
-                            <input type="number" class="input-field" id="inp-selling-costs" value="3.0" step="0.1">
-                            <span class="input-hint">Agent fees, legal, etc.</span>
-                        </div>
-                        <div class="input-row">
-                            <label class="input-label">Buffer Months</label>
-                            <input type="number" class="input-field" id="inp-buffer-months" value="12" step="1">
-                            <span class="input-hint">Months of payments to keep as buffer</span>
-                        </div>
-                        <div class="input-row">
-                            <label class="input-label">Move Friction (Seabrook)</label>
-                            <input type="number" class="input-field" id="inp-move-friction" value="130000" step="5000">
-                            <span class="input-hint">Moving + contents writeoff</span>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn-recalc" onclick="recalculate()">🔄 Recalculate All</button>
-                <button class="btn-reset" onclick="resetDefaults()">Reset to Defaults</button>
-            </div>
-
-            <div class="card">
-                <h2>📊 Current Snapshot</h2>
-                <div class="key-numbers" id="snapshot-numbers">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- OVERVIEW SECTION -->
-        <section id="overview">
-            <h1>Property Decision Pack</h1>
-            <p class="subtitle">Troy & Cassandra • Modelling only, not financial advice</p>
-
-            <div id="preference-display"></div>
-
-            <div class="key-numbers" id="overview-numbers"></div>
-
-            <div class="card">
-                <h2>🎯 Agreed Position: B2</h2>
-                <p><strong>Sell Peninsular, keep Seabrook, keep 12-month buffer</strong></p>
-                <p style="margin-top: 0.5rem; color: var(--text-muted);">This is our current agreed direction. Use this calculator to confirm with real numbers or explore alternatives.</p>
-                <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;" id="rec-badges"></div>
-            </div>
-
-            <div class="card">
-                <h2>📊 Quick Summary</h2>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr><th>Item</th><th>Current</th><th>After B2</th></tr>
-                        </thead>
-                        <tbody id="summary-tbody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- GROWTH SECTION -->
-        <section id="growth">
-            <h1>📈 Growth Projections</h1>
-            <p class="subtitle">Future value scenarios based on growth assumptions</p>
-
-            <div class="card">
-                <h2>Seabrook Value Projections</h2>
-                <p style="color: var(--text-muted); margin-bottom: 1rem;">At <span id="seabrook-growth-rate">4.0</span>% annual growth</p>
-                <div class="growth-grid" id="seabrook-growth-grid"></div>
-            </div>
-
-            <div class="card">
-                <h2>Peninsular Value Projections</h2>
-                <p style="color: var(--text-muted); margin-bottom: 1rem;">At <span id="pen-growth-rate">3.5</span>% annual growth</p>
-                <div class="growth-grid" id="pen-growth-grid"></div>
-            </div>
-
-            <div class="card">
-                <h2>Combined Equity Growth (if keeping both)</h2>
-                <div class="growth-grid" id="combined-growth-grid"></div>
-            </div>
-
-            <div class="card">
-                <h2>📉 Opportunity Cost: Selling Peninsular Now</h2>
-                <p style="color: var(--text-muted); margin-bottom: 1rem;">What you give up by selling Peninsular today</p>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr><th>Year</th><th>Pen Future Value</th><th>Pen Future Equity</th><th>Lost Growth</th></tr>
-                        </thead>
-                        <tbody id="opportunity-cost-tbody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>🏆 Seabrook Equity if Sell Pen & Pay Down</h2>
-                <p style="color: var(--text-muted); margin-bottom: 1rem;">Seabrook grows, debt stays reduced</p>
-                <div class="growth-grid" id="seabrook-after-sale-grid"></div>
-            </div>
-        </section>
-
-        <!-- OPTIONS SECTION -->
-        <section id="options">
-            <h1>All Options</h1>
-            <p class="subtitle">Click any option to mark as your preference</p>
-            <div id="preference-display-options"></div>
-            <div class="options-grid" id="options-grid"></div>
-        </section>
-
-        <!-- COMPARE SECTION -->
-        <section id="compare">
-            <h1>Compare Options</h1>
-            <p class="subtitle">Side-by-side comparison of all scenarios</p>
-            <div class="card">
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr><th>Code</th><th>Option</th><th>Debt After</th><th>Cash After</th><th>Risk</th><th>Move Cost</th></tr>
-                        </thead>
-                        <tbody id="compare-tbody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- STRESS TEST SECTION -->
-        <section id="stress">
-            <h1>Stress Test</h1>
-            <p class="subtitle">What happens if income stops?</p>
-
-            <div class="card">
-                <h2>Weekly Cashflow & Runway</h2>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr><th>Option</th><th>Weekly Mortgage</th><th>Buffer</th><th>Runway</th></tr>
-                        </thead>
-                        <tbody id="stress-tbody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Interest Rate Sensitivity</h2>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr><th>Rate</th><th>Current/month</th><th>Reduced/month</th><th>Savings</th></tr>
-                        </thead>
-                        <tbody id="rate-tbody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- SPLITS SECTION -->
-        <section id="splits">
-            <h1>Split Scenarios</h1>
-            <p class="subtitle">Different ways to divide if selling both</p>
-            <div class="split-grid" id="split-grid"></div>
-        </section>
-
-        <!-- CHAT SECTION -->
-        <section id="chat">
-            <h1>Ask Questions</h1>
-            <p class="subtitle">Get answers about your options</p>
-
-            <div class="chat-container">
-                <div class="chat-messages" id="chat-messages">
-                    <div class="chat-message assistant">
-                        <div class="chat-bubble">
-                            Hi! I can help you understand your property options. Try asking about the safest option, comparing scenarios, rate impacts, splits, or growth projections.
-                        </div>
-                    </div>
-                </div>
-                <div class="quick-questions">
-                    <button class="quick-q" onclick="askQuestion('What is the safest option?')">Safest option?</button>
-                    <button class="quick-q" onclick="askQuestion('Compare B2 vs keeping both')">B2 vs Keep Both</button>
-                    <button class="quick-q" onclick="askQuestion('What if rates rise?')">Rate rise impact</button>
-                    <button class="quick-q" onclick="askQuestion('How much growth am I giving up?')">Growth opportunity cost</button>
-                    <button class="quick-q" onclick="askQuestion('How is the split calculated?')">Split rules</button>
-                </div>
-                <div class="chat-input-area">
-                    <input type="text" class="chat-input" id="chat-input" placeholder="Ask a question..." onkeypress="if(event.key==='Enter')sendChat()">
-                    <button class="chat-send" onclick="sendChat()">Send</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- CHECKLIST SECTION -->
-        <section id="checklist">
-            <h1>✓ Decision Checklist</h1>
-            <p class="subtitle">Track what's done before making a final call</p>
-
-            <div class="card">
-                <div class="checklist-progress">
-                    <div class="progress-text"><span id="checklist-done">0</span> of <span id="checklist-total">0</span> complete</div>
-                    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-                </div>
-            </div>
-
-            <div class="checklist-grid" id="checklist-grid"></div>
-
-            <div class="card" style="margin-top: 1.5rem;">
-                <h2>📝 Notes</h2>
-                <textarea class="notes-area" id="decision-notes" placeholder="Add any notes, concerns, or questions here..." onchange="saveNotes()"></textarea>
-            </div>
-        </section>
-    </main>
-
-    <!-- Mobile FAB Menu -->
-    <div class="fab-menu">
-        <div class="fab-options" id="fab-options">
-            <button class="fab-option" onclick="showSection('inputs');toggleFab()">⚙️ Inputs</button>
-            <button class="fab-option" onclick="showSection('overview');toggleFab()">📊 Overview</button>
-            <button class="fab-option" onclick="showSection('growth');toggleFab()">📈 Growth</button>
-            <button class="fab-option" onclick="showSection('options');toggleFab()">🏠 Options</button>
-            <button class="fab-option" onclick="showSection('compare');toggleFab()">⚖️ Compare</button>
-            <button class="fab-option" onclick="showSection('stress');toggleFab()">🧪 Stress</button>
-            <button class="fab-option" onclick="showSection('splits');toggleFab()">💰 Splits</button>
-            <button class="fab-option" onclick="showSection('chat');toggleFab()">💬 Q&A</button>
-            <button class="fab-option" onclick="showSection('checklist');toggleFab()">✓ Checklist</button>
-        </div>
-        <button class="fab-btn" onclick="toggleFab()">☰</button>
+    <div class="nav">
+      <button class="active" data-section="overview">Overview</button>
+      <button data-section="inputs">Inputs</button>
+      <button data-section="projections">Future split</button>
+      <button data-section="options">Option cards</button>
+      <button data-section="notes">Rule notes</button>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <section id="overview" class="active">
+      <div class="grid">
+        <div class="stack">
+          <div class="card">
+            <h2>Current position</h2>
+            <div class="sub">High-level view of the working model.</div>
+            <div class="summary-grid" id="overviewGrid"></div>
+            <div class="pill-row" id="overviewPills"></div>
+          </div>
 
-    <!-- Help Modal -->
-    <div class="help-modal" id="help-modal" onclick="if(event.target===this)hideHelp()">
-        <div class="help-content">
-            <h2>👋 Hi Cass! Quick Guide</h2>
-            
-            <h3>📍 Current Agreed Position</h3>
-            <p><strong>B2: Sell Peninsular, keep Seabrook, keep 12-month buffer</strong></p>
-            <p style="color: var(--text-muted); margin-top: 0.5rem;">This is where we're at. Use this calculator to test other scenarios if you want, or confirm this is still right with updated numbers.</p>
-            
-            <h3>📱 Getting Started</h3>
-            <p>This calculator shows all our property options. No login needed - just use the tabs at the top.</p>
-            
-            <h3>🔢 The Tabs</h3>
-            <ul>
-                <li><strong>⚙️ Inputs</strong> - Change property values, loans, growth rates</li>
-                <li><strong>Overview</strong> - Key numbers at a glance</li>
-                <li><strong>Growth</strong> - Future value projections (1-10 years)</li>
-                <li><strong>Options</strong> - All 12 scenarios with risk levels</li>
-                <li><strong>Compare</strong> - Side-by-side table</li>
-                <li><strong>Stress</strong> - What if income stops?</li>
-                <li><strong>Splits</strong> - How to divide if selling both</li>
-                <li><strong>Q&A</strong> - Ask questions</li>
-            </ul>
-            
-            <h3>🎯 Agreed Position: B2</h3>
-            <p>Sell Peninsular, keep Seabrook, keep 12-month buffer. This:</p>
-            <ul>
-                <li>Cuts debt roughly in half</li>
-                <li>Keeps us in Seabrook</li>
-                <li>Gives ~$130k safety buffer</li>
-                <li>Protects your equity</li>
-            </ul>
-            
-            <h3>💡 Tips</h3>
-            <ul>
-                <li>Tap any option card to mark as your preference</li>
-                <li>Change numbers in ⚙️ Inputs - everything auto-updates</li>
-                <li>Green = safer, Red = higher risk</li>
-                <li>Use Q&A tab to ask "what if" questions</li>
-            </ul>
-            
-            <h3>⚠️ Important</h3>
-            <p>This is <strong>modelling only</strong> - not financial advice. It helps us think through options together.</p>
-            
-            <button class="help-close" onclick="hideHelp()">Got it!</button>
+          <div class="card">
+            <h2>Today’s split snapshot</h2>
+            <div class="sub">Using the fixed agreed Seabrook baseline you wanted.</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Rule</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody id="snapshotTable"></tbody>
+            </table>
+          </div>
         </div>
+
+        <div class="stack">
+          <div class="card">
+            <h2>Decision rule</h2>
+            <div class="rule-card">
+              <strong>Working commercial rule</strong>
+              <ul>
+                <li>Cass keeps Peninsular sale proceeds after sale costs and debt.</li>
+                <li>Troy keeps the fixed agreed Seabrook baseline valuation amount.</li>
+                <li>Any Seabrook growth above that baseline is split equally 50/50.</li>
+                <li>Debt and sale costs get cleared first in the final settlement model.</li>
+                <li>Troy-only business or discretionary spend is deducted from Troy’s side only.</li>
+                <li>Looking for work is not counted as discretionary spend.</li>
+              </ul>
+            </div>
+            <div class="callout">
+              This is still a modelling tool, not legal or financial advice. It is set up to reflect the rule you described, not to replace formal settlement drafting.
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Quick read</h2>
+            <div id="quickRead" class="sub" style="margin-bottom:0"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="inputs">
+      <div class="grid">
+        <div class="card">
+          <h2>Core inputs</h2>
+          <div class="sub">Change the numbers and the whole model updates immediately.</div>
+          <div class="input-grid">
+            <div class="field">
+              <label>Seabrook current market value</label>
+              <input id="seabrookValue" type="number" step="10000" value="2700000">
+              <div class="hint">Current reference value only.</div>
+            </div>
+            <div class="field">
+              <label>Seabrook loan balance</label>
+              <input id="seabrookLoan" type="number" step="1000" value="1615977">
+              <div class="hint">Outstanding debt secured against Seabrook.</div>
+            </div>
+            <div class="field">
+              <label>Peninsular sale price</label>
+              <input id="penSalePrice" type="number" step="10000" value="1600000">
+              <div class="hint">Expected or actual sale price.</div>
+            </div>
+            <div class="field">
+              <label>Peninsular loan balance</label>
+              <input id="penLoan" type="number" step="1000" value="824429">
+              <div class="hint">Outstanding debt secured against Peninsular.</div>
+            </div>
+            <div class="field">
+              <label>Agreed Seabrook baseline valuation</label>
+              <input id="agreedSeabrookBaseline" type="number" step="10000" value="2700000">
+              <div class="hint">Fixed agreed number used for Troy’s baseline.</div>
+            </div>
+            <div class="field">
+              <label>Selling costs %</label>
+              <input id="sellingCostsPct" type="number" step="0.1" value="3.0">
+              <div class="hint">Applied to sale values for working model.</div>
+            </div>
+            <div class="field">
+              <label>Seabrook future growth % p.a.</label>
+              <input id="seabrookGrowth" type="number" step="0.1" value="4.0">
+              <div class="hint">Used to model future split scenarios.</div>
+            </div>
+            <div class="field">
+              <label>Troy discretionary spend adjustment</label>
+              <input id="troySpend" type="number" step="1000" value="0">
+              <div class="hint">Business or other discretionary spend only. Job search is excluded.</div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn primary" id="recalcBtn">Recalculate</button>
+            <button class="btn secondary" id="resetBtn">Reset defaults</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Input guidance</h2>
+          <div class="sub">
+            This version treats the Seabrook baseline as a fixed agreed number. That means you can lock the commercial starting point,
+            then let the model show how future growth above that point is shared.
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Input</th>
+                <th>How it is used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">Agreed baseline</td><td>Troy’s starting Seabrook position before future growth split.</td></tr>
+              <tr><td class="mono">Pen sale price</td><td>Cass sale proceeds pool after costs and debt.</td></tr>
+              <tr><td class="mono">Troy spend</td><td>Deducted from Troy’s side only.</td></tr>
+              <tr><td class="mono">Growth %</td><td>Used to project the split of Seabrook gains above baseline.</td></tr>
+              <tr><td class="mono">Selling costs</td><td>Applied before final split calculations.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="projections">
+      <div class="card">
+        <h2>Future Seabrook split scenarios</h2>
+        <div class="sub">Future growth above the agreed baseline gets split 50/50 after everyone is paid.</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Years</th>
+              <th>Projected Seabrook value</th>
+              <th>Growth above baseline</th>
+              <th>Cass 50% growth share</th>
+              <th>Troy 50% growth share</th>
+              <th>Troy net after spend adj.</th>
+            </tr>
+          </thead>
+          <tbody id="futureTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="options">
+      <div class="card">
+        <h2>Updated option cards</h2>
+        <div class="sub">Cleaner framing of the main commercial choices now that the baseline rule is fixed.</div>
+        <div class="option-grid" id="optionGrid"></div>
+      </div>
+    </section>
+
+    <section id="notes">
+      <div class="grid">
+        <div class="card">
+          <h2>Settlement drafting notes</h2>
+          <div class="sub">
+            Plain-English articulation of the working rule for later legal drafting.
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Topic</th>
+                <th>Working wording</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Peninsular proceeds</td>
+                <td>Cassandra retains the Peninsular sale proceeds after selling costs and secured debt are paid.</td>
+              </tr>
+              <tr>
+                <td>Seabrook baseline</td>
+                <td>Troy retains the fixed agreed Seabrook baseline valuation amount as the starting Seabrook position.</td>
+              </tr>
+              <tr>
+                <td>Future growth</td>
+                <td>Any Seabrook value uplift above the agreed baseline is split equally 50/50 after debt and sale costs are paid.</td>
+              </tr>
+              <tr>
+                <td>Troy discretionary spend</td>
+                <td>Any Troy-only business or other discretionary spend reduces Troy’s side only.</td>
+              </tr>
+              <tr>
+                <td>Job search carve-out</td>
+                <td>Reasonable costs of looking for work are excluded from the Troy discretionary spend deduction rule.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2>What changed in this rebuild</h2>
+          <ul style="margin-left:18px; color:#d8e2f4">
+            <li style="margin:8px 0">Sharper visual design and cleaner hierarchy.</li>
+            <li style="margin:8px 0">Model rebuilt around the fixed agreed Seabrook baseline.</li>
+            <li style="margin:8px 0">Dedicated Troy spend adjustment built in.</li>
+            <li style="margin:8px 0">Future growth split table added.</li>
+            <li style="margin:8px 0">Old generic split cards replaced with rule-specific cards.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <a href="https://linkedin.com/in/troylatter">LinkedIn</a>
+      <div style="margin-top:14px">© 2026 Troy Latter / Tech 4 Humanity Ltd</div>
     </div>
+  </div>
 
-    <script>
-    // ========================================
-    // CHECKLIST DATA
-    // ========================================
-    const CHECKLIST = [
-        {
-            group: "Hard Numbers",
-            icon: "📊",
-            items: [
-                { id: "val_seabrook", text: "Get formal Seabrook valuation", hint: "From agent or certified valuer" },
-                { id: "val_pen", text: "Get formal Peninsular valuation", hint: "From agent or certified valuer" },
-                { id: "loan_seabrook", text: "Confirm Seabrook loan balance", hint: "Call bank for exact figure" },
-                { id: "loan_pen", text: "Confirm Peninsular loan balance", hint: "Call bank for exact figure" },
-                { id: "income", text: "Document household income", hint: "Both salaries + any other income" },
-                { id: "expenses", text: "List monthly expenses", hint: "Fixed + variable costs" },
-                { id: "agent_quotes", text: "Get agent selling quotes", hint: "Compare 2-3 agents on fees" }
-            ]
-        },
-        {
-            group: "Tax & Legal",
-            icon: "⚖️",
-            items: [
-                { id: "cgt", text: "Get CGT estimate from accountant", hint: "Capital gains if selling Pen" },
-                { id: "ownership", text: "Clarify ownership structure", hint: "Names on title, percentages" },
-                { id: "stamp_duty", text: "Check stamp duty if buying new", hint: "Only if E2 option relevant" },
-                { id: "settlement", text: "Understand settlement process", hint: "How long, what's involved" }
-            ]
-        },
-        {
-            group: "Professional Advice",
-            icon: "👔",
-            items: [
-                { id: "broker", text: "Talk to mortgage broker", hint: "Can you refinance? Best rates?" },
-                { id: "accountant", text: "Meet with accountant", hint: "Tax implications of each option" },
-                { id: "lawyer", text: "Consult lawyer if needed", hint: "For split/settlement scenarios" }
-            ]
-        },
-        {
-            group: "Together Decisions",
-            icon: "💬",
-            items: [
-                { id: "cass_review", text: "Cass has reviewed calculator", hint: "Gone through all tabs" },
-                { id: "cass_questions", text: "Cass's questions answered", hint: "No outstanding concerns" },
-                { id: "preference_aligned", text: "Both preferences marked", hint: "Use Options tab to mark" },
-                { id: "discuss_timeline", text: "Discussed timeline", hint: "When to decide, when to act" },
-                { id: "discuss_kids", text: "Considered impact on kids", hint: "Schools, routine, friends" },
-                { id: "emotional", text: "Discussed emotional factors", hint: "Attachment to properties" }
-            ]
-        },
-        {
-            group: "Final Steps",
-            icon: "🎯",
-            items: [
-                { id: "option_agreed", text: "Agreed on preferred option", hint: "Both aligned on direction" },
-                { id: "numbers_final", text: "Updated calculator with final numbers", hint: "All real values entered" },
-                { id: "professional_ok", text: "Professional advice supports choice", hint: "Broker/accountant comfortable" },
-                { id: "ready_decide", text: "Ready to make final decision", hint: "All boxes ticked above" }
-            ]
-        }
-    ];
-
-    // ========================================
-    // DEFAULT VALUES
-    // ========================================
+  <script>
     const DEFAULTS = {
-        seabrook_value: 2700000,
-        seabrook_loan: 1615977,
-        pen_value: 1600000,
-        pen_loan: 824429,
-        seabrook_past_growth: 5.2,
-        seabrook_future_growth: 4.0,
-        pen_past_growth: 4.8,
-        pen_future_growth: 3.5,
-        interest_rate: 7.0,
-        selling_costs: 3.0,
-        buffer_months: 12,
-        move_friction: 130000
+      seabrookValue: 2700000,
+      seabrookLoan: 1615977,
+      penSalePrice: 1600000,
+      penLoan: 824429,
+      agreedSeabrookBaseline: 2700000,
+      sellingCostsPct: 3.0,
+      seabrookGrowth: 4.0,
+      troySpend: 0
     };
 
-    // ========================================
-    // LIVE INPUTS (will be updated from UI)
-    // ========================================
-    let INPUTS = { ...DEFAULTS };
+    const $$ = (id) => document.getElementById(id);
 
-    // ========================================
-    // CALCULATED VALUES
-    // ========================================
-    let CALC = {};
+    function money(n){
+      if (!isFinite(n)) return "-";
+      return "$" + Math.round(n).toLocaleString("en-AU");
+    }
 
-    function updateCalc() {
-        const r = INPUTS.interest_rate / 100;
-        const sellPct = 1 - (INPUTS.selling_costs / 100);
+    function readInputs(){
+      return {
+        seabrookValue: Number($$("seabrookValue").value || 0),
+        seabrookLoan: Number($$("seabrookLoan").value || 0),
+        penSalePrice: Number($$("penSalePrice").value || 0),
+        penLoan: Number($$("penLoan").value || 0),
+        agreedSeabrookBaseline: Number($$("agreedSeabrookBaseline").value || 0),
+        sellingCostsPct: Number($$("sellingCostsPct").value || 0),
+        seabrookGrowth: Number($$("seabrookGrowth").value || 0),
+        troySpend: Number($$("troySpend").value || 0)
+      };
+    }
 
-        CALC = {
-            seabrook_equity: INPUTS.seabrook_value - INPUTS.seabrook_loan,
-            pen_equity: INPUTS.pen_value - INPUTS.pen_loan,
-            combined_debt: INPUTS.seabrook_loan + INPUTS.pen_loan,
-            
-            get combined_equity() { return this.seabrook_equity + this.pen_equity; },
-            
-            pen_net_proceeds: (INPUTS.pen_value * sellPct) - INPUTS.pen_loan,
-            seabrook_net_proceeds: (INPUTS.seabrook_value * sellPct) - INPUTS.seabrook_loan,
-            
-            get both_net_proceeds() { return this.pen_net_proceeds + this.seabrook_net_proceeds; },
-            
-            monthly_payment_current: calcMonthlyPayment(INPUTS.seabrook_loan + INPUTS.pen_loan, r),
-            
-            get buffer_amount() { return this.monthly_payment_current * INPUTS.buffer_months; },
-            
-            get b1_remaining_debt() { return Math.max(0, INPUTS.seabrook_loan - this.pen_net_proceeds); },
-            get b2_remaining_debt() { return Math.max(0, INPUTS.seabrook_loan - (this.pen_net_proceeds - this.buffer_amount)); },
-            get d1_cash_after() { return Math.max(0, this.seabrook_net_proceeds - INPUTS.pen_loan); }
+    function calc(data){
+      const costFactor = 1 - (data.sellingCostsPct / 100);
+      const penNet = Math.max(0, data.penSalePrice * costFactor - data.penLoan);
+      const seabrookNetToday = Math.max(0, data.seabrookValue * costFactor - data.seabrookLoan);
+      const troyBaselineEquity = Math.max(0, data.agreedSeabrookBaseline * costFactor - data.seabrookLoan);
+      const baselineGapVsCurrent = data.seabrookValue - data.agreedSeabrookBaseline;
+
+      const years = [1, 3, 5, 10].map((y) => {
+        const futureValue = data.seabrookValue * Math.pow(1 + data.seabrookGrowth / 100, y);
+        const futureNet = Math.max(0, futureValue * costFactor - data.seabrookLoan);
+        const baselineNet = Math.max(0, data.agreedSeabrookBaseline * costFactor - data.seabrookLoan);
+        const growthPool = Math.max(0, futureNet - baselineNet);
+        const eachGrowthShare = growthPool / 2;
+        return {
+          years: y,
+          futureValue,
+          growthPool,
+          cassShare: eachGrowthShare,
+          troyShare: eachGrowthShare,
+          troyNetAfterSpend: Math.max(0, baselineNet + eachGrowthShare - data.troySpend)
         };
+      });
+
+      return {
+        penNet,
+        seabrookNetToday,
+        troyBaselineEquity,
+        baselineGapVsCurrent,
+        years
+      };
     }
 
-    function calcMonthlyPayment(principal, rate) {
-        if (principal <= 0) return 0;
-        const r = rate / 12;
-        const n = 30 * 12;
-        return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    function render(){
+      const data = readInputs();
+      const c = calc(data);
+
+      $$("heroStats").innerHTML = `
+        <div class="hero-stat">
+          <div class="label">Cass sale proceeds</div>
+          <div class="value good">${money(c.penNet)}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Troy baseline equity</div>
+          <div class="value">${money(c.troyBaselineEquity)}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Current Seabrook net equity</div>
+          <div class="value">${money(c.seabrookNetToday)}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Troy spend adjustment</div>
+          <div class="value ${data.troySpend > 0 ? 'warn' : ''}">${money(data.troySpend)}</div>
+        </div>
+      `;
+
+      $$("overviewGrid").innerHTML = `
+        <div class="summary-box">
+          <div class="k">Cass keeps now</div>
+          <div class="v good">${money(c.penNet)}</div>
+          <div class="mini">Peninsular sale proceeds after costs and debt</div>
+        </div>
+        <div class="summary-box">
+          <div class="k">Troy baseline now</div>
+          <div class="v">${money(c.troyBaselineEquity)}</div>
+          <div class="mini">Agreed Seabrook baseline less sale costs and debt</div>
+        </div>
+        <div class="summary-box">
+          <div class="k">Current Seabrook vs agreed baseline</div>
+          <div class="v ${c.baselineGapVsCurrent >= 0 ? 'good' : 'bad'}">${money(c.baselineGapVsCurrent)}</div>
+          <div class="mini">Difference between current value and fixed baseline</div>
+        </div>
+        <div class="summary-box">
+          <div class="k">5-year each growth share</div>
+          <div class="v good">${money(c.years.find(x => x.years === 5).cassShare)}</div>
+          <div class="mini">If Seabrook growth performs at the current forecast</div>
+        </div>
+      `;
+
+      $$("overviewPills").innerHTML = `
+        <span class="pill blue">Fixed baseline: ${money(data.agreedSeabrookBaseline)}</span>
+        <span class="pill green">Growth split: 50 / 50</span>
+        <span class="pill amber">Troy-only spend deducted from Troy</span>
+      `;
+
+      $$("snapshotTable").innerHTML = `
+        <tr>
+          <td>Cassandra position</td>
+          <td>Peninsular net proceeds retained</td>
+          <td class="mono">${money(c.penNet)}</td>
+        </tr>
+        <tr>
+          <td>Troy position</td>
+          <td>Agreed Seabrook baseline equity retained</td>
+          <td class="mono">${money(c.troyBaselineEquity)}</td>
+        </tr>
+        <tr>
+          <td>Future Seabrook growth</td>
+          <td>Shared equally above baseline</td>
+          <td class="mono">50 / 50</td>
+        </tr>
+        <tr>
+          <td>Troy discretionary spend</td>
+          <td>Comes out of Troy’s side only</td>
+          <td class="mono">${money(data.troySpend)}</td>
+        </tr>
+      `;
+
+      $$("quickRead").innerHTML = `
+        On the current numbers, Cass’s immediate retained Peninsular proceeds are <strong>${money(c.penNet)}</strong>.
+        Troy’s Seabrook baseline equity on the fixed agreed valuation is <strong>${money(c.troyBaselineEquity)}</strong>.
+        On a ${data.seabrookGrowth.toFixed(1)}% annual Seabrook growth run, the 5-year shared upside pool gives each side roughly
+        <strong>${money(c.years.find(x => x.years === 5).cassShare)}</strong> of additional value before Troy’s discretionary spend adjustment.
+      `;
+
+      $$("futureTable").innerHTML = c.years.map(row => `
+        <tr>
+          <td class="mono">${row.years}</td>
+          <td class="mono">${money(row.futureValue)}</td>
+          <td class="mono">${money(row.growthPool)}</td>
+          <td class="mono">${money(row.cassShare)}</td>
+          <td class="mono">${money(row.troyShare)}</td>
+          <td class="mono">${money(row.troyNetAfterSpend)}</td>
+        </tr>
+      `).join("");
+
+      const five = c.years.find(x => x.years === 5);
+      const ten = c.years.find(x => x.years === 10);
+
+      $$("optionGrid").innerHTML = `
+        <div class="option">
+          <h3>Rule-led settlement base</h3>
+          <p>Best fit for the rule you just set. Cass keeps Peninsular proceeds. Troy keeps the Seabrook baseline. Future growth is shared.</p>
+          <div class="meta">
+            <div class="meta-box"><div class="k">Cass now</div><div class="v">${money(c.penNet)}</div></div>
+            <div class="meta-box"><div class="k">Troy baseline</div><div class="v">${money(c.troyBaselineEquity)}</div></div>
+            <div class="meta-box"><div class="k">5y each growth share</div><div class="v">${money(five.cassShare)}</div></div>
+            <div class="meta-box"><div class="k">Risk note</div><div class="v">Needs legal wording</div></div>
+          </div>
+        </div>
+        <div class="option">
+          <h3>More Troy-favourable view</h3>
+          <p>Uses the fixed Seabrook baseline and treats future growth as shared, but preserves Troy’s baseline first and only deducts Troy-only spend from Troy.</p>
+          <div class="meta">
+            <div class="meta-box"><div class="k">Troy after spend today</div><div class="v">${money(Math.max(0, c.troyBaselineEquity - data.troySpend))}</div></div>
+            <div class="meta-box"><div class="k">Spend adjustment</div><div class="v">${money(data.troySpend)}</div></div>
+            <div class="meta-box"><div class="k">10y each growth share</div><div class="v">${money(ten.troyShare)}</div></div>
+            <div class="meta-box"><div class="k">Job search costs</div><div class="v">Excluded</div></div>
+          </div>
+        </div>
+        <div class="option">
+          <h3>Negotiation midpoint card</h3>
+          <p>Use this if you want to explain the logic cleanly: immediate retained positions are separated, but later Seabrook upside is shared fairly.</p>
+          <div class="meta">
+            <div class="meta-box"><div class="k">Immediate split</div><div class="v">Separated</div></div>
+            <div class="meta-box"><div class="k">Later upside</div><div class="v">Equal share</div></div>
+            <div class="meta-box"><div class="k">Commercial framing</div><div class="v">Cleaner</div></div>
+            <div class="meta-box"><div class="k">Look / feel</div><div class="v">Upgraded</div></div>
+          </div>
+        </div>
+        <div class="option">
+          <h3>Conservative legal drafting card</h3>
+          <p>Assume all debt and selling costs are settled first, then apply the baseline and future-growth split. This is the safer reading for formal documents.</p>
+          <div class="meta">
+            <div class="meta-box"><div class="k">Debt paid first</div><div class="v">Yes</div></div>
+            <div class="meta-box"><div class="k">Cost paid first</div><div class="v">Yes</div></div>
+            <div class="meta-box"><div class="k">Baseline locked</div><div class="v">${money(data.agreedSeabrookBaseline)}</div></div>
+            <div class="meta-box"><div class="k">Formalisation</div><div class="v">Recommended</div></div>
+          </div>
+        </div>
+      `;
     }
 
-    function futureValue(pv, rate, years) {
-        return pv * Math.pow(1 + rate / 100, years);
+    function resetDefaults(){
+      Object.entries(DEFAULTS).forEach(([key,val]) => {
+        const el = $$(key);
+        if (el) el.value = val;
+      });
+      render();
     }
 
-    function fmt(n) {
-        if (n === null || n === undefined || isNaN(n)) return '-';
-        return '$' + Math.round(Math.abs(n)).toLocaleString('en-AU');
-    }
-
-    function fmtPct(n) {
-        return n.toFixed(1) + '%';
-    }
-
-    // ========================================
-    // READ INPUTS FROM UI
-    // ========================================
-    function readInputs() {
-        INPUTS.seabrook_value = parseFloat(document.getElementById('inp-seabrook-value').value) || 0;
-        INPUTS.seabrook_loan = parseFloat(document.getElementById('inp-seabrook-loan').value) || 0;
-        INPUTS.pen_value = parseFloat(document.getElementById('inp-pen-value').value) || 0;
-        INPUTS.pen_loan = parseFloat(document.getElementById('inp-pen-loan').value) || 0;
-        INPUTS.seabrook_past_growth = parseFloat(document.getElementById('inp-seabrook-past-growth').value) || 0;
-        INPUTS.seabrook_future_growth = parseFloat(document.getElementById('inp-seabrook-future-growth').value) || 0;
-        INPUTS.pen_past_growth = parseFloat(document.getElementById('inp-pen-past-growth').value) || 0;
-        INPUTS.pen_future_growth = parseFloat(document.getElementById('inp-pen-future-growth').value) || 0;
-        INPUTS.interest_rate = parseFloat(document.getElementById('inp-interest-rate').value) || 0;
-        INPUTS.selling_costs = parseFloat(document.getElementById('inp-selling-costs').value) || 0;
-        INPUTS.buffer_months = parseFloat(document.getElementById('inp-buffer-months').value) || 0;
-        INPUTS.move_friction = parseFloat(document.getElementById('inp-move-friction').value) || 0;
-
-        // Update equity displays
-        document.getElementById('calc-seabrook-equity').textContent = fmt(INPUTS.seabrook_value - INPUTS.seabrook_loan);
-        document.getElementById('calc-pen-equity').textContent = fmt(INPUTS.pen_value - INPUTS.pen_loan);
-    }
-
-    function resetDefaults() {
-        INPUTS = { ...DEFAULTS };
-        document.getElementById('inp-seabrook-value').value = DEFAULTS.seabrook_value;
-        document.getElementById('inp-seabrook-loan').value = DEFAULTS.seabrook_loan;
-        document.getElementById('inp-pen-value').value = DEFAULTS.pen_value;
-        document.getElementById('inp-pen-loan').value = DEFAULTS.pen_loan;
-        document.getElementById('inp-seabrook-past-growth').value = DEFAULTS.seabrook_past_growth;
-        document.getElementById('inp-seabrook-future-growth').value = DEFAULTS.seabrook_future_growth;
-        document.getElementById('inp-pen-past-growth').value = DEFAULTS.pen_past_growth;
-        document.getElementById('inp-pen-future-growth').value = DEFAULTS.pen_future_growth;
-        document.getElementById('inp-interest-rate').value = DEFAULTS.interest_rate;
-        document.getElementById('inp-selling-costs').value = DEFAULTS.selling_costs;
-        document.getElementById('inp-buffer-months').value = DEFAULTS.buffer_months;
-        document.getElementById('inp-move-friction').value = DEFAULTS.move_friction;
-        recalculate();
-        showToast('Reset to defaults');
-    }
-
-    // ========================================
-    // RECALCULATE EVERYTHING
-    // ========================================
-    function recalculate() {
-        readInputs();
-        updateCalc();
-        renderAll();
-        showToast('✓ Recalculated');
-    }
-
-    // ========================================
-    // RENDER FUNCTIONS
-    // ========================================
-    function renderAll() {
-        renderSnapshot();
-        renderOverview();
-        renderGrowth();
-        renderOptions();
-        renderCompare();
-        renderStress();
-        renderSplits();
-    }
-
-    function renderSnapshot() {
-        const html = `
-            <div class="stat-card">
-                <div class="stat-label">Combined Value</div>
-                <div class="stat-value">${fmt(INPUTS.seabrook_value + INPUTS.pen_value)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Combined Debt</div>
-                <div class="stat-value negative">${fmt(CALC.combined_debt)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Combined Equity</div>
-                <div class="stat-value positive">${fmt(CALC.combined_equity)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Net if Sell Both</div>
-                <div class="stat-value positive">${fmt(CALC.both_net_proceeds)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Monthly Payment</div>
-                <div class="stat-value negative">${fmt(CALC.monthly_payment_current)}</div>
-            </div>
-        `;
-        document.getElementById('snapshot-numbers').innerHTML = html;
-    }
-
-    function renderOverview() {
-        const html = `
-            <div class="stat-card">
-                <div class="stat-label">Seabrook Value</div>
-                <div class="stat-value">${fmt(INPUTS.seabrook_value)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Peninsular Value</div>
-                <div class="stat-value">${fmt(INPUTS.pen_value)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Combined Equity</div>
-                <div class="stat-value positive">${fmt(CALC.combined_equity)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Combined Debt</div>
-                <div class="stat-value negative">${fmt(CALC.combined_debt)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Net if Sell Both</div>
-                <div class="stat-value positive">${fmt(CALC.both_net_proceeds)}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Agreed Position</div>
-                <div class="stat-value" style="color: var(--accent)">B2</div>
-            </div>
-        `;
-        document.getElementById('overview-numbers').innerHTML = html;
-
-        document.getElementById('rec-badges').innerHTML = `
-            <span class="badge badge-success">✅ Agreed Position</span>
-            <span class="badge badge-info">${fmt(CALC.buffer_amount)} Buffer</span>
-            <span class="badge badge-warning">${fmt(CALC.b2_remaining_debt)} Debt</span>
-        `;
-
-        const b2Payment = calcMonthlyPayment(CALC.b2_remaining_debt, INPUTS.interest_rate / 100);
-        document.getElementById('summary-tbody').innerHTML = `
-            <tr>
-                <td>Total Debt</td>
-                <td class="mono">${fmt(CALC.combined_debt)}</td>
-                <td class="mono" style="color: var(--success)">${fmt(CALC.b2_remaining_debt)}</td>
-            </tr>
-            <tr>
-                <td>Monthly Repayment</td>
-                <td class="mono">${fmt(CALC.monthly_payment_current)}</td>
-                <td class="mono" style="color: var(--success)">~${fmt(b2Payment)}</td>
-            </tr>
-            <tr>
-                <td>Cash Buffer</td>
-                <td class="mono">$0</td>
-                <td class="mono" style="color: var(--success)">${fmt(CALC.buffer_amount)}</td>
-            </tr>
-            <tr>
-                <td>Properties</td>
-                <td>2</td>
-                <td>1 (Seabrook)</td>
-            </tr>
-        `;
-    }
-
-    function renderGrowth() {
-        const years = [1, 3, 5, 10];
-        
-        document.getElementById('seabrook-growth-rate').textContent = INPUTS.seabrook_future_growth;
-        document.getElementById('pen-growth-rate').textContent = INPUTS.pen_future_growth;
-
-        // Seabrook projections
-        let html = years.map(y => {
-            const fv = futureValue(INPUTS.seabrook_value, INPUTS.seabrook_future_growth, y);
-            const eq = fv - INPUTS.seabrook_loan;
-            return `
-                <div class="growth-card">
-                    <div class="growth-year">${y} Year${y > 1 ? 's' : ''}</div>
-                    <div class="growth-value">${fmt(fv)}</div>
-                    <div class="growth-detail">Equity: ${fmt(eq)}</div>
-                </div>
-            `;
-        }).join('');
-        document.getElementById('seabrook-growth-grid').innerHTML = html;
-
-        // Peninsular projections
-        html = years.map(y => {
-            const fv = futureValue(INPUTS.pen_value, INPUTS.pen_future_growth, y);
-            const eq = fv - INPUTS.pen_loan;
-            return `
-                <div class="growth-card">
-                    <div class="growth-year">${y} Year${y > 1 ? 's' : ''}</div>
-                    <div class="growth-value">${fmt(fv)}</div>
-                    <div class="growth-detail">Equity: ${fmt(eq)}</div>
-                </div>
-            `;
-        }).join('');
-        document.getElementById('pen-growth-grid').innerHTML = html;
-
-        // Combined projections
-        html = years.map(y => {
-            const sfv = futureValue(INPUTS.seabrook_value, INPUTS.seabrook_future_growth, y);
-            const pfv = futureValue(INPUTS.pen_value, INPUTS.pen_future_growth, y);
-            const eq = (sfv - INPUTS.seabrook_loan) + (pfv - INPUTS.pen_loan);
-            return `
-                <div class="growth-card">
-                    <div class="growth-year">${y} Year${y > 1 ? 's' : ''}</div>
-                    <div class="growth-value">${fmt(eq)}</div>
-                    <div class="growth-detail">Total: ${fmt(sfv + pfv)}</div>
-                </div>
-            `;
-        }).join('');
-        document.getElementById('combined-growth-grid').innerHTML = html;
-
-        // Opportunity cost table
-        html = years.map(y => {
-            const fv = futureValue(INPUTS.pen_value, INPUTS.pen_future_growth, y);
-            const eq = fv - INPUTS.pen_loan;
-            const lost = fv - INPUTS.pen_value;
-            return `
-                <tr>
-                    <td>${y} Year${y > 1 ? 's' : ''}</td>
-                    <td class="mono">${fmt(fv)}</td>
-                    <td class="mono">${fmt(eq)}</td>
-                    <td class="mono" style="color: var(--danger)">${fmt(lost)}</td>
-                </tr>
-            `;
-        }).join('');
-        document.getElementById('opportunity-cost-tbody').innerHTML = html;
-
-        // Seabrook after selling Pen
-        const reducedDebt = CALC.b1_remaining_debt;
-        html = years.map(y => {
-            const fv = futureValue(INPUTS.seabrook_value, INPUTS.seabrook_future_growth, y);
-            const eq = fv - reducedDebt;
-            return `
-                <div class="growth-card">
-                    <div class="growth-year">${y} Year${y > 1 ? 's' : ''}</div>
-                    <div class="growth-value">${fmt(eq)}</div>
-                    <div class="growth-detail">Value: ${fmt(fv)} | Debt: ${fmt(reducedDebt)}</div>
-                </div>
-            `;
-        }).join('');
-        document.getElementById('seabrook-after-sale-grid').innerHTML = html;
-    }
-
-    function riskBadge(risk) {
-        const map = {
-            'Very Low': 'badge-success',
-            'Low': 'badge-success',
-            'Low-Medium': 'badge-success',
-            'Medium': 'badge-warning',
-            'High': 'badge-danger',
-            'Flexible': 'badge-info'
-        };
-        return map[risk] || 'badge-info';
-    }
-
-    function getOptions() {
-        return [
-            { code: "A", name: "Keep both houses", description: "No sale. Formalise internal settlement.", debt_after: CALC.combined_debt, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
-            { code: "B1", name: "Sell Peninsular, pay all into Seabrook", description: "Maximum debt reduction.", debt_after: CALC.b1_remaining_debt, cash_after: Math.max(0, -CALC.b1_remaining_debt + INPUTS.seabrook_loan), move_friction: 0, risk: "Medium", recommended: false },
-            { code: "B2", name: "Sell Peninsular, keep buffer", description: `Keep ${INPUTS.buffer_months} months of repayments as buffer.`, debt_after: CALC.b2_remaining_debt, cash_after: Math.round(CALC.buffer_amount), move_friction: 0, risk: "Low-Medium", agreed: true },
-            { code: "B3", name: "Sell Peninsular, put into offset", description: "Interest drops but liquidity preserved.", debt_after: INPUTS.seabrook_loan, cash_after: Math.round(CALC.pen_net_proceeds), move_friction: 0, risk: "Medium", recommended: false },
-            { code: "C", name: "Sell Peninsular, rent Seabrook", description: "Rent Seabrook, family lives elsewhere.", debt_after: CALC.b1_remaining_debt, cash_after: 0, move_friction: 30000, risk: "Medium", recommended: false },
-            { code: "D1", name: "Sell Seabrook, keep Peninsular", description: "Debt free with buffer.", debt_after: 0, cash_after: CALC.d1_cash_after, move_friction: INPUTS.move_friction, risk: "Very Low", recommended: false },
-            { code: "D2", name: "Sell Seabrook, rent Peninsular", description: "Rent Peninsular out.", debt_after: 0, cash_after: CALC.d1_cash_after, move_friction: INPUTS.move_friction, risk: "Low", recommended: false },
-            { code: "E1", name: "Sell both, hold cash", description: "Maximum flexibility. Rent while deciding.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds), move_friction: INPUTS.move_friction, risk: "Flexible", recommended: false },
-            { code: "E2", name: "Sell both, buy new quickly", description: "Clean slate with ideal home.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds - INPUTS.move_friction), move_friction: INPUTS.move_friction, risk: "Medium", recommended: false },
-            { code: "F", name: "Keep both, formalise agreement", description: "Write formal ownership agreement.", debt_after: CALC.combined_debt, cash_after: 0, move_friction: 0, risk: "High", recommended: false },
-            { code: "G", name: "Sell both, live with family", description: "Hold cash, buy when ready.", debt_after: 0, cash_after: Math.round(CALC.both_net_proceeds - INPUTS.move_friction), move_friction: INPUTS.move_friction, risk: "Medium", recommended: false },
-            { code: "H", name: "Sell Peninsular, aggressive payoff", description: "Kill loan fast (~8 years).", debt_after: CALC.b1_remaining_debt, cash_after: 0, move_friction: 0, risk: "Medium", recommended: false }
-        ];
-    }
-
-    function renderOptions() {
-        const grid = document.getElementById('options-grid');
-        const pref = localStorage.getItem('property_preference');
-        const options = getOptions();
-        
-        grid.innerHTML = options.map(opt => `
-            <div class="option-card ${opt.agreed ? 'recommended' : ''} ${pref === opt.code ? 'selected' : ''}" 
-                 onclick="selectOption('${opt.code}')">
-                <div class="option-header">
-                    <span class="option-code">${opt.code}</span>
-                    <span class="badge ${riskBadge(opt.risk)}">${opt.risk}</span>
-                </div>
-                <div class="option-name">${opt.name}</div>
-                <div class="option-desc">${opt.description}</div>
-                <div class="option-metrics">
-                    <div class="metric">
-                        <div class="metric-label">Debt After</div>
-                        <div class="metric-value" style="color: ${opt.debt_after === 0 ? 'var(--success)' : 'var(--danger)'}">${fmt(opt.debt_after)}</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-label">Cash After</div>
-                        <div class="metric-value" style="color: ${opt.cash_after > 0 ? 'var(--success)' : 'var(--text-muted)'}">${fmt(opt.cash_after)}</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-label">Move Cost</div>
-                        <div class="metric-value">${opt.move_friction === 0 ? '-' : fmt(opt.move_friction)}</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-label">Status</div>
-                        <div class="metric-value">${opt.agreed ? '✅ Agreed' : '-'}</div>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function renderCompare() {
-        const options = getOptions();
-        document.getElementById('compare-tbody').innerHTML = options.map(opt => `
-            <tr style="${opt.agreed ? 'background: var(--success-light);' : ''}">
-                <td class="mono">${opt.code}</td>
-                <td>${opt.name}</td>
-                <td class="mono" style="color: ${opt.debt_after === 0 ? 'var(--success)' : ''}">${fmt(opt.debt_after)}</td>
-                <td class="mono" style="color: ${opt.cash_after > 0 ? 'var(--success)' : ''}">${fmt(opt.cash_after)}</td>
-                <td><span class="badge ${riskBadge(opt.risk)}">${opt.risk}</span></td>
-                <td class="mono">${opt.move_friction === 0 ? '-' : fmt(opt.move_friction)}</td>
-            </tr>
-        `).join('');
-    }
-
-    function renderStress() {
-        const r = INPUTS.interest_rate / 100;
-        const weeklyCurrentMortgage = Math.round(CALC.monthly_payment_current * 12 / 52);
-        const weeklyB1 = Math.round(calcMonthlyPayment(CALC.b1_remaining_debt, r) * 12 / 52);
-        const weeklyB2 = Math.round(calcMonthlyPayment(CALC.b2_remaining_debt, r) * 12 / 52);
-        const b2Runway = CALC.buffer_amount / (weeklyB2 || 1);
-
-        const stress = [
-            { option: "Keep both (current)", weekly: weeklyCurrentMortgage, buffer: 0, runway: 0 },
-            { option: "Sell Pen, pay all in (B1)", weekly: weeklyB1, buffer: 0, runway: 0 },
-            { option: "Sell Pen, keep buffer (B2)", weekly: weeklyB2, buffer: Math.round(CALC.buffer_amount), runway: Math.round(b2Runway * 10) / 10 },
-            { option: "Sell Seabrook (D1)", weekly: 0, buffer: Math.round(CALC.d1_cash_after), runway: "∞" },
-            { option: "Sell both (E1)", weekly: 0, buffer: Math.round(CALC.both_net_proceeds), runway: "∞" }
-        ];
-
-        document.getElementById('stress-tbody').innerHTML = stress.map(s => {
-            const runwayPct = typeof s.runway === 'number' ? Math.min(s.runway / 100 * 100, 100) : 100;
-            const runwayColor = s.runway === '∞' ? 'var(--success)' : (s.runway > 50 ? 'var(--warning)' : 'var(--danger)');
-            return `
-                <tr>
-                    <td>${s.option}</td>
-                    <td class="mono">${fmt(s.weekly)}/wk</td>
-                    <td class="mono" style="color: ${s.buffer > 0 ? 'var(--success)' : ''}">${s.buffer === 0 ? '-' : fmt(s.buffer)}</td>
-                    <td>
-                        <span style="color: ${runwayColor}; font-weight: 600;">${s.runway === '∞' ? '∞ Safe' : s.runway + ' weeks'}</span>
-                        <div class="runway-bar">
-                            <div class="runway-fill" style="width: ${runwayPct}%; background: ${runwayColor}"></div>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-
-        // Rate sensitivity
-        const rates = [5.5, 6.0, 6.5, 7.0, 7.5, 8.0];
-        document.getElementById('rate-tbody').innerHTML = rates.map(rate => {
-            const currentP = calcMonthlyPayment(CALC.combined_debt, rate / 100);
-            const reducedP = calcMonthlyPayment(CALC.b1_remaining_debt, rate / 100);
-            return `
-                <tr ${rate === INPUTS.interest_rate ? 'style="background: var(--accent-light);"' : ''}>
-                    <td class="mono">${rate.toFixed(1)}%</td>
-                    <td class="mono">${fmt(currentP)}</td>
-                    <td class="mono">${fmt(reducedP)}</td>
-                    <td class="mono" style="color: var(--success)">${fmt(currentP - reducedP)}</td>
-                </tr>
-            `;
-        }).join('');
-    }
-
-    function renderSplits() {
-        const net = CALC.both_net_proceeds;
-        const splits = [
-            { rule: "50/50 equal", cassandra: net / 2, troy: net / 2, note: "Simple equal split" },
-            { rule: "70/30 to Cassandra", cassandra: net * 0.7, troy: net * 0.3, note: "Proposed ratio" },
-            { rule: "Each keeps own sale net", cassandra: CALC.pen_net_proceeds, troy: CALC.seabrook_net_proceeds, note: "By property ownership" },
-            { rule: "Cass gets Pen first, then 70/30", cassandra: CALC.pen_net_proceeds + CALC.seabrook_net_proceeds * 0.7, troy: CALC.seabrook_net_proceeds * 0.3, note: "Preserves Pen value first" },
-            { rule: "60/40 to Cassandra", cassandra: net * 0.6, troy: net * 0.4, note: "Middle ground" },
-            { rule: "Proportional to equity", cassandra: net * (CALC.pen_equity / CALC.combined_equity), troy: net * (CALC.seabrook_equity / CALC.combined_equity), note: "Based on equity %" }
-        ];
-
-        document.getElementById('split-grid').innerHTML = splits.map(s => `
-            <div class="split-card">
-                <div class="split-rule">${s.rule}</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">${s.note}</div>
-                <div class="split-values">
-                    <div class="split-person">
-                        <div class="split-name">Cassandra</div>
-                        <div class="split-amount">${fmt(s.cassandra)}</div>
-                    </div>
-                    <div class="split-person">
-                        <div class="split-name">Troy</div>
-                        <div class="split-amount">${fmt(s.troy)}</div>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    // ========================================
-    // UI FUNCTIONS
-    // ========================================
-    function selectOption(code) {
-        localStorage.setItem('property_preference', code);
-        renderOptions();
-        updatePreferenceDisplay();
-        showToast(`Option ${code} marked as preference`);
-    }
-
-    function updatePreferenceDisplay() {
-        const pref = localStorage.getItem('property_preference');
-        const displays = ['preference-display', 'preference-display-options'];
-        const options = getOptions();
-        
-        displays.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                if (pref) {
-                    const opt = options.find(o => o.code === pref);
-                    if (opt) {
-                        el.innerHTML = `
-                            <div class="preference-banner">
-                                <span>✅ Your preference: <strong>${opt.code} - ${opt.name}</strong></span>
-                                <button class="clear-pref" onclick="clearPreference()">Clear</button>
-                            </div>
-                        `;
-                    }
-                } else {
-                    el.innerHTML = '';
-                }
-            }
-        });
-    }
-
-    function clearPreference() {
-        localStorage.removeItem('property_preference');
-        renderOptions();
-        updatePreferenceDisplay();
-        showToast('Preference cleared');
-    }
-
-    function showSection(sectionId) {
-        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        document.getElementById(sectionId).classList.add('active');
-        
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.section === sectionId) btn.classList.add('active');
-        });
-    }
-
-    function toggleFab() {
-        document.getElementById('fab-options').classList.toggle('open');
-    }
-
-    function showHelp() {
-        document.getElementById('help-modal').classList.add('show');
-    }
-
-    function hideHelp() {
-        document.getElementById('help-modal').classList.remove('show');
-    }
-
-    // ========================================
-    // CHECKLIST FUNCTIONS
-    // ========================================
-    function getChecklistState() {
-        return JSON.parse(localStorage.getItem('checklist_state') || '{}');
-    }
-
-    function saveChecklistState(state) {
-        localStorage.setItem('checklist_state', JSON.stringify(state));
-    }
-
-    function toggleCheckItem(id) {
-        const state = getChecklistState();
-        state[id] = !state[id];
-        saveChecklistState(state);
-        renderChecklist();
-        showToast(state[id] ? '✓ Done!' : 'Unmarked');
-    }
-
-    function renderChecklist() {
-        const state = getChecklistState();
-        const grid = document.getElementById('checklist-grid');
-        
-        let totalItems = 0;
-        let doneItems = 0;
-        
-        grid.innerHTML = CHECKLIST.map(group => {
-            const itemsHtml = group.items.map(item => {
-                totalItems++;
-                const isDone = state[item.id];
-                if (isDone) doneItems++;
-                return `
-                    <div class="checklist-item ${isDone ? 'done' : ''}" onclick="toggleCheckItem('${item.id}')">
-                        <div class="checklist-checkbox">${isDone ? '✓' : ''}</div>
-                        <div class="checklist-content">
-                            <div class="checklist-text">${item.text}</div>
-                            <div class="checklist-hint">${item.hint}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            return `
-                <div class="checklist-group">
-                    <div class="checklist-group-title">${group.icon} ${group.group}</div>
-                    ${itemsHtml}
-                </div>
-            `;
-        }).join('');
-        
-        // Update progress
-        document.getElementById('checklist-done').textContent = doneItems;
-        document.getElementById('checklist-total').textContent = totalItems;
-        document.getElementById('progress-fill').style.width = totalItems > 0 ? (doneItems / totalItems * 100) + '%' : '0%';
-    }
-
-    function saveNotes() {
-        const notes = document.getElementById('decision-notes').value;
-        localStorage.setItem('decision_notes', notes);
-    }
-
-    function loadNotes() {
-        const notes = localStorage.getItem('decision_notes') || '';
-        document.getElementById('decision-notes').value = notes;
-    }
-
-    function showToast(message) {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2000);
-    }
-
-    function askQuestion(q) {
-        document.getElementById('chat-input').value = q;
-        sendChat();
-    }
-
-    function sendChat() {
-        const input = document.getElementById('chat-input');
-        const q = input.value.trim();
-        if (!q) return;
-
-        const messages = document.getElementById('chat-messages');
-        messages.innerHTML += `<div class="chat-message user"><div class="chat-bubble">${q}</div></div>`;
-
-        let answer = getAnswer(q.toLowerCase());
-
-        setTimeout(() => {
-            messages.innerHTML += `<div class="chat-message assistant"><div class="chat-bubble">${answer}</div></div>`;
-            messages.scrollTop = messages.scrollHeight;
-        }, 300);
-
-        input.value = '';
-    }
-
-    function getAnswer(q) {
-        if (q.includes('safe')) {
-            return `The safest options are D1 (Sell Seabrook) or E1 (Sell both). Both give zero debt. D1 gives ${fmt(CALC.d1_cash_after)} buffer, E1 gives ${fmt(CALC.both_net_proceeds)}. B2 is safest if staying in Seabrook - ${fmt(CALC.buffer_amount)} buffer.`;
-        }
-        if (q.includes('b2') || (q.includes('keep') && q.includes('both'))) {
-            return `B2 reduces debt from ${fmt(CALC.combined_debt)} to ${fmt(CALC.b2_remaining_debt)}. You keep ${fmt(CALC.buffer_amount)} cash buffer. Compared to keeping both: you lose Peninsular's growth (${INPUTS.pen_future_growth}% p.a.) but gain massive stress reduction.`;
-        }
-        if (q.includes('rate') || q.includes('interest')) {
-            const current8 = calcMonthlyPayment(CALC.combined_debt, 0.08);
-            const reduced8 = calcMonthlyPayment(CALC.b1_remaining_debt, 0.08);
-            return `At 8%, current loan = ${fmt(current8)}/month. After selling Pen = ${fmt(reduced8)}/month. Selling Peninsular halves your rate exposure.`;
-        }
-        if (q.includes('growth') || q.includes('opportunity')) {
-            const penIn5 = futureValue(INPUTS.pen_value, INPUTS.pen_future_growth, 5);
-            const lost = penIn5 - INPUTS.pen_value;
-            return `At ${INPUTS.pen_future_growth}% growth, Peninsular would be worth ${fmt(penIn5)} in 5 years. That's ${fmt(lost)} in growth you'd give up by selling now. However, the stress reduction and debt paydown may be worth it.`;
-        }
-        if (q.includes('split') || q.includes('divide')) {
-            return `Six split options exist: 50/50 = ${fmt(CALC.both_net_proceeds / 2)} each. 70/30 gives Cass ${fmt(CALC.both_net_proceeds * 0.7)}. 'Each keeps own' gives Cass ${fmt(CALC.pen_net_proceeds)}, Troy ${fmt(CALC.seabrook_net_proceeds)}.`;
-        }
-        if (q.includes('friction') || q.includes('move')) {
-            return `Move friction = ${fmt(INPUTS.move_friction)} (moving costs + contents writeoff). Furniture bought retail can't be resold at value. Staying in Seabrook = $0 friction.`;
-        }
-        return "I can help with: safest option, B2 comparison, rate impacts, growth projections, splits, or move friction. Try one of those!";
-    }
-
-    // ========================================
-    // INIT
-    // ========================================
-    document.addEventListener('DOMContentLoaded', () => {
-        readInputs();
-        updateCalc();
-        renderAll();
-        renderChecklist();
-        loadNotes();
-        updatePreferenceDisplay();
-        
-        // Auto-recalc on input change
-        document.querySelectorAll('.input-field').forEach(inp => {
-            inp.addEventListener('change', recalculate);
-        });
-        
-        setTimeout(() => {
-            document.getElementById('loading').classList.add('hidden');
-            // Show help on first visit
-            if (!localStorage.getItem('help_seen')) {
-                showHelp();
-                localStorage.setItem('help_seen', 'true');
-            }
-        }, 300);
+    document.querySelectorAll(".nav button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".nav button").forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll("section").forEach((s) => s.classList.remove("active"));
+        btn.classList.add("active");
+        $$(btn.dataset.section).classList.add("active");
+      });
     });
-    </script>
-<!-- T4H-BRAND-INJECT-FOOTER v1 -->
-<footer style="background:#0f0f0f;color:#888;padding:32px 20px;text-align:center;font-size:13px;margin-top:40px;border-top:1px solid #222">
-  <a href="https://linkedin.com/in/troylatter" style="color:#10b981;margin:0 12px;text-decoration:none">LinkedIn</a>
-  <div style="margin-top:16px;font-size:11px;opacity:0.6">© 2026 Troy Latter / Tech 4 Humanity Ltd</div>
-</footer>
-<!-- /T4H-BRAND-INJECT-FOOTER -->
+
+    document.querySelectorAll("input").forEach((el) => el.addEventListener("input", render));
+    $$("recalcBtn").addEventListener("click", render);
+    $$("resetBtn").addEventListener("click", resetDefaults);
+
+    render();
+  </script>
 </body>
 </html>
