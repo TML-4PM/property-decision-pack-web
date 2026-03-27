@@ -23,6 +23,16 @@
     .rule-card{border-radius:22px;padding:20px;background:linear-gradient(135deg,rgba(69,212,131,.1),rgba(116,167,255,.08));border:1px solid rgba(116,167,255,.2)}.rule-card ul{margin:10px 0 0 18px;color:#d8e2f4}.rule-card li{margin:8px 0}.callout{margin-top:16px;padding:14px 16px;border-radius:16px;background:rgba(255,190,85,.12);border:1px solid rgba(255,190,85,.25);color:#fff0d1;font-size:14px}.footer{margin-top:24px;color:var(--muted);font-size:13px;text-align:center}
     @media (max-width:1080px){.grid{grid-template-columns:1fr}.hero-grid{grid-template-columns:1fr 1fr}} @media (max-width:720px){.hero,.card{padding:18px}.hero-grid,.option-grid,.summary-grid,.input-grid,.agreement-grid{grid-template-columns:1fr}h1{font-size:34px}}
   </style>
+<!-- T4H-BRAND-INJECT v1 group=G6 -->
+<link rel="icon" type="image/png" sizes="32x32" href="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
+<link rel="icon" type="image/x-icon" href="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.ico">
+<link rel="apple-touch-icon" href="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
+<meta property="og:image" content="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lzfgigiyqpuuxslsygjt.supabase.co/storage/v1/object/public/images/t4h-icon.png">
+<!-- /T4H-BRAND-INJECT -->
 </head>
 <body>
 <div class="shell">
@@ -48,5 +58,11 @@ function render(){const d=readInputs(), c=calc(d), five=c.years.find(x=>x.years=
 function resetDefaults(){Object.entries(DEFAULTS).forEach(([k,v])=>{const el=$$(k); if(el) el.value=v}); render()}
 document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active')); document.querySelectorAll('section').forEach(s=>s.classList.remove('active')); btn.classList.add('active'); $$(btn.dataset.section).classList.add('active')})); document.addEventListener('change',e=>{if(e.target.matches('input,textarea,select')) renderAgreementPreview()}); document.querySelectorAll('input').forEach(el=>el.addEventListener('input',render)); $$('recalcBtn').addEventListener('click',render); $$('resetBtn').addEventListener('click',resetDefaults); $$('sendAgreementBtn').addEventListener('click',()=>{const email=buildAgreementEmail(); const to=['cassandra','4pm.net.au','troy.latter','gmail.com']; const mailto='mailto:'+to[0]+'@'+to[1]+','+to[2]+'@'+to[3]+'?subject='+encodeURIComponent(email.subject)+'&body='+encodeURIComponent(email.body); window.location.href=mailto}); render();
 </script>
+<!-- T4H-BRAND-INJECT-FOOTER v1 -->
+<footer style="background:#0f0f0f;color:#888;padding:32px 20px;text-align:center;font-size:13px;margin-top:40px;border-top:1px solid #222">
+  <a href="https://linkedin.com/in/troylatter" style="color:#10b981;margin:0 12px;text-decoration:none">LinkedIn</a>
+  <div style="margin-top:16px;font-size:11px;opacity:0.6">© 2026 Troy Latter / Tech 4 Humanity Ltd</div>
+</footer>
+<!-- /T4H-BRAND-INJECT-FOOTER -->
 </body>
 </html>
